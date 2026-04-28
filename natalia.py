@@ -13,13 +13,13 @@ LARGURA_QUADRADO, ALTURA_QUADRADO = 600, 450
 
 quadrado = pygame.Rect(100, 30, LARGURA_QUADRADO, ALTURA_QUADRADO)
 coordenada_desenhar_imagens = (100, 30)
-numero_fotos, lista_fotos = listar_fotos("imagens")
+numero_fotos, lista_fotos = listar_fotos(caminho_recurso("imagens"))
 indice_foto_atual = 0
 
-seta_direita = pygame.image.load("seta.png").convert_alpha()
+seta_direita = pygame.image.load(caminho_recurso("seta.png")).convert_alpha()
 seta_direita = pygame.transform.scale(seta_direita, (100, 100))
 
-seta_esquerda = pygame.image.load("seta.png").convert_alpha()
+seta_esquerda = pygame.image.load(caminho_recurso("seta.png")).convert_alpha()
 seta_esquerda = pygame.transform.scale(seta_esquerda, (100, 100))
 seta_esquerda = pygame.transform.flip(seta_esquerda, True, False)
 
@@ -28,6 +28,8 @@ rect_seta_esqurda = seta_esquerda.get_rect(topleft=(100, 490))
 
 posicao_seta_direita = (600, 490)
 posicao_seta_esqurda = (100, 490)
+
+print(numero_fotos)
     
 def transformar_tamanho_imagem(caminho):
     imagem = pygame.image.load(caminho)
@@ -42,7 +44,7 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
             if rect_seta_direita.collidepoint(mouse_pos):
-                if indice_foto_atual + 1 == numero_fotos - 1:
+                if indice_foto_atual== numero_fotos - 1:
                     indice_foto_atual = 0
                 else:
                     indice_foto_atual += 1
