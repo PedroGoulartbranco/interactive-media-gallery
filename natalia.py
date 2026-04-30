@@ -43,6 +43,12 @@ def transformar_tamanho_imagem(caminho):
     imagem_redimensionada = imagem_redimensionada.convert()
     return imagem_redimensionada
 
+def mostrar_numero_foto_atual(indice):
+    texto_numero = fonte.render(f"Foto: {indice + 1}", True, "black")
+    #rect_numero = pygame.rect(100, 28, 20, 20)
+    screen.blit(texto_numero, (100, 9))
+
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -73,6 +79,8 @@ while running:
     i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
 
     screen.blit(i, coordenada_desenhar_imagens)
+    mostrar_numero_foto_atual(indice_foto_atual)
+
     pygame.draw.rect(screen, "BLACK", quadrado, 4)
     screen.blit(seta_direita, posicao_seta_direita)
     screen.blit(seta_esquerda, posicao_seta_esqurda)
