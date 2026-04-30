@@ -1,8 +1,9 @@
 import pygame
 from utils import *
+from random import choice
 
 pygame.init()
-LARGURA, ALTURA = 800, 600
+LARGURA, ALTURA = 1000, 600
 screen = pygame.display.set_mode((LARGURA, ALTURA))
 clock = pygame.time.Clock()
 running = True
@@ -16,6 +17,9 @@ coordenada_desenhar_imagens = (100, 30)
 numero_fotos, lista_fotos = listar_fotos(caminho_recurso("imagens"))
 indice_foto_atual = 0
 
+ponto_interrogacao = pygame.image.load(caminho_recurso("interrogacao.png")).convert_alpha()
+ponto_interrogacao = pygame.transform.scale(ponto_interrogacao, (100, 100))
+
 seta_direita = pygame.image.load(caminho_recurso("seta.png")).convert_alpha()
 seta_direita = pygame.transform.scale(seta_direita, (100, 100))
 
@@ -25,9 +29,11 @@ seta_esquerda = pygame.transform.flip(seta_esquerda, True, False)
 
 rect_seta_direita = seta_direita.get_rect(topleft=(600, 490))
 rect_seta_esqurda = seta_esquerda.get_rect(topleft=(100, 490))
+rect_ponto_interrogacao = ponto_interrogacao.get_rect(topleft=(350, 490))
 
 posicao_seta_direita = (600, 490)
 posicao_seta_esqurda = (100, 490)
+posicao_ponto_interrogacao = (350, 490)
 
 print(numero_fotos)
     
@@ -55,6 +61,12 @@ while running:
                 else:
                     indice_foto_atual -= 1
                 print(indice_foto_atual)
+            if rect_ponto_interrogacao.collidepoint(mouse_pos):
+                fotos_opcoes = []
+                for indice_foto in range(numero_fotos):
+                    if indice_foto != indice_foto_atual:
+                        fotos_opcoes.append(indice_foto)
+                indice_foto_atual = choice(fotos_opcoes)
 
     screen.fill("purple")
     
@@ -64,6 +76,7 @@ while running:
     pygame.draw.rect(screen, "BLACK", quadrado, 4)
     screen.blit(seta_direita, posicao_seta_direita)
     screen.blit(seta_esquerda, posicao_seta_esqurda)
+    screen.blit(ponto_interrogacao, posicao_ponto_interrogacao)
 
     pygame.display.flip()
 
