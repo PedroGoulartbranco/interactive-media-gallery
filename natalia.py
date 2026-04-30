@@ -35,6 +35,9 @@ posicao_seta_direita = (600, 490)
 posicao_seta_esqurda = (100, 490)
 posicao_ponto_interrogacao = (350, 490)
 
+clicou_botao_randomizar = False
+fotos_opcoes = []
+
 print(numero_fotos)
     
 def transformar_tamanho_imagem(caminho):
@@ -72,7 +75,10 @@ while running:
                 for indice_foto in range(numero_fotos):
                     if indice_foto != indice_foto_atual:
                         fotos_opcoes.append(indice_foto)
-                indice_foto_atual = choice(fotos_opcoes)
+                #indice_foto_atual = choice(fotos_opcoes)
+                ticks_clicou_randozimar = pygame.time.get_ticks()
+                clicou_botao_randomizar = True
+                
 
     screen.fill("purple")
     
@@ -80,6 +86,12 @@ while running:
 
     screen.blit(i, coordenada_desenhar_imagens)
     mostrar_numero_foto_atual(indice_foto_atual)
+    ticks_atuais = pygame.time.get_ticks()
+
+    if clicou_botao_randomizar:
+        if (ticks_atuais - ticks_clicou_randozimar >= 1000):
+            clicou_botao_randomizar = False
+        indice_foto_atual = choice(fotos_opcoes)
 
     pygame.draw.rect(screen, "BLACK", quadrado, 4)
     screen.blit(seta_direita, posicao_seta_direita)
