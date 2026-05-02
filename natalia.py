@@ -71,11 +71,7 @@ while running:
                     indice_foto_atual -= 1
                 print(indice_foto_atual)
             if rect_ponto_interrogacao.collidepoint(mouse_pos):
-                fotos_opcoes = []
-                for indice_foto in range(numero_fotos):
-                    if indice_foto != indice_foto_atual:
-                        fotos_opcoes.append(indice_foto)
-                #indice_foto_atual = choice(fotos_opcoes)
+                aleatorizar(numero_fotos, indice_foto_atual)
                 ticks_clicou_randozimar = pygame.time.get_ticks()
                 clicou_botao_randomizar = True
                 
@@ -91,7 +87,7 @@ while running:
     if clicou_botao_randomizar:
         if (ticks_atuais - ticks_clicou_randozimar >= 1000):
             clicou_botao_randomizar = False
-        indice_foto_atual = choice(fotos_opcoes)
+        indice_foto_atual = aleatorizar(numero_fotos, indice_foto_atual)
 
     pygame.draw.rect(screen, "BLACK", quadrado, 4)
     screen.blit(seta_direita, posicao_seta_direita)
