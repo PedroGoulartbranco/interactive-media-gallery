@@ -7,8 +7,11 @@ LARGURA, ALTURA = 1000, 600
 screen = pygame.display.set_mode((LARGURA, ALTURA))
 clock = pygame.time.Clock()
 running = True
+
 pygame.display.set_caption("Te Amo Natalia")
 fonte = pygame.font.SysFont('consolas', 20)
+
+pygame.mixer.init()
 
 LARGURA_QUADRADO, ALTURA_QUADRADO = 600, 450
 
@@ -38,7 +41,11 @@ posicao_ponto_interrogacao = (350, 490)
 clicou_botao_randomizar = False
 fotos_opcoes = []
 
-print(numero_fotos)
+indice_musica = 0
+nome_musica_atual, caminho_musica_atual = musica_atual(indice_musica)
+
+pygame.mixer.music.load(caminho_musica_atual)
+pygame.mixer.music.play(-1)
     
 def transformar_tamanho_imagem(caminho):
     imagem = pygame.image.load(caminho)

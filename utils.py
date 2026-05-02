@@ -2,6 +2,11 @@ import os
 import sys
 from random import choice
 
+lista_musicas = [
+    {"nome": "So Easy to Fall in Love","caminho": "sons\olivia_dean___so_easy__to_fall_in_love___lyrics_.mp3"},
+    {"nome": "For Youth","caminho": "sons\bts___for_youth__legendado_tradu__o_.mp3"}
+]
+
 def listar_fotos(caminho):
     lista = []
     extensoes_foto = (".png", ".jpg", ".jpeg")
@@ -28,3 +33,6 @@ def aleatorizar(numero_fotos, indice_foto_atual):
         if indice_foto != indice_foto_atual:
             fotos_opcoes.append(indice_foto)
     return choice(fotos_opcoes)
+
+def musica_atual(indice):
+    return lista_musicas[indice]["nome"], lista_musicas[indice]["caminho"]
