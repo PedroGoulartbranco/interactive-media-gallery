@@ -14,6 +14,7 @@ fonte = pygame.font.SysFont('consolas', 20)
 pygame.mixer.init()
 
 LARGURA_QUADRADO, ALTURA_QUADRADO = 600, 450
+TEMPO_APARECER_NOME_MUSICA = 5000
 
 quadrado = pygame.Rect(100, 30, LARGURA_QUADRADO, ALTURA_QUADRADO)
 coordenada_desenhar_imagens = (100, 30)
@@ -46,6 +47,9 @@ nome_musica_atual, caminho_musica_atual = musica_atual(indice_musica)
 
 pygame.mixer.music.load(caminho_musica_atual)
 pygame.mixer.music.play(-1)
+
+texto_musica_atual = texto_numero = fonte.render(nome_musica_atual, True, "black")
+posicao_texto_musica = (0, 0)
     
 def transformar_tamanho_imagem(caminho):
     imagem = pygame.image.load(caminho)
@@ -95,6 +99,7 @@ while running:
         if (ticks_atuais - ticks_clicou_randozimar >= 1000):
             clicou_botao_randomizar = False
         indice_foto_atual = aleatorizar(numero_fotos, indice_foto_atual)
+    
 
     pygame.draw.rect(screen, "BLACK", quadrado, 4)
     screen.blit(seta_direita, posicao_seta_direita)
