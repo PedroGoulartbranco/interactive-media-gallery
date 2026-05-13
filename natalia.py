@@ -1,6 +1,7 @@
 import pygame
 from utils import *
 from random import choice
+import tkinter
 
 pygame.init()
 LARGURA, ALTURA = 1000, 600
@@ -15,6 +16,8 @@ imagem_coracao = pygame.image.load(caminho_recurso("coracao_icon.png")).convert_
 pygame.display.set_icon(imagem_coracao)
 
 pygame.mixer.init()
+
+pasta_aberta = False
 
 LARGURA_QUADRADO, ALTURA_QUADRADO = 600, 450
 TEMPO_APARECER_NOME_MUSICA = 5000
@@ -91,6 +94,11 @@ while running:
 
     screen.fill("purple")
     
+    if pasta_aberta:
+        pass
+    else:
+        pass
+
     i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
 
     screen.blit(i, coordenada_desenhar_imagens)
