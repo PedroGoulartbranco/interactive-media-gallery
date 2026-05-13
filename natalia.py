@@ -11,6 +11,9 @@ running = True
 pygame.display.set_caption("Te Amo Natalia")
 fonte = pygame.font.SysFont('consolas', 20)
 
+imagem_coracao = pygame.image.load(caminho_recurso("coracao_icon.png")).convert_alpha()
+pygame.display.set_icon(imagem_coracao)
+
 pygame.mixer.init()
 
 LARGURA_QUADRADO, ALTURA_QUADRADO = 600, 450
@@ -59,7 +62,6 @@ def transformar_tamanho_imagem(caminho):
 
 def mostrar_numero_foto_atual(indice):
     texto_numero = fonte.render(f"Foto: {indice + 1}", True, "black")
-    #rect_numero = pygame.rect(100, 28, 20, 20)
     screen.blit(texto_numero, (100, 9))
 
 
