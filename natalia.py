@@ -67,6 +67,14 @@ def mostrar_numero_foto_atual(indice):
     texto_numero = fonte.render(f"Foto: {indice + 1}", True, "black")
     screen.blit(texto_numero, (100, 9))
 
+def mostrar_botao_abrir_pasta():
+    texto = fonte.render("Abrir Pasta", True, "black")
+    quadrado_cinza = pygame.Rect(100, 30, LARGURA_QUADRADO, ALTURA_QUADRADO)
+    coordenadas_texto = texto.get_rect(center=quadrado_cinza.center)
+    pygame.draw.rect(screen, "gray", quadrado_cinza)
+    screen.blit(texto, coordenadas_texto)
+    return texto, quadrado_cinza
+
 
 while running:
     for event in pygame.event.get():
@@ -97,21 +105,21 @@ while running:
     if pasta_aberta:
         pass
     else:
-        pass
+        texto_botao_abrir_pasta, botao_abrir_pasta = mostrar_botao_abrir_pasta()
 
-    i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
+    # i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
 
-    screen.blit(i, coordenada_desenhar_imagens)
-    mostrar_numero_foto_atual(indice_foto_atual)
-    ticks_atuais = pygame.time.get_ticks()
+    # screen.blit(i, coordenada_desenhar_imagens)
+    # mostrar_numero_foto_atual(indice_foto_atual)
+    # ticks_atuais = pygame.time.get_ticks()
 
-    if clicou_botao_randomizar:
-        if (ticks_atuais - ticks_clicou_randozimar >= 1000):
-            clicou_botao_randomizar = False
-        indice_foto_atual = aleatorizar(numero_fotos, indice_foto_atual)
+    # if clicou_botao_randomizar:
+    #     if (ticks_atuais - ticks_clicou_randozimar >= 1000):
+    #         clicou_botao_randomizar = False
+    #     indice_foto_atual = aleatorizar(numero_fotos, indice_foto_atual)
     
 
-    pygame.draw.rect(screen, "BLACK", quadrado, 4)
+    # pygame.draw.rect(screen, "BLACK", quadrado, 4)
     screen.blit(seta_direita, posicao_seta_direita)
     screen.blit(seta_esquerda, posicao_seta_esqurda)
     screen.blit(ponto_interrogacao, posicao_ponto_interrogacao)
