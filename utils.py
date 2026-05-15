@@ -1,6 +1,8 @@
 import os
 import sys
 from random import choice
+import tkinter
+from tkinter import filedialog
 
 lista_musicas = [
     {"nome": "So Easy to Fall in Love","caminho": "sons\olivia_dean___so_easy__to_fall_in_love___lyrics_.mp3"},
@@ -38,4 +40,11 @@ def musica_atual(indice):
     return lista_musicas[indice]["nome"], lista_musicas[indice]["caminho"]
 
 def abrir_pasta():
-    pass
+    root = tkinter.Tk()
+    root.withdraw()
+    root.attributes('-topmost', True)
+    caminho = filedialog.askdirectory()
+    
+    root.destroy()
+    
+    return caminho

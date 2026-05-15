@@ -1,7 +1,6 @@
 import pygame
 from utils import *
 from random import choice
-import tkinter
 
 pygame.init()
 LARGURA, ALTURA = 1000, 600
@@ -56,6 +55,8 @@ pygame.mixer.music.play(-1)
 
 texto_musica_atual = texto_numero = fonte.render(nome_musica_atual, True, "black")
 posicao_texto_musica = (0, 0)
+
+texto_botao_abrir_pasta = botao_abrir_pasta = pygame.Rect(100, 30, LARGURA_QUADRADO, ALTURA_QUADRADO)
     
 def transformar_tamanho_imagem(caminho):
     imagem = pygame.image.load(caminho)
@@ -98,6 +99,8 @@ while running:
                 aleatorizar(numero_fotos, indice_foto_atual)
                 ticks_clicou_randozimar = pygame.time.get_ticks()
                 clicou_botao_randomizar = True
+            if botao_abrir_pasta.collidepoint(mouse_pos):
+                caminho = abrir_pasta()
                 
 
     screen.fill("purple")
