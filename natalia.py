@@ -23,9 +23,10 @@ pasta_aberta = False
 
 LARGURA_QUADRADO, ALTURA_QUADRADO = 600, 450
 TEMPO_APARECER_NOME_MUSICA = 5000
+DISTANCIA_LATERAL_QUADRADO = 50
 
-quadrado = pygame.Rect(100, 30, LARGURA_QUADRADO, ALTURA_QUADRADO)
-coordenada_desenhar_imagens = (100, 30)
+quadrado = pygame.Rect(DISTANCIA_LATERAL_QUADRADO, 30, LARGURA_QUADRADO, ALTURA_QUADRADO)
+coordenada_desenhar_imagens = (DISTANCIA_LATERAL_QUADRADO, 30)
 numero_fotos = lista_fotos = None
 indice_foto_atual = 0
 
@@ -39,13 +40,13 @@ seta_esquerda = pygame.image.load(caminho_recurso("seta.png")).convert_alpha()
 seta_esquerda = pygame.transform.scale(seta_esquerda, (100, 100))
 seta_esquerda = pygame.transform.flip(seta_esquerda, True, False)
 
-rect_seta_direita = seta_direita.get_rect(topleft=(600, 490))
-rect_seta_esqurda = seta_esquerda.get_rect(topleft=(100, 490))
-rect_ponto_interrogacao = ponto_interrogacao.get_rect(topleft=(350, 490))
+rect_seta_direita = seta_direita.get_rect(topleft=(DISTANCIA_LATERAL_QUADRADO + 500, 490))
+rect_seta_esqurda = seta_esquerda.get_rect(topleft=(DISTANCIA_LATERAL_QUADRADO, 490))
+rect_ponto_interrogacao = ponto_interrogacao.get_rect(topleft=(DISTANCIA_LATERAL_QUADRADO + 250, 490))
 
-posicao_seta_direita = (600, 490)
-posicao_seta_esqurda = (100, 490)
-posicao_ponto_interrogacao = (350, 490)
+posicao_seta_direita = (DISTANCIA_LATERAL_QUADRADO + 500, 490)
+posicao_seta_esqurda = (DISTANCIA_LATERAL_QUADRADO, 490)
+posicao_ponto_interrogacao = (DISTANCIA_LATERAL_QUADRADO + 250, 490)
 
 clicou_botao_randomizar = False
 fotos_opcoes = []
@@ -59,7 +60,7 @@ pygame.mixer.music.play(-1)
 texto_musica_atual = texto_numero = fonte.render(nome_musica_atual, True, "black")
 posicao_texto_musica = (0, 0)
 
-texto_botao_abrir_pasta = botao_abrir_pasta = pygame.Rect(100, 30, LARGURA_QUADRADO, ALTURA_QUADRADO)
+texto_botao_abrir_pasta = botao_abrir_pasta = pygame.Rect(DISTANCIA_LATERAL_QUADRADO, 30, LARGURA_QUADRADO, ALTURA_QUADRADO)
     
 def transformar_tamanho_imagem(caminho):
     imagem = pygame.image.load(caminho)
@@ -73,7 +74,7 @@ def mostrar_numero_foto_atual(indice):
 
 def mostrar_botao_abrir_pasta():
     texto = fonte.render("Abrir Pasta", True, "black")
-    quadrado_cinza = pygame.Rect(100, 30, LARGURA_QUADRADO, ALTURA_QUADRADO)
+    quadrado_cinza = pygame.Rect(DISTANCIA_LATERAL_QUADRADO, 30, LARGURA_QUADRADO, ALTURA_QUADRADO)
     coordenadas_texto = texto.get_rect(center=quadrado_cinza.center)
     pygame.draw.rect(screen, "gray", quadrado_cinza)
     screen.blit(texto, coordenadas_texto)
