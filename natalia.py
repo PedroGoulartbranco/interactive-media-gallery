@@ -87,19 +87,22 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
             if rect_seta_direita.collidepoint(mouse_pos):
-                if indice_foto_atual== numero_fotos - 1:
-                    indice_foto_atual = 0
-                else:
-                    indice_foto_atual += 1
+                if pasta_aberta:
+                    if indice_foto_atual== numero_fotos - 1:
+                        indice_foto_atual = 0
+                    else:
+                        indice_foto_atual += 1
             if rect_seta_esqurda.collidepoint(mouse_pos):
-                if indice_foto_atual - 1 == -1:
-                    indice_foto_atual = numero_fotos - 1
-                else:
-                    indice_foto_atual -= 1
+                if pasta_aberta:
+                    if indice_foto_atual - 1 == -1:
+                        indice_foto_atual = numero_fotos - 1
+                    else:
+                        indice_foto_atual -= 1
             if rect_ponto_interrogacao.collidepoint(mouse_pos):
-                aleatorizar(numero_fotos, indice_foto_atual)
-                ticks_clicou_randozimar = pygame.time.get_ticks()
-                clicou_botao_randomizar = True
+                if pasta_aberta:
+                    aleatorizar(numero_fotos, indice_foto_atual)
+                    ticks_clicou_randozimar = pygame.time.get_ticks()
+                    clicou_botao_randomizar = True
             if botao_abrir_pasta.collidepoint(mouse_pos):
                 caminho = abrir_pasta()
                 if verificar_pasta(caminho):
