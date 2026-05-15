@@ -37,7 +37,7 @@ def aleatorizar(numero_fotos, indice_foto_atual):
     return choice(fotos_opcoes)
 
 def musica_atual(indice):
-    return lista_musicas[indice]["nome"], lista_musicas[indice]["caminho"]
+    return lista_musicas[indice]["nome"], caminho_recurso(lista_musicas[indice]["caminho"])
 
 def abrir_pasta():
     root = tkinter.Tk()

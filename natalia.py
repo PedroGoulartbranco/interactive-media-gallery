@@ -14,6 +14,7 @@ pygame.display.set_caption("Te Amo Natalia")
 fonte = pygame.font.SysFont('consolas', 20)
 
 imagem_coracao = pygame.image.load(caminho_recurso("coracao_icon.png")).convert_alpha()
+imagem_coracao = pygame.transform.scale(imagem_coracao, (128, 128))
 pygame.display.set_icon(imagem_coracao)
 
 pygame.mixer.init()
@@ -131,6 +132,6 @@ while running:
 
     pygame.display.flip()
 
-    clock.tick(30)
+    clock.tick(25)
 
 pygame.quit()
