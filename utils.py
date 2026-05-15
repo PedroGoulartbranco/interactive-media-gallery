@@ -48,3 +48,9 @@ def abrir_pasta():
     root.destroy()
     
     return caminho
+
+
+def verificar_pasta(caminho):
+    if os.path.isdir(caminho):
+        return True
+    return False

@@ -8,6 +8,8 @@ screen = pygame.display.set_mode((LARGURA, ALTURA))
 clock = pygame.time.Clock()
 running = True
 
+caminho = None
+
 pygame.display.set_caption("Te Amo Natalia")
 fonte = pygame.font.SysFont('consolas', 20)
 
@@ -23,7 +25,7 @@ TEMPO_APARECER_NOME_MUSICA = 5000
 
 quadrado = pygame.Rect(100, 30, LARGURA_QUADRADO, ALTURA_QUADRADO)
 coordenada_desenhar_imagens = (100, 30)
-numero_fotos, lista_fotos = listar_fotos(caminho_recurso("imagens"))
+numero_fotos = lista_fotos = None
 indice_foto_atual = 0
 
 ponto_interrogacao = pygame.image.load(caminho_recurso("interrogacao.png")).convert_alpha()
@@ -88,41 +90,41 @@ while running:
                     indice_foto_atual = 0
                 else:
                     indice_foto_atual += 1
-                print(indice_foto_atual)
             if rect_seta_esqurda.collidepoint(mouse_pos):
                 if indice_foto_atual - 1 == -1:
                     indice_foto_atual = numero_fotos - 1
                 else:
                     indice_foto_atual -= 1
-                print(indice_foto_atual)
             if rect_ponto_interrogacao.collidepoint(mouse_pos):
                 aleatorizar(numero_fotos, indice_foto_atual)
                 ticks_clicou_randozimar = pygame.time.get_ticks()
                 clicou_botao_randomizar = True
             if botao_abrir_pasta.collidepoint(mouse_pos):
                 caminho = abrir_pasta()
+                if verificar_pasta(caminho):
+                    pasta_aberta = True
+                    numero_fotos, lista_fotos = listar_fotos(caminho)
+                    if numero_fotos == 0:
+                        pasta_aberta = False
                 
 
     screen.fill("purple")
     
     if pasta_aberta:
-        pass
+        i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
+        screen.blit(i, coordenada_desenhar_imagens)
+        mostrar_numero_foto_atual(indice_foto_atual)
+        if clicou_botao_randomizar:
+            if (ticks_atuais - ticks_clicou_randozimar >= 1000):
+                clicou_botao_randomizar = False
+            indice_foto_atual = aleatorizar(numero_fotos, indice_foto_atual)
     else:
         texto_botao_abrir_pasta, botao_abrir_pasta = mostrar_botao_abrir_pasta()
 
-    # i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
-
-    # screen.blit(i, coordenada_desenhar_imagens)
-    # mostrar_numero_foto_atual(indice_foto_atual)
-    # ticks_atuais = pygame.time.get_ticks()
-
-    # if clicou_botao_randomizar:
-    #     if (ticks_atuais - ticks_clicou_randozimar >= 1000):
-    #         clicou_botao_randomizar = False
-    #     indice_foto_atual = aleatorizar(numero_fotos, indice_foto_atual)
+    ticks_atuais = pygame.time.get_ticks()
     
 
-    # pygame.draw.rect(screen, "BLACK", quadrado, 4)
+    pygame.draw.rect(screen, "BLACK", quadrado, 4)
     screen.blit(seta_direita, posicao_seta_direita)
     screen.blit(seta_esquerda, posicao_seta_esqurda)
     screen.blit(ponto_interrogacao, posicao_ponto_interrogacao)
