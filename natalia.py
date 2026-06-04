@@ -1,5 +1,6 @@
 import pygame
 from utils import *
+from quadrados import *
 
 pygame.init()
 LARGURA, ALTURA = 1000, 600
@@ -25,26 +26,17 @@ ultimo_click = 0
 
 pasta_aberta = False
 mostrar_botoes_laterais = True
+pagina_configuracoes_aberta = False
+pagina_editar_aberta = False
+pagina_ler_aberta = False
+pagina_supresa_aberta = False
 
-LARGURA_QUADRADO, ALTURA_QUADRADO = 600, 450
-TEMPO_APARECER_NOME_MUSICA = 5000
-DISTANCIA_LATERAL_QUADRADO = 50
-
-DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES =  LARGURA_QUADRADO + 70
-LARGURA_BOTOES, ALTURA_BOTOES = 300, 80
-
+texto_botao_voltar = fonte.render("Configurações", True, "black")
 
 quadrado = pygame.Rect(DISTANCIA_LATERAL_QUADRADO, 30, LARGURA_QUADRADO, ALTURA_QUADRADO)
 coordenada_desenhar_imagens = (DISTANCIA_LATERAL_QUADRADO, 30)
 numero_fotos = lista_fotos = None
 indice_foto_atual = 0
-
-#Criar Quadrados de menu
-botao_configuracoes = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 30, LARGURA_BOTOES, ALTURA_BOTOES)
-botao_editar_imagens = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 60 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
-botao_ler = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 160 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
-botao_supresa = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 260 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
- 
 ponto_interrogacao = pygame.image.load(caminho_recurso("interrogacao.png")).convert_alpha()
 ponto_interrogacao = pygame.transform.scale(ponto_interrogacao, (100, 100))
 
@@ -117,6 +109,9 @@ def funcao_mostrar_botoes_laterais():
     screen.blit(texto_botao_ler, coordenadas_texto_ler)
     screen.blit(texto_botao_supresa, coordenadas_texto_supresa)
 
+def funcao_mostrar_pagina_configuracoes():
+    pygame.draw.rect(screen, cores_botoes, botao_voltar)
+
 
 while running:
     for event in pygame.event.get():
@@ -148,6 +143,16 @@ while running:
                     numero_fotos, lista_fotos = listar_fotos(caminho)
                     if numero_fotos == 0:
                         pasta_aberta = False
+            if mostrar_botoes_laterais:
+                if botao_configuracoes.collidepoint(mouse_pos):
+                    mostrar_botoes_laterais = False
+                    pagina_configuracoes_aberta = True
+                if botao_editar_imagens.collidepoint(mouse_pos):
+                    mostrar_botoes_laterais = False
+                if botao_ler.collidepoint(mouse_pos):
+                    mostrar_botoes_laterais = False
+                if botao_supresa.collidepoint(mouse_pos):
+                    mostrar_botoes_laterais = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                 if indice_musica == 0:
@@ -205,6 +210,9 @@ while running:
 
     if mostrar_botoes_laterais:
         funcao_mostrar_botoes_laterais()
+    
+    if pagina_configuracoes_aberta:
+        funcao_mostrar_pagina_configuracoes()
 
     pygame.display.flip()
 
