@@ -20,6 +20,9 @@ pygame.display.set_icon(imagem_coracao)
 
 pygame.mixer.init()
 
+tempo_para_segurar = 250 #Tempo de cooldown para um clique nao contar como dois
+ultimo_click = 0
+
 pasta_aberta = False
 mostrar_botoes_laterais = True
 
@@ -95,7 +98,7 @@ def mostrar_botao_abrir_pasta():
 def funcao_mostrar_botoes_laterais():
     texto_botao_configuracoes = fonte.render("Configurações", True, "black")
     texto_botao_editar = fonte.render("Editar", True, "black")
-    texto_botao_ler = fonte.render("Ler Mais", True, "black")
+    texto_botao_ler = fonte.render("Leitura", True, "black")
     texto_botao_supresa = fonte.render("Mais", True, "black")
 
     coordenadas_texto_configuracoes = texto_botao_configuracoes.get_rect(center=botao_configuracoes.center)
@@ -154,18 +157,6 @@ while running:
                 nome_musica_atual, caminho_musica_atual = tocar_musica(indice_musica)
                 pygame.mixer.music.load(caminho_musica_atual)
                 pygame.mixer.music.play(-1)
-            if event.key == pygame.K_LEFT:
-                if pasta_aberta:
-                    if indice_foto_atual - 1 == -1:
-                        indice_foto_atual = numero_fotos - 1
-                    else:
-                        indice_foto_atual -= 1
-            if event.key == pygame.K_RIGHT:
-                if pasta_aberta:
-                    if indice_foto_atual== numero_fotos - 1:
-                        indice_foto_atual = 0
-                    else:
-                        indice_foto_atual += 1
             if event.key == pygame.K_SPACE:
                 if pasta_aberta:
                     aleatorizar(numero_fotos, indice_foto_atual)
@@ -174,6 +165,8 @@ while running:
                 
 
     screen.fill("#AC01F4")
+    keys = pygame.key.get_pressed()
+    tempo_atual = pygame.time.get_ticks()
     
     if pasta_aberta:
         i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
@@ -192,6 +185,23 @@ while running:
     screen.blit(seta_direita, posicao_seta_direita)
     screen.blit(seta_esquerda, posicao_seta_esqurda)
     screen.blit(ponto_interrogacao, posicao_ponto_interrogacao)
+    
+    if keys[pygame.K_LEFT]:
+        if pasta_aberta:
+            if tempo_atual - ultimo_click > tempo_para_segurar:
+                ultimo_click = tempo_atual
+                if indice_foto_atual - 1 == -1:
+                    indice_foto_atual = numero_fotos - 1
+                else:
+                    indice_foto_atual -= 1
+    if keys[pygame.K_RIGHT]:
+        if tempo_atual - ultimo_click > tempo_para_segurar:
+            ultimo_click = tempo_atual
+            if pasta_aberta:
+                if indice_foto_atual== numero_fotos - 1:
+                    indice_foto_atual = 0
+                else:
+                    indice_foto_atual += 1
 
     if mostrar_botoes_laterais:
         funcao_mostrar_botoes_laterais()
