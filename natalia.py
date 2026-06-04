@@ -29,7 +29,7 @@ quadrado = pygame.Rect(DISTANCIA_LATERAL_QUADRADO, 30, LARGURA_QUADRADO, ALTURA_
 coordenada_desenhar_imagens = (DISTANCIA_LATERAL_QUADRADO, 30)
 numero_fotos = lista_fotos = None
 indice_foto_atual = 0
-
+ 
 ponto_interrogacao = pygame.image.load(caminho_recurso("interrogacao.png")).convert_alpha()
 ponto_interrogacao = pygame.transform.scale(ponto_interrogacao, (100, 100))
 
@@ -80,6 +80,11 @@ def mostrar_botao_abrir_pasta():
     screen.blit(texto, coordenadas_texto)
     return texto, quadrado_cinza
 
+def tocar_musica(indice):
+    nome_musica_atual, caminho_musica_atual = musica_atual(indice)
+
+    return nome_musica_atual, caminho_musica_atual
+
 
 while running:
     for event in pygame.event.get():
@@ -111,6 +116,15 @@ while running:
                     numero_fotos, lista_fotos = listar_fotos(caminho)
                     if numero_fotos == 0:
                         pasta_aberta = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                if indice_musica == 0:
+                    indice_musica = 1
+                else:
+                    indice_musica = 0
+                nome_musica_atual, caminho_musica_atual = tocar_musica(indice_musica)
+                pygame.mixer.music.load(caminho_musica_atual)
+                pygame.mixer.music.play(-1)
                 
 
     screen.fill("purple")

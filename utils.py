@@ -6,7 +6,7 @@ from tkinter import filedialog
 
 lista_musicas = [
     {"nome": "So Easy to Fall in Love","caminho": "sons\olivia_dean___so_easy__to_fall_in_love___lyrics_.mp3"},
-    {"nome": "For Youth","caminho": "sons\bts___for_youth__legendado_tradu__o_.mp3"}
+    {"nome": "For Youth","caminho": "sons\o___for_youth__legendado_tradu__o_.mp3"}
 ]
 
 def listar_fotos(caminho):
