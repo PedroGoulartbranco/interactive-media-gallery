@@ -54,3 +54,8 @@ def verificar_pasta(caminho):
     if os.path.isdir(caminho):
         return True
     return False
+
+def tocar_musica(indice):
+    nome_musica_atual, caminho_musica_atual = musica_atual(indice)
+
+    return nome_musica_atual, caminho_musica_atual

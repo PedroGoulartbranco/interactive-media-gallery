@@ -10,6 +10,8 @@ running = True
 
 caminho = None
 
+cores_botoes = "#6503A6"
+
 pygame.display.set_caption("Te Amo Natalia")
 fonte = pygame.font.SysFont('consolas', 20)
 
@@ -25,10 +27,20 @@ LARGURA_QUADRADO, ALTURA_QUADRADO = 600, 450
 TEMPO_APARECER_NOME_MUSICA = 5000
 DISTANCIA_LATERAL_QUADRADO = 50
 
+DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES =  LARGURA_QUADRADO + 70
+LARGURA_BOTOES, ALTURA_BOTOES = 300, 80
+
+
 quadrado = pygame.Rect(DISTANCIA_LATERAL_QUADRADO, 30, LARGURA_QUADRADO, ALTURA_QUADRADO)
 coordenada_desenhar_imagens = (DISTANCIA_LATERAL_QUADRADO, 30)
 numero_fotos = lista_fotos = None
 indice_foto_atual = 0
+
+#Criar Quadrados de menu
+botao_configuracoes = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 30, LARGURA_BOTOES, ALTURA_BOTOES)
+botao_editar_imagens = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 60 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
+botao_ler = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 160 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
+botao_supresa = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 260 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
  
 ponto_interrogacao = pygame.image.load(caminho_recurso("interrogacao.png")).convert_alpha()
 ponto_interrogacao = pygame.transform.scale(ponto_interrogacao, (100, 100))
@@ -70,7 +82,7 @@ def transformar_tamanho_imagem(caminho):
 
 def mostrar_numero_foto_atual(indice):
     texto_numero = fonte.render(f"Foto: {indice + 1}", True, "black")
-    screen.blit(texto_numero, (100, 9))
+    screen.blit(texto_numero, (DISTANCIA_LATERAL_QUADRADO, 9))
 
 def mostrar_botao_abrir_pasta():
     texto = fonte.render("Abrir Pasta", True, "black")
@@ -79,11 +91,6 @@ def mostrar_botao_abrir_pasta():
     pygame.draw.rect(screen, "gray", quadrado_cinza)
     screen.blit(texto, coordenadas_texto)
     return texto, quadrado_cinza
-
-def tocar_musica(indice):
-    nome_musica_atual, caminho_musica_atual = musica_atual(indice)
-
-    return nome_musica_atual, caminho_musica_atual
 
 
 while running:
@@ -137,9 +144,14 @@ while running:
                         indice_foto_atual = 0
                     else:
                         indice_foto_atual += 1
+            if event.key == pygame.K_SPACE:
+                if pasta_aberta:
+                    aleatorizar(numero_fotos, indice_foto_atual)
+                    ticks_clicou_randozimar = pygame.time.get_ticks()
+                    clicou_botao_randomizar = True
                 
 
-    screen.fill("purple")
+    screen.fill("#AC01F4")
     
     if pasta_aberta:
         i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
@@ -154,11 +166,15 @@ while running:
 
     ticks_atuais = pygame.time.get_ticks()
     
-
     pygame.draw.rect(screen, "BLACK", quadrado, 4)
     screen.blit(seta_direita, posicao_seta_direita)
     screen.blit(seta_esquerda, posicao_seta_esqurda)
     screen.blit(ponto_interrogacao, posicao_ponto_interrogacao)
+
+    pygame.draw.rect(screen, cores_botoes, botao_configuracoes)
+    pygame.draw.rect(screen,  cores_botoes, botao_editar_imagens)
+    pygame.draw.rect(screen,  cores_botoes, botao_ler)
+    pygame.draw.rect(screen,  cores_botoes, botao_supresa)
 
     pygame.display.flip()
 
