@@ -1,6 +1,5 @@
 import pygame
 from utils import *
-from random import choice
 
 pygame.init()
 LARGURA, ALTURA = 1000, 600
@@ -22,6 +21,7 @@ pygame.display.set_icon(imagem_coracao)
 pygame.mixer.init()
 
 pasta_aberta = False
+mostrar_botoes_laterais = True
 
 LARGURA_QUADRADO, ALTURA_QUADRADO = 600, 450
 TEMPO_APARECER_NOME_MUSICA = 5000
@@ -91,6 +91,28 @@ def mostrar_botao_abrir_pasta():
     pygame.draw.rect(screen, "gray", quadrado_cinza)
     screen.blit(texto, coordenadas_texto)
     return texto, quadrado_cinza
+
+def funcao_mostrar_botoes_laterais():
+    texto_botao_configuracoes = fonte.render("Configurações", True, "black")
+    texto_botao_editar = fonte.render("Editar", True, "black")
+    texto_botao_ler = fonte.render("Ler Mais", True, "black")
+    texto_botao_supresa = fonte.render("Mais", True, "black")
+
+    coordenadas_texto_configuracoes = texto_botao_configuracoes.get_rect(center=botao_configuracoes.center)
+    coordenadas_texto_editar = texto_botao_editar.get_rect(center=botao_editar_imagens.center)
+    coordenadas_texto_ler = texto_botao_ler.get_rect(center=botao_ler.center)
+    coordenadas_texto_supresa = texto_botao_supresa.get_rect(center=botao_supresa.center)
+
+
+    pygame.draw.rect(screen, cores_botoes, botao_configuracoes)
+    pygame.draw.rect(screen,  cores_botoes, botao_editar_imagens)
+    pygame.draw.rect(screen,  cores_botoes, botao_ler)
+    pygame.draw.rect(screen,  cores_botoes, botao_supresa)
+
+    screen.blit(texto_botao_configuracoes, coordenadas_texto_configuracoes)
+    screen.blit(texto_botao_editar, coordenadas_texto_editar)
+    screen.blit(texto_botao_ler, coordenadas_texto_ler)
+    screen.blit(texto_botao_supresa, coordenadas_texto_supresa)
 
 
 while running:
@@ -171,10 +193,8 @@ while running:
     screen.blit(seta_esquerda, posicao_seta_esqurda)
     screen.blit(ponto_interrogacao, posicao_ponto_interrogacao)
 
-    pygame.draw.rect(screen, cores_botoes, botao_configuracoes)
-    pygame.draw.rect(screen,  cores_botoes, botao_editar_imagens)
-    pygame.draw.rect(screen,  cores_botoes, botao_ler)
-    pygame.draw.rect(screen,  cores_botoes, botao_supresa)
+    if mostrar_botoes_laterais:
+        funcao_mostrar_botoes_laterais()
 
     pygame.display.flip()
 
