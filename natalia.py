@@ -125,6 +125,18 @@ while running:
                 nome_musica_atual, caminho_musica_atual = tocar_musica(indice_musica)
                 pygame.mixer.music.load(caminho_musica_atual)
                 pygame.mixer.music.play(-1)
+            if event.key == pygame.K_LEFT:
+                if pasta_aberta:
+                    if indice_foto_atual - 1 == -1:
+                        indice_foto_atual = numero_fotos - 1
+                    else:
+                        indice_foto_atual -= 1
+            if event.key == pygame.K_RIGHT:
+                if pasta_aberta:
+                    if indice_foto_atual== numero_fotos - 1:
+                        indice_foto_atual = 0
+                    else:
+                        indice_foto_atual += 1
                 
 
     screen.fill("purple")
