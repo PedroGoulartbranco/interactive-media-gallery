@@ -113,14 +113,23 @@ def funcao_mostrar_botoes_laterais():
 #Pagina de configurações
 def funcao_mostrar_pagina_configuracoes():
     texto_botao_abrir_nova_pasta = fonte.render("Abrir Pasta", True, "black")
+    texto_botao_trocar_musica = fonte.render("Pular Música", True, "black")
+    texto_botao_personalizar = fonte.render("Personalizar Galeria", True, "black")
+
     coordenadas_texto_voltar = texto_botao_voltar.get_rect(center=botao_voltar.center)
     coordenadas_texto_abrir_nova_pasta = texto_botao_abrir_nova_pasta.get_rect(center=botao_abrir_nova_pasta.center)
+    coordenadas_texto_trocar_musica = texto_botao_trocar_musica.get_rect(center=botao_trocar_musica.center)
+    coordenadas_texto_personalizar = texto_botao_personalizar.get_rect(center=botao_personalizar.center)
 
     pygame.draw.rect(screen, cores_botoes, botao_voltar)
     pygame.draw.rect(screen, cores_botoes, botao_abrir_nova_pasta)
+    pygame.draw.rect(screen, cores_botoes, botao_trocar_musica)
+    pygame.draw.rect(screen, cores_botoes, botao_personalizar)
 
     screen.blit(texto_botao_voltar, coordenadas_texto_voltar)
     screen.blit(texto_botao_abrir_nova_pasta, coordenadas_texto_abrir_nova_pasta)
+    screen.blit(texto_botao_trocar_musica, coordenadas_texto_trocar_musica)
+    screen.blit(texto_botao_personalizar, coordenadas_texto_personalizar)
 
 def atualizar_tamanho(largura, altura):
     escala_x = largura / LARGURA
@@ -151,10 +160,26 @@ def atualizar_tamanho(largura, altura):
     botao_supresa.x = x_pos
     botao_supresa.y = (260 + 80) * escala_y
 
+    #Botoes de configurações
+    botao_abrir_nova_pasta.width = nova_largura
+    botao_abrir_nova_pasta.height = nova_altura
+    botao_abrir_nova_pasta.x = x_pos
+    botao_abrir_nova_pasta.y = 30 * escala_y
+
     botao_voltar.width = nova_largura
     botao_voltar.height = nova_altura
     botao_voltar.x = x_pos
     botao_voltar.y = (260 + 80) * escala_y
+
+    botao_trocar_musica.width = nova_largura
+    botao_trocar_musica.height = nova_altura
+    botao_trocar_musica.x = x_pos
+    botao_trocar_musica.y = (60 + 80) * escala_y
+
+    botao_personalizar.width = nova_largura
+    botao_personalizar.height = nova_altura
+    botao_personalizar.x = x_pos
+    botao_personalizar.y = (160 + 80) * escala_y
 
 def atualizar_tamanho_quadrado(largura, altura):
     global coordenada_desenhar_imagens
@@ -246,7 +271,8 @@ while running:
                     mostrar_botoes_laterais = False
                 if botao_supresa.collidepoint(mouse_pos):
                     mostrar_botoes_laterais = False
-            if pagina_configuracoes_aberta: #Se a pagina de configurações estiver aberta
+            #Se a pagina de configurações estiver aberta
+            if pagina_configuracoes_aberta:
                 if abriu_primeira_vez_configuracoes is False:
                     abriu_primeira_vez_configuracoes = True
                 else:
@@ -254,6 +280,14 @@ while running:
                 if botao_voltar.collidepoint(mouse_pos):
                     pagina_configuracoes_aberta = False
                     mostrar_botoes_laterais = True
+                if botao_trocar_musica.collidepoint(mouse_pos):
+                    if indice_musica == 0:
+                        indice_musica = 1
+                    else:
+                        indice_musica = 0
+                    nome_musica_atual, caminho_musica_atual = tocar_musica(indice_musica)
+                    pygame.mixer.music.load(caminho_musica_atual)
+                    pygame.mixer.music.play(-1)
                 if botao_abrir_nova_pasta.collidepoint(mouse_pos) and abriu_primeira_vez_configuracoes  is False:
                     caminho_novo = abrir_pasta()
                     if verificar_pasta(caminho_novo):
