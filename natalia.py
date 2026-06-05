@@ -115,21 +115,25 @@ def funcao_mostrar_pagina_configuracoes():
     texto_botao_abrir_nova_pasta = fonte.render("Abrir Pasta", True, "black")
     texto_botao_trocar_musica = fonte.render("Pular Música", True, "black")
     texto_botao_personalizar = fonte.render("Personalizar Galeria", True, "black")
+    texto_botao_ajuda = fonte.render("Guia/Ajuda", True, "black")
 
     coordenadas_texto_voltar = texto_botao_voltar.get_rect(center=botao_voltar.center)
     coordenadas_texto_abrir_nova_pasta = texto_botao_abrir_nova_pasta.get_rect(center=botao_abrir_nova_pasta.center)
     coordenadas_texto_trocar_musica = texto_botao_trocar_musica.get_rect(center=botao_trocar_musica.center)
     coordenadas_texto_personalizar = texto_botao_personalizar.get_rect(center=botao_personalizar.center)
+    coordenadas_texto_ajuda = texto_botao_ajuda.get_rect(center=botao_ajuda.center)
 
     pygame.draw.rect(screen, cores_botoes, botao_voltar)
     pygame.draw.rect(screen, cores_botoes, botao_abrir_nova_pasta)
     pygame.draw.rect(screen, cores_botoes, botao_trocar_musica)
     pygame.draw.rect(screen, cores_botoes, botao_personalizar)
+    pygame.draw.rect(screen, cores_botoes, botao_ajuda)
 
     screen.blit(texto_botao_voltar, coordenadas_texto_voltar)
     screen.blit(texto_botao_abrir_nova_pasta, coordenadas_texto_abrir_nova_pasta)
     screen.blit(texto_botao_trocar_musica, coordenadas_texto_trocar_musica)
     screen.blit(texto_botao_personalizar, coordenadas_texto_personalizar)
+    screen.blit(texto_botao_ajuda, coordenadas_texto_ajuda)
 
 def atualizar_tamanho(largura, altura):
     escala_x = largura / LARGURA
@@ -352,6 +356,7 @@ while running:
                     indice_foto_atual += 1
 
     if mostrar_botoes_laterais:
+        abriu_primeira_vez_configuracoes = False
         funcao_mostrar_botoes_laterais()
     
     if pagina_configuracoes_aberta:
