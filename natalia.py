@@ -71,7 +71,7 @@ texto_botao_abrir_pasta = botao_abrir_pasta = pygame.Rect(DISTANCIA_LATERAL_QUAD
     
 def transformar_tamanho_imagem(caminho):
     imagem = pygame.image.load(caminho)
-    imagem_redimensionada = pygame.transform.smoothscale(imagem, (LARGURA_QUADRADO, ALTURA_QUADRADO))
+    imagem_redimensionada = pygame.transform.smoothscale(imagem, (quadrado.width, quadrado.height))
     imagem_redimensionada = imagem_redimensionada.convert()
     return imagem_redimensionada
 
@@ -141,6 +141,7 @@ def atualizar_tamanho(largura, altura):
     botao_supresa.y = (260 + 80) * escala_y
 
 def atualizar_tamanho_quadrado(largura, altura):
+    global coordenada_desenhar_imagens
     escala_x = largura / LARGURA
     escala_y = altura / ALTURA
 
@@ -155,6 +156,8 @@ def atualizar_tamanho_quadrado(largura, altura):
 
     quadrado_cinza.x = DISTANCIA_LATERAL_QUADRADO * escala_x
     quadrado_cinza.y = 30 * escala_y
+
+    coordenada_desenhar_imagens = (quadrado_cinza.x, quadrado_cinza.y)
 
 def atualizar_botoes_de_imagem(largura, altura):
     global seta_esquerda, posicao_seta_esqurda, rect_seta_esqurda, seta_direita, rect_seta_direita, posicao_seta_direita, ponto_interrogacao, rect_ponto_interrogacao, posicao_ponto_interrogacao
