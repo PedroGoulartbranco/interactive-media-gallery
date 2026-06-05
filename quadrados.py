@@ -19,4 +19,7 @@ botao_supresa = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 260 +
 #Criar botao de voltar
 botao_voltar = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 260 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
 
+#Menu de configurações
+botao_abrir_nova_pasta = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 30, LARGURA_BOTOES, ALTURA_BOTOES)
+
 #Criar botoes dentro de configurações

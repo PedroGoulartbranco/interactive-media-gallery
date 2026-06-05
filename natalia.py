@@ -31,6 +31,8 @@ pagina_editar_aberta = False
 pagina_ler_aberta = False
 pagina_supresa_aberta = False
 
+abriu_primeira_vez_configuracoes = False
+
 texto_botao_voltar = fonte.render("Configurações", True, "black")
 texto_botao_voltar = fonte.render("Voltar", True, "black")
 
@@ -108,11 +110,17 @@ def funcao_mostrar_botoes_laterais():
     screen.blit(texto_botao_ler, coordenadas_texto_ler)
     screen.blit(texto_botao_supresa, coordenadas_texto_supresa)
 
+#Pagina de configurações
 def funcao_mostrar_pagina_configuracoes():
+    texto_botao_abrir_nova_pasta = fonte.render("Abrir Pasta", True, "black")
     coordenadas_texto_voltar = texto_botao_voltar.get_rect(center=botao_voltar.center)
+    coordenadas_texto_abrir_nova_pasta = texto_botao_abrir_nova_pasta.get_rect(center=botao_abrir_nova_pasta.center)
 
     pygame.draw.rect(screen, cores_botoes, botao_voltar)
+    pygame.draw.rect(screen, cores_botoes, botao_abrir_nova_pasta)
+
     screen.blit(texto_botao_voltar, coordenadas_texto_voltar)
+    screen.blit(texto_botao_abrir_nova_pasta, coordenadas_texto_abrir_nova_pasta)
 
 def atualizar_tamanho(largura, altura):
     escala_x = largura / LARGURA
@@ -238,10 +246,22 @@ while running:
                     mostrar_botoes_laterais = False
                 if botao_supresa.collidepoint(mouse_pos):
                     mostrar_botoes_laterais = False
-            if pagina_configuracoes_aberta:
+            if pagina_configuracoes_aberta: #Se a pagina de configurações estiver aberta
+                if abriu_primeira_vez_configuracoes is False:
+                    abriu_primeira_vez_configuracoes = True
+                else:
+                    abriu_primeira_vez_configuracoes = False
                 if botao_voltar.collidepoint(mouse_pos):
                     pagina_configuracoes_aberta = False
                     mostrar_botoes_laterais = True
+                if botao_abrir_nova_pasta.collidepoint(mouse_pos) and abriu_primeira_vez_configuracoes  is False:
+                    caminho_novo = abrir_pasta()
+                    if verificar_pasta(caminho_novo):
+                        pasta_aberta = True
+                        caminho = caminho_novo
+                        numero_fotos, lista_fotos = listar_fotos(caminho)
+                        if numero_fotos == 0:
+                            pasta_aberta = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                 if indice_musica == 0:
