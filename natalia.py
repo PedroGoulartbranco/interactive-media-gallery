@@ -4,7 +4,7 @@ from quadrados import *
 
 pygame.init()
 LARGURA, ALTURA = 1000, 600
-screen = pygame.display.set_mode((LARGURA, ALTURA))
+screen = pygame.display.set_mode((LARGURA, ALTURA), pygame.RESIZABLE)
 clock = pygame.time.Clock()
 running = True
 
@@ -23,6 +23,29 @@ pygame.mixer.init()
 
 tempo_para_segurar = 250 #Tempo de cooldown para um clique nao contar como dois
 ultimo_click = 0
+
+#=================================================================================
+#                               Configurações de Tamanho de Tudo
+LARGURA_QUADRADO, ALTURA_QUADRADO = 600, 450
+TEMPO_APARECER_NOME_MUSICA = 5000
+DISTANCIA_LATERAL_QUADRADO = 50
+
+DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES =  LARGURA_QUADRADO + 70
+LARGURA_BOTOES, ALTURA_BOTOES = 300, 80
+
+#Criar Quadrados de menu
+botao_configuracoes = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 30, LARGURA_BOTOES, ALTURA_BOTOES)
+botao_editar_imagens = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 60 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
+botao_ler = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 160 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
+botao_supresa = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 260 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
+
+#Criar botao de voltar
+botao_voltar = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 260 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
+
+#Criar botoes dentro de configurações
+
+#                              FIM  Configurações de Tamanho de Tudo
+#=================================================================================
 
 pasta_aberta = False
 mostrar_botoes_laterais = True
@@ -112,11 +135,43 @@ def funcao_mostrar_botoes_laterais():
 def funcao_mostrar_pagina_configuracoes():
     pygame.draw.rect(screen, cores_botoes, botao_voltar)
 
+def atualizar_tamanho(largura, altura):
+    escala_x = largura / LARGURA
+    escala_y = altura / ALTURA
+
+    nova_largura = 300 * escala_x
+    nova_altura = 80 * escala_y
+
+    x_pos = (600 * escala_x) + (70 * escala_x)
+
+    botao_configuracoes.width = nova_largura
+    botao_configuracoes.height = nova_altura
+    botao_configuracoes.x = x_pos
+    botao_configuracoes.y = 30 * escala_y
+
+    botao_editar_imagens.width = nova_largura
+    botao_editar_imagens.height = nova_altura
+    botao_editar_imagens.x = x_pos
+    botao_editar_imagens.y = (60 + 80) * escala_y
+
+    botao_ler.width = nova_largura
+    botao_ler.height = nova_altura
+    botao_ler.x = x_pos
+    botao_ler.y = (160 + 80) * escala_y
+
+    botao_supresa.width = nova_largura
+    botao_supresa.height = nova_altura
+    botao_supresa.x = x_pos
+    botao_supresa.y = (260 + 80) * escala_y
+
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.VIDEORESIZE:
+            screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
+            atualizar_tamanho(event.w, event.h)
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
             if rect_seta_direita.collidepoint(mouse_pos):
