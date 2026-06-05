@@ -24,29 +24,6 @@ pygame.mixer.init()
 tempo_para_segurar = 250 #Tempo de cooldown para um clique nao contar como dois
 ultimo_click = 0
 
-#=================================================================================
-#                               Configurações de Tamanho de Tudo
-LARGURA_QUADRADO, ALTURA_QUADRADO = 600, 450
-TEMPO_APARECER_NOME_MUSICA = 5000
-DISTANCIA_LATERAL_QUADRADO = 50
-
-DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES =  LARGURA_QUADRADO + 70
-LARGURA_BOTOES, ALTURA_BOTOES = 300, 80
-
-#Criar Quadrados de menu
-botao_configuracoes = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 30, LARGURA_BOTOES, ALTURA_BOTOES)
-botao_editar_imagens = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 60 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
-botao_ler = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 160 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
-botao_supresa = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 260 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
-
-#Criar botao de voltar
-botao_voltar = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 260 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
-
-#Criar botoes dentro de configurações
-
-#                              FIM  Configurações de Tamanho de Tudo
-#=================================================================================
-
 pasta_aberta = False
 mostrar_botoes_laterais = True
 pagina_configuracoes_aberta = False
@@ -104,11 +81,10 @@ def mostrar_numero_foto_atual(indice):
 
 def mostrar_botao_abrir_pasta():
     texto = fonte.render("Abrir Pasta", True, "black")
-    quadrado_cinza = pygame.Rect(DISTANCIA_LATERAL_QUADRADO, 30, LARGURA_QUADRADO, ALTURA_QUADRADO)
     coordenadas_texto = texto.get_rect(center=quadrado_cinza.center)
     pygame.draw.rect(screen, "gray", quadrado_cinza)
     screen.blit(texto, coordenadas_texto)
-    return texto, quadrado_cinza
+    return texto
 
 def funcao_mostrar_botoes_laterais():
     texto_botao_configuracoes = fonte.render("Configurações", True, "black")
@@ -164,6 +140,16 @@ def atualizar_tamanho(largura, altura):
     botao_supresa.x = x_pos
     botao_supresa.y = (260 + 80) * escala_y
 
+def atualizar_tamanho_quadrado(largura, altura):
+    escala_x = largura / LARGURA
+    escala_y = altura / ALTURA
+
+    quadrado.width = LARGURA_QUADRADO * escala_x
+    quadrado.height = ALTURA_QUADRADO * escala_y
+
+    quadrado.x = DISTANCIA_LATERAL_QUADRADO * escala_x
+    quadrado.y = 30 * escala_y
+
 
 while running:
     for event in pygame.event.get():
@@ -172,6 +158,7 @@ while running:
         if event.type == pygame.VIDEORESIZE:
             screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
             atualizar_tamanho(event.w, event.h)
+            atualizar_tamanho_quadrado(event.w, event.h)
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
             if rect_seta_direita.collidepoint(mouse_pos):
@@ -191,13 +178,14 @@ while running:
                     aleatorizar(numero_fotos, indice_foto_atual)
                     ticks_clicou_randozimar = pygame.time.get_ticks()
                     clicou_botao_randomizar = True
-            if botao_abrir_pasta.collidepoint(mouse_pos):
-                caminho = abrir_pasta()
-                if verificar_pasta(caminho):
-                    pasta_aberta = True
-                    numero_fotos, lista_fotos = listar_fotos(caminho)
-                    if numero_fotos == 0:
-                        pasta_aberta = False
+            if quadrado_cinza.collidepoint(mouse_pos):
+                if pasta_aberta is False:
+                    caminho = abrir_pasta()
+                    if verificar_pasta(caminho):
+                        pasta_aberta = True
+                        numero_fotos, lista_fotos = listar_fotos(caminho)
+                        if numero_fotos == 0:
+                            pasta_aberta = False
             if mostrar_botoes_laterais:
                 if botao_configuracoes.collidepoint(mouse_pos):
                     mostrar_botoes_laterais = False
@@ -237,7 +225,7 @@ while running:
                 clicou_botao_randomizar = False
             indice_foto_atual = aleatorizar(numero_fotos, indice_foto_atual)
     else:
-        texto_botao_abrir_pasta, botao_abrir_pasta = mostrar_botao_abrir_pasta()
+        texto_botao_abrir_pasta = mostrar_botao_abrir_pasta()
 
     ticks_atuais = pygame.time.get_ticks()
     
