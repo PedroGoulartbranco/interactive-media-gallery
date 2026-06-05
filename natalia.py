@@ -32,6 +32,7 @@ pagina_ler_aberta = False
 pagina_supresa_aberta = False
 
 texto_botao_voltar = fonte.render("Configurações", True, "black")
+texto_botao_voltar = fonte.render("Voltar", True, "black")
 
 quadrado = pygame.Rect(DISTANCIA_LATERAL_QUADRADO, 30, LARGURA_QUADRADO, ALTURA_QUADRADO)
 coordenada_desenhar_imagens = (DISTANCIA_LATERAL_QUADRADO, 30)
@@ -97,7 +98,6 @@ def funcao_mostrar_botoes_laterais():
     coordenadas_texto_ler = texto_botao_ler.get_rect(center=botao_ler.center)
     coordenadas_texto_supresa = texto_botao_supresa.get_rect(center=botao_supresa.center)
 
-
     pygame.draw.rect(screen, cores_botoes, botao_configuracoes)
     pygame.draw.rect(screen,  cores_botoes, botao_editar_imagens)
     pygame.draw.rect(screen,  cores_botoes, botao_ler)
@@ -109,7 +109,10 @@ def funcao_mostrar_botoes_laterais():
     screen.blit(texto_botao_supresa, coordenadas_texto_supresa)
 
 def funcao_mostrar_pagina_configuracoes():
+    coordenadas_texto_voltar = texto_botao_voltar.get_rect(center=botao_voltar.center)
+
     pygame.draw.rect(screen, cores_botoes, botao_voltar)
+    screen.blit(texto_botao_voltar, coordenadas_texto_voltar)
 
 def atualizar_tamanho(largura, altura):
     escala_x = largura / LARGURA
@@ -139,6 +142,11 @@ def atualizar_tamanho(largura, altura):
     botao_supresa.height = nova_altura
     botao_supresa.x = x_pos
     botao_supresa.y = (260 + 80) * escala_y
+
+    botao_voltar.width = nova_largura
+    botao_voltar.height = nova_altura
+    botao_voltar.x = x_pos
+    botao_voltar.y = (260 + 80) * escala_y
 
 def atualizar_tamanho_quadrado(largura, altura):
     global coordenada_desenhar_imagens
@@ -230,6 +238,10 @@ while running:
                     mostrar_botoes_laterais = False
                 if botao_supresa.collidepoint(mouse_pos):
                     mostrar_botoes_laterais = False
+            if pagina_configuracoes_aberta:
+                if botao_voltar.collidepoint(mouse_pos):
+                    pagina_configuracoes_aberta = False
+                    mostrar_botoes_laterais = True
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                 if indice_musica == 0:
