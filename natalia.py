@@ -147,8 +147,38 @@ def atualizar_tamanho_quadrado(largura, altura):
     quadrado.width = LARGURA_QUADRADO * escala_x
     quadrado.height = ALTURA_QUADRADO * escala_y
 
+    quadrado_cinza.width =  LARGURA_QUADRADO * escala_x
+    quadrado_cinza.height = ALTURA_QUADRADO * escala_y
+
     quadrado.x = DISTANCIA_LATERAL_QUADRADO * escala_x
     quadrado.y = 30 * escala_y
+
+    quadrado_cinza.x = DISTANCIA_LATERAL_QUADRADO * escala_x
+    quadrado_cinza.y = 30 * escala_y
+
+def atualizar_botoes_de_imagem(largura, altura):
+    global seta_esquerda, posicao_seta_esqurda, rect_seta_esqurda, seta_direita, rect_seta_direita, posicao_seta_direita, ponto_interrogacao, rect_ponto_interrogacao, posicao_ponto_interrogacao
+    escala_x = largura / LARGURA
+    escala_y = altura / ALTURA
+
+    nova_largura = 100 * escala_x
+    nova_altura = 100 * escala_y
+
+    seta_esquerda = pygame.transform.scale(seta_esquerda, (int(nova_largura), int(nova_altura)))
+    seta_direita = pygame.transform.scale(seta_direita, (int(nova_largura), int(nova_altura)))
+    ponto_interrogacao = pygame.transform.scale(ponto_interrogacao, (int(nova_largura), int(nova_altura)))
+
+    rect_seta_esqurda.x = DISTANCIA_LATERAL_QUADRADO * escala_x
+    rect_seta_esqurda.y = 490 * escala_y
+    posicao_seta_esqurda = (rect_seta_esqurda.x, rect_seta_esqurda.y)
+    
+    rect_seta_direita.x = (DISTANCIA_LATERAL_QUADRADO +500) * escala_x
+    rect_seta_direita.y = 490 * escala_y
+    posicao_seta_direita = (rect_seta_direita.x, rect_seta_direita.y)
+
+    rect_ponto_interrogacao.x = (DISTANCIA_LATERAL_QUADRADO + 250) * escala_x
+    rect_ponto_interrogacao.y = 490 * escala_y
+    posicao_ponto_interrogacao = (rect_ponto_interrogacao.x, rect_ponto_interrogacao.y)
 
 
 while running:
@@ -159,6 +189,7 @@ while running:
             screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
             atualizar_tamanho(event.w, event.h)
             atualizar_tamanho_quadrado(event.w, event.h)
+            atualizar_botoes_de_imagem(event.w, event.h)
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
             if rect_seta_direita.collidepoint(mouse_pos):
