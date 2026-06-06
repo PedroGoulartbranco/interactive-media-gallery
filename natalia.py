@@ -334,11 +334,17 @@ while running:
                 nome_musica_atual, caminho_musica_atual = tocar_musica(indice_musica)
                 pygame.mixer.music.load(caminho_musica_atual)
                 pygame.mixer.music.play(-1)
-            if event.key == pygame.K_SPACE:
-                if pasta_aberta:
-                    aleatorizar(numero_fotos, indice_foto_atual)
-                    ticks_clicou_randozimar = pygame.time.get_ticks()
-                    clicou_botao_randomizar = True
+            if pagina_inicial:
+                if event.key == pygame.K_SPACE:
+                    if pasta_aberta:
+                        aleatorizar(numero_fotos, indice_foto_atual)
+                        ticks_clicou_randozimar = pygame.time.get_ticks()
+                        clicou_botao_randomizar = True
+                if event.key == pygame.K_a:
+                    lista_fotos_antigas = lista_fotos
+                    embaralhar_fotos(lista_fotos)
+                if event.key == pygame.K_s:
+                    numero_fotos, lista_fotos = listar_fotos(caminho)
                 
 
     screen.fill("#AC01F4")

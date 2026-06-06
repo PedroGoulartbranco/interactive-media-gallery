@@ -1,6 +1,6 @@
 import os
 import sys
-from random import choice
+from random import choice, shuffle
 import tkinter
 from tkinter import filedialog
 
@@ -59,3 +59,6 @@ def tocar_musica(indice):
     nome_musica_atual, caminho_musica_atual = musica_atual(indice)
 
     return nome_musica_atual, caminho_musica_atual
+
+def embaralhar_fotos(lista_fotos):
+    return shuffle(lista_fotos)
