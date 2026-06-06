@@ -33,6 +33,9 @@ pagina_supresa_aberta = False
 
 abriu_primeira_vez_configuracoes = False
 
+pagina_personalisar_galeria_aberta = False
+pagina_inicial = True #Pagina normal
+
 texto_botao_voltar = fonte.render("Configurações", True, "black")
 texto_botao_voltar = fonte.render("Voltar", True, "black")
 
@@ -240,31 +243,32 @@ while running:
             atualizar_botoes_de_imagem(event.w, event.h)
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
-            if rect_seta_direita.collidepoint(mouse_pos):
-                if pasta_aberta:
-                    if indice_foto_atual== numero_fotos - 1:
-                        indice_foto_atual = 0
-                    else:
-                        indice_foto_atual += 1
-            if rect_seta_esqurda.collidepoint(mouse_pos):
-                if pasta_aberta:
-                    if indice_foto_atual - 1 == -1:
-                        indice_foto_atual = numero_fotos - 1
-                    else:
-                        indice_foto_atual -= 1
-            if rect_ponto_interrogacao.collidepoint(mouse_pos):
-                if pasta_aberta:
-                    aleatorizar(numero_fotos, indice_foto_atual)
-                    ticks_clicou_randozimar = pygame.time.get_ticks()
-                    clicou_botao_randomizar = True
-            if quadrado_cinza.collidepoint(mouse_pos):
-                if pasta_aberta is False:
-                    caminho = abrir_pasta()
-                    if verificar_pasta(caminho):
-                        pasta_aberta = True
-                        numero_fotos, lista_fotos = listar_fotos(caminho)
-                        if numero_fotos == 0:
-                            pasta_aberta = False
+            if pagina_inicial:
+                if rect_seta_direita.collidepoint(mouse_pos):
+                    if pasta_aberta:
+                        if indice_foto_atual== numero_fotos - 1:
+                            indice_foto_atual = 0
+                        else:
+                            indice_foto_atual += 1
+                if rect_seta_esqurda.collidepoint(mouse_pos):
+                    if pasta_aberta:
+                        if indice_foto_atual - 1 == -1:
+                            indice_foto_atual = numero_fotos - 1
+                        else:
+                            indice_foto_atual -= 1
+                if rect_ponto_interrogacao.collidepoint(mouse_pos):
+                    if pasta_aberta:
+                        aleatorizar(numero_fotos, indice_foto_atual)
+                        ticks_clicou_randozimar = pygame.time.get_ticks()
+                        clicou_botao_randomizar = True
+                if quadrado_cinza.collidepoint(mouse_pos):
+                    if pasta_aberta is False:
+                        caminho = abrir_pasta()
+                        if verificar_pasta(caminho):
+                            pasta_aberta = True
+                            numero_fotos, lista_fotos = listar_fotos(caminho)
+                            if numero_fotos == 0:
+                                pasta_aberta = False
             if mostrar_botoes_laterais:
                 if botao_configuracoes.collidepoint(mouse_pos):
                     mostrar_botoes_laterais = False
@@ -300,6 +304,9 @@ while running:
                         numero_fotos, lista_fotos = listar_fotos(caminho)
                         if numero_fotos == 0:
                             pasta_aberta = False
+                if botao_personalizar.collidepoint(mouse_pos):
+                    pagina_inicial = False
+                    pagina_personalisar_galeria_aberta = True
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                 if indice_musica == 0:
@@ -319,48 +326,48 @@ while running:
     screen.fill("#AC01F4")
     keys = pygame.key.get_pressed()
     tempo_atual = pygame.time.get_ticks()
-    
-    if pasta_aberta:
-        i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
-        screen.blit(i, coordenada_desenhar_imagens)
-        mostrar_numero_foto_atual(indice_foto_atual)
-        if clicou_botao_randomizar:
-            if (ticks_atuais - ticks_clicou_randozimar >= 1000):
-                clicou_botao_randomizar = False
-            indice_foto_atual = aleatorizar(numero_fotos, indice_foto_atual)
-    else:
-        texto_botao_abrir_pasta = mostrar_botao_abrir_pasta()
-
-    ticks_atuais = pygame.time.get_ticks()
-    
-    pygame.draw.rect(screen, "BLACK", quadrado, 4)
-    screen.blit(seta_direita, posicao_seta_direita)
-    screen.blit(seta_esquerda, posicao_seta_esqurda)
-    screen.blit(ponto_interrogacao, posicao_ponto_interrogacao)
-    
-    if keys[pygame.K_LEFT]:
+    if pagina_inicial:
         if pasta_aberta:
+            i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
+            screen.blit(i, coordenada_desenhar_imagens)
+            mostrar_numero_foto_atual(indice_foto_atual)
+            if clicou_botao_randomizar:
+                if (ticks_atuais - ticks_clicou_randozimar >= 1000):
+                    clicou_botao_randomizar = False
+                indice_foto_atual = aleatorizar(numero_fotos, indice_foto_atual)
+        else:
+            texto_botao_abrir_pasta = mostrar_botao_abrir_pasta()
+
+        ticks_atuais = pygame.time.get_ticks()
+        
+        pygame.draw.rect(screen, "BLACK", quadrado, 4)
+        screen.blit(seta_direita, posicao_seta_direita)
+        screen.blit(seta_esquerda, posicao_seta_esqurda)
+        screen.blit(ponto_interrogacao, posicao_ponto_interrogacao)
+        
+        if keys[pygame.K_LEFT]:
+            if pasta_aberta:
+                if tempo_atual - ultimo_click > tempo_para_segurar:
+                    ultimo_click = tempo_atual
+                    if indice_foto_atual - 1 == -1:
+                        indice_foto_atual = numero_fotos - 1
+                    else:
+                        indice_foto_atual -= 1
+        if keys[pygame.K_RIGHT]:
             if tempo_atual - ultimo_click > tempo_para_segurar:
                 ultimo_click = tempo_atual
-                if indice_foto_atual - 1 == -1:
-                    indice_foto_atual = numero_fotos - 1
-                else:
-                    indice_foto_atual -= 1
-    if keys[pygame.K_RIGHT]:
-        if tempo_atual - ultimo_click > tempo_para_segurar:
-            ultimo_click = tempo_atual
-            if pasta_aberta:
-                if indice_foto_atual== numero_fotos - 1:
-                    indice_foto_atual = 0
-                else:
-                    indice_foto_atual += 1
+                if pasta_aberta:
+                    if indice_foto_atual== numero_fotos - 1:
+                        indice_foto_atual = 0
+                    else:
+                        indice_foto_atual += 1
 
-    if mostrar_botoes_laterais:
-        abriu_primeira_vez_configuracoes = False
-        funcao_mostrar_botoes_laterais()
-    
-    if pagina_configuracoes_aberta:
-        funcao_mostrar_pagina_configuracoes()
+        if mostrar_botoes_laterais:
+            abriu_primeira_vez_configuracoes = False
+            funcao_mostrar_botoes_laterais()
+        
+        if pagina_configuracoes_aberta:
+            funcao_mostrar_pagina_configuracoes()
 
     pygame.display.flip()
 
