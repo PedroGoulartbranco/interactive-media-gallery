@@ -12,6 +12,9 @@ caminho = None
 
 cores_botoes = "#6503A6"
 
+largura_atual = LARGURA
+altura_atual = ALTURA
+
 pygame.display.set_caption("Te Amo Natalia")
 fonte = pygame.font.SysFont('consolas', 20)
 
@@ -91,6 +94,11 @@ def mostrar_botao_abrir_pasta():
     pygame.draw.rect(screen, "gray", quadrado_cinza)
     screen.blit(texto, coordenadas_texto)
     return texto
+
+def calculo_tamanho_fonte_atual(tamanho_base):
+    escala = screen.get_height() / 600
+    novo_tamanho = int(tamanho_base * escala)
+    return pygame.font.SysFont('consolas', novo_tamanho)
 
 def funcao_mostrar_botoes_laterais():
     texto_botao_configuracoes = fonte.render("Configurações", True, "black")
@@ -232,6 +240,14 @@ def atualizar_botoes_de_imagem(largura, altura):
     posicao_ponto_interrogacao = (rect_ponto_interrogacao.x, rect_ponto_interrogacao.y)
 
 
+def funcao_pagina_personalisar():
+    fonte_atual = calculo_tamanho_fonte_atual(30)
+    texto_titulo = fonte_atual.render("Personalizar Galeria", True, "black")
+    coordenadas_titulo_texto = texto_titulo.get_rect()
+    coordenadas_titulo_texto.centerx = largura_atual / 2
+    coordenadas_titulo_texto.top = 30
+    screen.blit(texto_titulo, coordenadas_titulo_texto)
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -241,6 +257,8 @@ while running:
             atualizar_tamanho(event.w, event.h)
             atualizar_tamanho_quadrado(event.w, event.h)
             atualizar_botoes_de_imagem(event.w, event.h)
+            largura_atual = event.w
+            altura_atual = event.h
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
             if pagina_inicial:
@@ -368,6 +386,8 @@ while running:
         
         if pagina_configuracoes_aberta:
             funcao_mostrar_pagina_configuracoes()
+    if pagina_personalisar_galeria_aberta:
+        funcao_pagina_personalisar()
 
     pygame.display.flip()
 
