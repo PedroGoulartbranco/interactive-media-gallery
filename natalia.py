@@ -81,6 +81,7 @@ posicao_texto_musica = (0, 0)
 texto_botao_abrir_pasta = botao_abrir_pasta = pygame.Rect(DISTANCIA_LATERAL_QUADRADO, 30, LARGURA_QUADRADO, ALTURA_QUADRADO)
 
 botao_fundo_branco = botao_fundo_roxo = botao_fundo_cinza  = botao_fundo_azul = botao_fundo_vermelho = pygame.Rect(0, 0 - 8, 40, 40)
+botao_botoes_branco = botao_botoes_roxo = botao_botoes_cinza = botao_botoes_vermelho = botao_botoes_azul = pygame.Rect(0, 0 - 8, 40, 40)
     
 def transformar_tamanho_imagem(caminho):
     imagem = pygame.image.load(caminho)
@@ -246,6 +247,7 @@ def atualizar_botoes_de_imagem(largura, altura):
 
 def funcao_pagina_personalisar():
     global botao_fundo_azul, botao_fundo_branco, botao_fundo_vermelho, botao_fundo_cinza, botao_fundo_roxo
+    global botao_botoes_azul, botao_botoes_branco, botao_botoes_cinza, botao_botoes_roxo, botao_botoes_vermelho
     DISTANCIA_TEXTO_PERSONALIZAR = 25
 
     fonte_atual = calculo_tamanho_fonte_atual(30)
@@ -290,6 +292,14 @@ def funcao_pagina_personalisar():
         "#1F8BE4": botao_fundo_azul
     }
 
+    dicionario_cor_botao = {
+        "#FFFFFF": botao_botoes_branco,
+        "#6503A6": botao_botoes_roxo,
+        "#6B7074": botao_botoes_cinza,
+        "#FD0E0E": botao_botoes_vermelho,
+        "#1F8BE4": botao_botoes_azul
+    }
+
     screen.blit(texto_titulo, coordenadas_titulo_texto)
     pygame.draw.line(screen, cor_linha_borda, (0, coordenadas_titulo_texto.bottom + 3), (largura_atual, coordenadas_titulo_texto.bottom + 3), 1)
     screen.blit(texto_personalizar_fundo, coordenadas_texto_personalizar_fundo)
@@ -302,11 +312,13 @@ def funcao_pagina_personalisar():
         else:
             pygame.draw.rect(screen, botao, dicionario_cor_fundo[botao])
 
-    pygame.draw.rect(screen, "#FFFFFF", botao_botoes_branco)
-    pygame.draw.rect(screen, "#6503A6", botao_botoes_roxo)
-    pygame.draw.rect(screen, "#6B7074", botao_botoes_cinza)
-    pygame.draw.rect(screen, "#FD0E0E", botao_botoes_vermelho)
-    pygame.draw.rect(screen, "#1F8BE4", botao_botoes_azul)
+    for botao in dicionario_cor_botao:
+        if cores_botoes == botao:
+            pygame.draw.rect(screen, "black", dicionario_cor_botao[botao], 2)
+        elif botao == cor_fundo_atual:
+            pygame.draw.rect(screen, "#3bee2b", dicionario_cor_botao[botao], 2)
+        else:
+            pygame.draw.rect(screen, botao, dicionario_cor_botao[botao])
 
     coordenadas_texto_voltar = texto_botao_voltar.get_rect(center=botao_voltar.center)
     pygame.draw.rect(screen, cores_botoes, botao_voltar)
@@ -405,6 +417,17 @@ while running:
                     cor_fundo_atual = "#1F8BE4"
                 if botao_fundo_cinza.collidepoint(mouse_pos):
                     cor_fundo_atual = "#6B7074"
+                if botao_botoes_vermelho.collidepoint(mouse_pos):
+                    cores_botoes = "#FD0E0E"
+                if botao_botoes_azul.collidepoint(mouse_pos):
+                    cores_botoes = "#1F8BE4"
+                if botao_botoes_roxo.collidepoint(mouse_pos):
+                    cores_botoes = "#6503A6"
+                if botao_botoes_branco.collidepoint(mouse_pos):
+                    cores_botoes = "#FFFFFF"
+                if botao_botoes_cinza.collidepoint(mouse_pos):
+                    cores_botoes = "#6B7074"
+                
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                 if indice_musica == 0:
