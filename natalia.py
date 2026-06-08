@@ -263,10 +263,38 @@ def funcao_pagina_personalisar():
     coordenadas_texto_personalizar_botoes.top = DISTANCIA_DO_TITULO + 80
     coordenadas_texto_personalizar_botoes.left = DISTANCIA_TEXTO_PERSONALIZAR
 
+    DISTANCIA_PAREDE_BOTOES_COR = coordenadas_texto_personalizar_botoes.right + 60
+    #Fundo
+    botao_fundo_branco = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR, coordenadas_texto_personalizar_fundo.y - 8, 40, 40)
+    botao_fundo_roxo = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 80, coordenadas_texto_personalizar_fundo.y - 8, 40, 40)
+    botao_fundo_cinza = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 160, coordenadas_texto_personalizar_fundo.y - 8, 40, 40)
+    botao_fundo_azul = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 240, coordenadas_texto_personalizar_fundo.y - 8, 40, 40)
+    botao_fundo_vermelho = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 320, coordenadas_texto_personalizar_fundo.y - 8, 40, 40)
+
+    #Botoes
+    botao_botoes_branco = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR, coordenadas_texto_personalizar_botoes.y - 8, 40, 40)
+    botao_botoes_roxo = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 80, coordenadas_texto_personalizar_botoes.y - 8, 40, 40)
+    botao_botoes_cinza = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 160, coordenadas_texto_personalizar_botoes.y - 8, 40, 40)
+    botao_botoes_azul = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 240, coordenadas_texto_personalizar_botoes.y - 8, 40, 40)
+    botao_botoes_vermelho = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 320, coordenadas_texto_personalizar_botoes.y - 8, 40, 40)
+
     screen.blit(texto_titulo, coordenadas_titulo_texto)
     pygame.draw.line(screen, cor_linha_borda, (0, coordenadas_titulo_texto.bottom + 3), (largura_atual, coordenadas_titulo_texto.bottom + 3), 1)
     screen.blit(texto_personalizar_fundo, coordenadas_texto_personalizar_fundo)
+    pygame.draw.line(screen, cor_linha_borda, (0, coordenadas_texto_personalizar_fundo.bottom + 10), (largura_atual, coordenadas_texto_personalizar_fundo.bottom + 10), 1)
     screen.blit(texto_personalizar_botoes, coordenadas_texto_personalizar_botoes)
+
+    pygame.draw.rect(screen, "white", botao_fundo_branco)
+    pygame.draw.rect(screen, "#6503A6", botao_fundo_roxo)
+    pygame.draw.rect(screen, "#6B7074", botao_fundo_cinza)
+    pygame.draw.rect(screen, "#FD0E0E", botao_fundo_vermelho)
+    pygame.draw.rect(screen, "#1F8BE4", botao_fundo_azul)
+
+    pygame.draw.rect(screen, "white", botao_botoes_branco)
+    pygame.draw.rect(screen, "#6503A6", botao_botoes_roxo)
+    pygame.draw.rect(screen, "#6B7074", botao_botoes_cinza)
+    pygame.draw.rect(screen, "#FD0E0E", botao_botoes_vermelho)
+    pygame.draw.rect(screen, "#1F8BE4", botao_botoes_azul)
 
 while running:
     for event in pygame.event.get():
