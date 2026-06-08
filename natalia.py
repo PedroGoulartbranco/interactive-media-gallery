@@ -189,7 +189,7 @@ def atualizar_tamanho(largura, altura):
     botao_voltar.width = nova_largura
     botao_voltar.height = nova_altura
     botao_voltar.x = x_pos
-    botao_voltar.y = (260 + 80) * escala_y
+    botao_voltar.y = (360 + 80) * escala_y
 
     botao_trocar_musica.width = nova_largura
     botao_trocar_musica.height = nova_altura
@@ -200,6 +200,11 @@ def atualizar_tamanho(largura, altura):
     botao_personalizar.height = nova_altura
     botao_personalizar.x = x_pos
     botao_personalizar.y = (160 + 80) * escala_y
+
+    botao_ajuda.width = nova_largura
+    botao_ajuda.height = nova_altura
+    botao_ajuda.x = x_pos
+    botao_ajuda.y = (260 + 80) * escala_y
 
 def atualizar_tamanho_quadrado(largura, altura):
     global coordenada_desenhar_imagens
