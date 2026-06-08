@@ -12,6 +12,7 @@ caminho = None
 
 cores_botoes = "#6503A6"
 cor_linha_borda = "#000000"
+cor_fundo_atual = "#AC01F4"
 
 largura_atual = LARGURA
 altura_atual = ALTURA
@@ -278,19 +279,31 @@ def funcao_pagina_personalisar():
     botao_botoes_azul = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 240, coordenadas_texto_personalizar_botoes.y - 8, 40, 40)
     botao_botoes_vermelho = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 320, coordenadas_texto_personalizar_botoes.y - 8, 40, 40)
 
+    dicionario_cor_fundo = {
+        "#FFFFFF": {
+            botao_fundo_branco
+        },
+        "#AC01F4": {
+            botao_fundo_roxo
+        },
+        "#6B7074": {
+            botao_fundo_cinza
+        }
+    }
+
     screen.blit(texto_titulo, coordenadas_titulo_texto)
     pygame.draw.line(screen, cor_linha_borda, (0, coordenadas_titulo_texto.bottom + 3), (largura_atual, coordenadas_titulo_texto.bottom + 3), 1)
     screen.blit(texto_personalizar_fundo, coordenadas_texto_personalizar_fundo)
     pygame.draw.line(screen, cor_linha_borda, (0, coordenadas_texto_personalizar_fundo.bottom + 10), (largura_atual, coordenadas_texto_personalizar_fundo.bottom + 10), 1)
     screen.blit(texto_personalizar_botoes, coordenadas_texto_personalizar_botoes)
 
-    pygame.draw.rect(screen, "white", botao_fundo_branco)
-    pygame.draw.rect(screen, "#6503A6", botao_fundo_roxo)
+    pygame.draw.rect(screen, "#FFFFFF", botao_fundo_branco)
+    pygame.draw.rect(screen, "#AC01F4", botao_fundo_roxo)
     pygame.draw.rect(screen, "#6B7074", botao_fundo_cinza)
     pygame.draw.rect(screen, "#FD0E0E", botao_fundo_vermelho)
     pygame.draw.rect(screen, "#1F8BE4", botao_fundo_azul)
 
-    pygame.draw.rect(screen, "white", botao_botoes_branco)
+    pygame.draw.rect(screen, "#FFFFFF", botao_botoes_branco)
     pygame.draw.rect(screen, "#6503A6", botao_botoes_roxo)
     pygame.draw.rect(screen, "#6B7074", botao_botoes_cinza)
     pygame.draw.rect(screen, "#FD0E0E", botao_botoes_vermelho)
@@ -399,7 +412,7 @@ while running:
                         indice_foto_atual = numero_fotos - 1
                 
 
-    screen.fill("#AC01F4")
+    screen.fill(cor_fundo_atual)
     keys = pygame.key.get_pressed()
     tempo_atual = pygame.time.get_ticks()
     if pagina_inicial:
