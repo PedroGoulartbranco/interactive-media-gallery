@@ -11,6 +11,7 @@ running = True
 caminho = None
 
 cores_botoes = "#6503A6"
+cor_linha_borda = "#000000"
 
 largura_atual = LARGURA
 altura_atual = ALTURA
@@ -241,14 +242,31 @@ def atualizar_botoes_de_imagem(largura, altura):
 
 
 def funcao_pagina_personalisar():
+    DISTANCIA_TEXTO_PERSONALIZAR = 25
+
     fonte_atual = calculo_tamanho_fonte_atual(30)
     texto_titulo = fonte_atual.render("Personalizar Galeria", True, "black")
-    texto_personalizar_fundo = fonte_atual.render("Cor Fundo", True, "black")
-    texto_personalizar_botoes = fonte_atual.render("Cor Botões", True, "black")
+    texto_personalizar_fundo = fonte_atual.render("Cor Fundo: ", True, "black")
+    texto_personalizar_botoes = fonte_atual.render("Cor Botões:", True, "black")
+
     coordenadas_titulo_texto = texto_titulo.get_rect()
     coordenadas_titulo_texto.centerx = largura_atual / 2
     coordenadas_titulo_texto.top = 30
+
+    DISTANCIA_DO_TITULO = coordenadas_titulo_texto.top + 67
+
+    coordenadas_texto_personalizar_fundo = texto_personalizar_fundo.get_rect()
+    coordenadas_texto_personalizar_fundo.top = DISTANCIA_DO_TITULO
+    coordenadas_texto_personalizar_fundo.left = DISTANCIA_TEXTO_PERSONALIZAR
+
+    coordenadas_texto_personalizar_botoes = texto_personalizar_botoes.get_rect()
+    coordenadas_texto_personalizar_botoes.top = DISTANCIA_DO_TITULO + 80
+    coordenadas_texto_personalizar_botoes.left = DISTANCIA_TEXTO_PERSONALIZAR
+
     screen.blit(texto_titulo, coordenadas_titulo_texto)
+    pygame.draw.line(screen, cor_linha_borda, (0, coordenadas_titulo_texto.bottom + 3), (largura_atual, coordenadas_titulo_texto.bottom + 3), 1)
+    screen.blit(texto_personalizar_fundo, coordenadas_texto_personalizar_fundo)
+    screen.blit(texto_personalizar_botoes, coordenadas_texto_personalizar_botoes)
 
 while running:
     for event in pygame.event.get():
