@@ -308,6 +308,10 @@ def funcao_pagina_personalisar():
     pygame.draw.rect(screen, "#FD0E0E", botao_botoes_vermelho)
     pygame.draw.rect(screen, "#1F8BE4", botao_botoes_azul)
 
+    coordenadas_texto_voltar = texto_botao_voltar.get_rect(center=botao_voltar.center)
+    pygame.draw.rect(screen, cores_botoes, botao_voltar)
+    screen.blit(texto_botao_voltar, coordenadas_texto_voltar)
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -385,17 +389,22 @@ while running:
                 if botao_personalizar.collidepoint(mouse_pos):
                     pagina_inicial = False
                     pagina_personalisar_galeria_aberta = True
-                if pagina_configuracoes_aberta:
-                    if botao_fundo_branco.collidepoint(mouse_pos):
-                        cor_fundo_atual = "#FFFFFF"
-                    if botao_fundo_roxo.collidepoint(mouse_pos):
-                        cor_fundo_atual = "#AC01F4"
-                    if botao_fundo_vermelho.collidepoint(mouse_pos):
-                        cor_fundo_atual = "#FD0E0E"
-                    if botao_fundo_azul.collidepoint(mouse_pos):
-                        cor_fundo_atual = "#1F8BE4"
-                    if botao_fundo_cinza.collidepoint(mouse_pos):
-                        cor_fundo_atual = "#6B7074"
+                    pagina_configuracoes_aberta = False
+            if pagina_personalisar_galeria_aberta:
+                if botao_voltar.collidepoint(mouse_pos):
+                    pagina_configuracoes_aberta = True
+                    pagina_inicial = True
+                    pagina_personalisar_galeria_aberta = False
+                if botao_fundo_branco.collidepoint(mouse_pos):
+                    cor_fundo_atual = "#FFFFFF"
+                if botao_fundo_roxo.collidepoint(mouse_pos):
+                    cor_fundo_atual = "#AC01F4"
+                if botao_fundo_vermelho.collidepoint(mouse_pos):
+                    cor_fundo_atual = "#FD0E0E"
+                if botao_fundo_azul.collidepoint(mouse_pos):
+                    cor_fundo_atual = "#1F8BE4"
+                if botao_fundo_cinza.collidepoint(mouse_pos):
+                    cor_fundo_atual = "#6B7074"
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                 if indice_musica == 0:
