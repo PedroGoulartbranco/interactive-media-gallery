@@ -243,6 +243,8 @@ def atualizar_botoes_de_imagem(largura, altura):
 def funcao_pagina_personalisar():
     fonte_atual = calculo_tamanho_fonte_atual(30)
     texto_titulo = fonte_atual.render("Personalizar Galeria", True, "black")
+    texto_personalizar_fundo = fonte_atual.render("Cor Fundo", True, "black")
+    texto_personalizar_botoes = fonte_atual.render("Cor Botões", True, "black")
     coordenadas_titulo_texto = texto_titulo.get_rect()
     coordenadas_titulo_texto.centerx = largura_atual / 2
     coordenadas_titulo_texto.top = 30
