@@ -347,6 +347,10 @@ while running:
                         embaralhar_fotos(lista_fotos)
                     if event.key == pygame.K_s:
                         numero_fotos, lista_fotos = listar_fotos(caminho)
+                    if event.key == pygame.K_1:
+                        indice_foto_atual = 0
+                    if event.key == pygame.K_2: 
+                        indice_foto_atual = numero_fotos - 1
                 
 
     screen.fill("#AC01F4")
