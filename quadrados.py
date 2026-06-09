@@ -33,5 +33,10 @@ botao_desenho_foto = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 
 botao_desfoque_foto = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES + botao_desenho_foto.width + 20, 130, LARGURA_BOTOES * 0.5, ALTURA_BOTOES_EDITAR)
 botao_vinheta_foto = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, botao_desfoque_foto.y + 100, LARGURA_BOTOES * 0.5, ALTURA_BOTOES_EDITAR)
 botao_espelhar_foto = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES + botao_vinheta_foto.width + 20, botao_desfoque_foto.y + 100, LARGURA_BOTOES * 0.5, ALTURA_BOTOES_EDITAR)
+botao_aleatorizar_foto = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, botao_vinheta_foto.y + 100, LARGURA_BOTOES * 0.5, ALTURA_BOTOES_EDITAR)
+botao_resetar_foto = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES + botao_desenho_foto.width + 20, botao_vinheta_foto.y + 100, LARGURA_BOTOES * 0.5, ALTURA_BOTOES_EDITAR)
 
-lista_botoes_editar = [botao_girar_foto, botao_cores_foto, botao_desenho_foto, botao_desfoque_foto, botao_vinheta_foto, botao_espelhar_foto]
+botao_voltar_editar =  pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, botao_aleatorizar_foto.y + 100, botao_vinheta_foto.width + 20 + botao_espelhar_foto.width, ALTURA_BOTOES_EDITAR)
+
+
+lista_botoes_editar = [botao_girar_foto, botao_cores_foto, botao_desenho_foto, botao_desfoque_foto, botao_vinheta_foto, botao_espelhar_foto, botao_voltar_editar, botao_aleatorizar_foto, botao_resetar_foto]

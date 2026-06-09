@@ -409,13 +409,32 @@ def funcao_mostrar_pagina_editar_imagens():
     texto_botao_desfoque = fonte_atual.render("Desfoque", True, "black")
     texto_botao_vinheta = fonte_atual.render("Vinheta", True, "black")
     texto_botao_espelhar = fonte_atual.render("Espelhar", True, "black")
+    texto_botao_aleatorizar = fonte_atual.render("Aleatorizar", True, "black")
+    texto_botao_resetar = fonte_atual.render("Resetar", True, "black")
+    texto_botao_voltar = fonte_atual.render("Voltar", True, "black")
 
     coordenadas_texto_girar_foto = texto_girar_foto.get_rect(center=botao_girar_foto.center)
+    coordenadas_texto_botao_cores = texto_botao_cores.get_rect(center=botao_cores_foto.center)
+    coordenadas_texto_botao_desenho = texto_botao_desenho.get_rect(center=botao_desenho_foto.center)
+    coordenadas_texto_botao_desfoque = texto_botao_desfoque.get_rect(center=botao_desfoque_foto.center)
+    coordenadas_texto_botao_vinheta = texto_botao_vinheta.get_rect(center=botao_vinheta_foto.center)
+    coordenadas_texto_botao_espelhar = texto_botao_espelhar.get_rect(center=botao_espelhar_foto.center)
+    coordenadas_texto_botao_aleatorizar = texto_botao_aleatorizar.get_rect(center=botao_aleatorizar_foto.center)
+    coordenadas_texto_botao_resetar = texto_botao_resetar.get_rect(center=botao_resetar_foto.center)
+    coordenadas_texto_botao_voltar = texto_botao_voltar.get_rect(center=botao_voltar_editar.center)
 
     for botao in lista_botoes_editar:
         pygame.draw.rect(screen, cores_botoes, botao)
 
     screen.blit(texto_girar_foto, coordenadas_texto_girar_foto)
+    screen.blit(texto_botao_cores, coordenadas_texto_botao_cores)
+    screen.blit(texto_botao_desenho, coordenadas_texto_botao_desenho)
+    screen.blit(texto_botao_desfoque, coordenadas_texto_botao_desfoque)
+    screen.blit(texto_botao_vinheta, coordenadas_texto_botao_vinheta)
+    screen.blit(texto_botao_espelhar, coordenadas_texto_botao_espelhar)
+    screen.blit(texto_botao_aleatorizar, coordenadas_texto_botao_aleatorizar)
+    screen.blit(texto_botao_resetar, coordenadas_texto_botao_resetar)
+    screen.blit(texto_botao_voltar, coordenadas_texto_botao_voltar)
 
 while running:
     for event in pygame.event.get():
