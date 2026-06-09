@@ -1,6 +1,8 @@
 import pygame
 from utils import *
 from quadrados import *
+from editar_imagens import *
+from PIL import Image
 
 pygame.init()
 LARGURA, ALTURA = 1000, 600
@@ -16,6 +18,10 @@ cor_borda_linhas_atual = "#000000"
 
 largura_atual = LARGURA
 altura_atual = ALTURA
+
+i = None
+angulo_atual = 0
+imagem_girada = False
 
 pygame.display.set_caption("Te Amo Natalia")
 fonte = pygame.font.SysFont('consolas', 20)
@@ -36,6 +42,9 @@ pagina_editar_aberta = False
 pagina_ler_aberta = False
 pagina_supresa_aberta = False
 pagina_de_ajuda = False
+
+mudancas_nas_imagens = False
+eh_para_girar = True
 
 abriu_primeira_vez_configuracoes = False
 
@@ -436,6 +445,34 @@ def funcao_mostrar_pagina_editar_imagens():
     screen.blit(texto_botao_resetar, coordenadas_texto_botao_resetar)
     screen.blit(texto_botao_voltar, coordenadas_texto_botao_voltar)
 
+def girar_imagem(caminho, largura, altura, angulo, quer_girar=True):
+    if quer_girar:
+        angulo = (angulo - 90) % 360
+
+    imagem = Image.open(caminho)
+    imagem = imagem.rotate(angulo, expand=True)
+    imagem = imagem.resize((largura, altura))
+
+    # modo = "RGBA" if surface_pygame.get_alpha() else "RGB"
+    
+    # imagem_bytes = pygame.image.tobytes(surface_pygame, modo)
+    # tamanho_atual = surface_pygame.get_size()
+    
+    # imagem = Image.frombytes(modo, tamanho_atual, imagem_bytes)
+
+    # imagem = imagem.transpose(Image.ROTATE_270)
+
+    # imagem = imagem.resize((largura, altura))
+
+    novo_tamanho = imagem.size
+    bytes_girados = imagem.tobytes()
+    try:
+        surface_girada = pygame.image.frombytes(bytes_girados, novo_tamanho, "RBGA")
+    except:
+        surface_girada = pygame.image.frombytes(bytes_girados, novo_tamanho, "RGB")
+    
+    return surface_girada, angulo
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -569,6 +606,15 @@ while running:
                     pagina_inicial = True
                     pagina_configuracoes_aberta = True
                     pagina_de_ajuda = False
+            if pagina_editar_aberta:
+                if botao_voltar_editar.collidepoint(mouse_pos):
+                    mostrar_botoes_laterais = True
+                    pagina_editar_aberta = False
+                if pasta_aberta:
+                    if botao_girar_foto.collidepoint(mouse_pos):
+                        mudancas_nas_imagens = True
+                        imagem_girada = True
+                        eh_para_girar = True
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
@@ -611,8 +657,16 @@ while running:
     tempo_atual = pygame.time.get_ticks()
     if pagina_inicial:
         if pasta_aberta:
-            i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
-            screen.blit(i, coordenada_desenhar_imagens)
+            if mudancas_nas_imagens:
+                if imagem_girada:
+                    print("entrou")
+                    i, angulo_atual = girar_imagem(lista_fotos[indice_foto_atual], quadrado.width, quadrado.height, angulo_atual, eh_para_girar)
+                    imagem_girada = False
+                screen.blit(i, coordenada_desenhar_imagens)
+                mostrar_numero_foto_atual(indice_foto_atual)
+            else:
+                i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
+                screen.blit(i, coordenada_desenhar_imagens)
             mostrar_numero_foto_atual(indice_foto_atual)
             if clicou_botao_randomizar:
                 if (ticks_atuais - ticks_clicou_randozimar >= 1000):
@@ -642,8 +696,18 @@ while running:
                 if pasta_aberta:
                     if indice_foto_atual== numero_fotos - 1:
                         indice_foto_atual = 0
+                        if angulo_atual != 0:
+                            print(angulo_atual)
+                            imagem_girada = True
+                            eh_para_girar
                     else:
                         indice_foto_atual += 1
+                        print(angulo_atual)
+                        if mudancas_nas_imagens:
+                            if angulo_atual != 0:
+                                print(angulo_atual)
+                                imagem_girada = True
+                                eh_para_girar = False
 
         if mostrar_botoes_laterais:
             abriu_primeira_vez_configuracoes = False
