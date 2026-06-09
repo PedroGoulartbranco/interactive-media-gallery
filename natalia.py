@@ -11,8 +11,8 @@ running = True
 caminho = None
 
 cores_botoes = "#6503A6"
-cor_linha_borda = "#000000"
 cor_fundo_atual = "#AC01F4"
+cor_borda_linhas_atual = "#000000"
 
 largura_atual = LARGURA
 altura_atual = ALTURA
@@ -83,6 +83,8 @@ texto_botao_abrir_pasta = botao_abrir_pasta = pygame.Rect(DISTANCIA_LATERAL_QUAD
 
 botao_fundo_branco = botao_fundo_roxo = botao_fundo_cinza  = botao_fundo_azul = botao_fundo_vermelho = botao_fundo_rosa = pygame.Rect(0, 0 - 8, 40, 40)
 botao_botoes_branco = botao_botoes_roxo = botao_botoes_cinza = botao_botoes_vermelho = botao_botoes_azul = botao_botoes_rosa = pygame.Rect(0, 0 - 8, 40, 40)
+botao_borda_azul = botao_borda_branco = botao_borda_cinza = botao_borda_rosa = botao_borda_roxo = botao_borda_vermelho = botao_borda_preto = pygame.Rect(0, 0 - 8, 40, 40)
+
 
 def transformar_tamanho_imagem(caminho):
     imagem = pygame.image.load(caminho)
@@ -256,12 +258,14 @@ def atualizar_botoes_de_imagem(largura, altura):
 def funcao_pagina_personalisar():
     global botao_fundo_azul, botao_fundo_branco, botao_fundo_vermelho, botao_fundo_cinza, botao_fundo_roxo, botao_fundo_rosa
     global botao_botoes_azul, botao_botoes_branco, botao_botoes_cinza, botao_botoes_roxo, botao_botoes_vermelho, botao_botoes_rosa
+    global botao_borda_azul, botao_borda_branco, botao_borda_cinza, botao_borda_rosa, botao_borda_roxo, botao_botoes_vermelho, botao_borda_preto
     DISTANCIA_TEXTO_PERSONALIZAR = 25
 
     fonte_atual = calculo_tamanho_fonte_atual(30)
     texto_titulo = fonte_atual.render("Personalizar Galeria", True, "black")
     texto_personalizar_fundo = fonte_atual.render("Cor Fundo: ", True, "black")
     texto_personalizar_botoes = fonte_atual.render("Cor Botões:", True, "black")
+    texto_personalizar_borda = fonte_atual.render("Cor Bordas: ", True, "black")
 
     coordenadas_titulo_texto = texto_titulo.get_rect()
     coordenadas_titulo_texto.centerx = largura_atual / 2
@@ -276,6 +280,10 @@ def funcao_pagina_personalisar():
     coordenadas_texto_personalizar_botoes = texto_personalizar_botoes.get_rect()
     coordenadas_texto_personalizar_botoes.top = DISTANCIA_DO_TITULO + 80
     coordenadas_texto_personalizar_botoes.left = DISTANCIA_TEXTO_PERSONALIZAR
+
+    coordenadas_texto_personalizar_bordas = texto_personalizar_borda.get_rect()
+    coordenadas_texto_personalizar_bordas.top = DISTANCIA_DO_TITULO + 160
+    coordenadas_texto_personalizar_bordas.left = DISTANCIA_TEXTO_PERSONALIZAR
 
     DISTANCIA_PAREDE_BOTOES_COR = coordenadas_texto_personalizar_botoes.right + 60
     #Fundo
@@ -293,6 +301,15 @@ def funcao_pagina_personalisar():
     botao_botoes_azul = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 240, coordenadas_texto_personalizar_botoes.y - 8, 40, 40)
     botao_botoes_vermelho = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 320, coordenadas_texto_personalizar_botoes.y - 8, 40, 40)
     botao_botoes_rosa = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 400, coordenadas_texto_personalizar_botoes.y - 8, 40, 40)
+
+    #Bordas
+    botao_borda_branco = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR, coordenadas_texto_personalizar_bordas.y - 8, 40, 40)
+    botao_borda_roxo = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 80, coordenadas_texto_personalizar_bordas.y - 8, 40, 40)
+    botao_borda_cinza = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 160, coordenadas_texto_personalizar_bordas.y - 8, 40, 40)
+    botao_borda_azul = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 240, coordenadas_texto_personalizar_bordas.y - 8, 40, 40)
+    botao_borda_vermelho = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 320, coordenadas_texto_personalizar_bordas.y - 8, 40, 40)
+    botao_borda_rosa = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 400, coordenadas_texto_personalizar_bordas.y - 8, 40, 40)
+    botao_borda_preto = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 480, coordenadas_texto_personalizar_bordas.y - 8, 40, 40)
 
     dicionario_cor_fundo = {
         "#FFFFFF": botao_fundo_branco,
@@ -312,11 +329,23 @@ def funcao_pagina_personalisar():
         "#F4C2C2": botao_botoes_rosa
     }
 
+    dicionario_cor_borda = {
+        "#FFFFFF": botao_borda_branco,
+        "#6503A6": botao_borda_roxo,
+        "#6B7074": botao_borda_cinza,
+        "#FD0E0E": botao_borda_vermelho,
+        "#1F8BE4": botao_borda_azul,
+        "#F4C2C2": botao_borda_rosa,
+        "#000000": botao_borda_preto
+    }
+
     screen.blit(texto_titulo, coordenadas_titulo_texto)
-    pygame.draw.line(screen, cor_linha_borda, (0, coordenadas_titulo_texto.bottom + 3), (largura_atual, coordenadas_titulo_texto.bottom + 3), 1)
+    pygame.draw.line(screen, cor_borda_linhas_atual, (0, coordenadas_titulo_texto.bottom + 3), (largura_atual, coordenadas_titulo_texto.bottom + 3), 1)
     screen.blit(texto_personalizar_fundo, coordenadas_texto_personalizar_fundo)
-    pygame.draw.line(screen, cor_linha_borda, (0, coordenadas_texto_personalizar_fundo.bottom + 10), (largura_atual, coordenadas_texto_personalizar_fundo.bottom + 10), 1)
+    pygame.draw.line(screen, cor_borda_linhas_atual, (0, coordenadas_texto_personalizar_fundo.bottom + 10), (largura_atual, coordenadas_texto_personalizar_fundo.bottom + 10), 1)
     screen.blit(texto_personalizar_botoes, coordenadas_texto_personalizar_botoes)
+    pygame.draw.line(screen, cor_borda_linhas_atual, (0, coordenadas_texto_personalizar_botoes.bottom + 10), (largura_atual, coordenadas_texto_personalizar_botoes.bottom + 10), 1)
+    screen.blit(texto_personalizar_borda, coordenadas_texto_personalizar_bordas)
 
     for botao in dicionario_cor_fundo:
         if cor_fundo_atual == botao:
@@ -331,6 +360,14 @@ def funcao_pagina_personalisar():
             pygame.draw.rect(screen, "#3bee2b", dicionario_cor_botao[botao], 2)
         else:
             pygame.draw.rect(screen, botao, dicionario_cor_botao[botao])
+
+    for botao in dicionario_cor_borda:
+        if cor_borda_linhas_atual == botao and botao != botao_borda_preto:
+            pygame.draw.rect(screen, "black", dicionario_cor_borda[botao], 2)
+        elif botao == cor_fundo_atual:
+            pygame.draw.rect(screen, "#3bee2b", dicionario_cor_borda[botao], 2)
+        else:
+            pygame.draw.rect(screen, botao, dicionario_cor_borda[botao])
 
     coordenadas_texto_voltar = texto_botao_voltar.get_rect(center=botao_voltar.center)
     pygame.draw.rect(screen, cores_botoes, botao_voltar)
@@ -359,7 +396,7 @@ def funcao_mostrar_pagina_ajuda():
         screen.blit(tranformar_texto, (30, pos_y))
 
     screen.blit(texto_titulo, coordenadas_titulo_texto)
-    pygame.draw.line(screen, cor_linha_borda, (0, coordenadas_titulo_texto.bottom + 3), (largura_atual, coordenadas_titulo_texto.bottom + 3), 1)
+    pygame.draw.line(screen, cor_borda_linhas_atual, (0, coordenadas_titulo_texto.bottom + 3), (largura_atual, coordenadas_titulo_texto.bottom + 3), 1)
 
     coordenadas_texto_voltar = texto_botao_voltar.get_rect(center=botao_voltar.center)
     pygame.draw.rect(screen, cores_botoes, botao_voltar)
@@ -464,6 +501,7 @@ while running:
                     cor_fundo_atual = "#6B7074"
                 if botao_fundo_rosa.collidepoint(mouse_pos):
                     cor_fundo_atual = "#F4C2C2"
+
                 if botao_botoes_vermelho.collidepoint(mouse_pos):
                     cores_botoes = "#FD0E0E"
                 if botao_botoes_azul.collidepoint(mouse_pos):
@@ -476,6 +514,21 @@ while running:
                     cores_botoes = "#6B7074"
                 if botao_botoes_rosa.collidepoint(mouse_pos):
                     cores_botoes = "#F4C2C2"
+
+                if botao_borda_vermelho.collidepoint(mouse_pos):
+                    cor_borda_linhas_atual = "#FD0E0E"
+                if botao_borda_azul.collidepoint(mouse_pos):
+                    cor_borda_linhas_atual = "#1F8BE4"
+                if botao_borda_roxo.collidepoint(mouse_pos):
+                    cor_borda_linhas_atual = "#6503A6"
+                if botao_borda_branco.collidepoint(mouse_pos):
+                    cor_borda_linhas_atual = "#FFFFFF"
+                if botao_borda_cinza.collidepoint(mouse_pos):
+                    cor_borda_linhas_atual = "#6B7074"
+                if botao_borda_rosa.collidepoint(mouse_pos):
+                    cor_borda_linhas_atual = "#F4C2C2"
+                if botao_borda_preto.collidepoint(mouse_pos):
+                    cor_borda_linhas_atual = "#000000"
             if pagina_de_ajuda:
                 if botao_voltar.collidepoint(mouse_pos):
                     pagina_inicial = True
@@ -535,7 +588,7 @@ while running:
 
         ticks_atuais = pygame.time.get_ticks()
         
-        pygame.draw.rect(screen, "BLACK", quadrado, 4)
+        pygame.draw.rect(screen, cor_borda_linhas_atual, quadrado, 4)
         screen.blit(seta_direita, posicao_seta_direita)
         screen.blit(seta_esquerda, posicao_seta_esqurda)
         screen.blit(ponto_interrogacao, posicao_ponto_interrogacao)
