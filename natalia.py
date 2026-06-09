@@ -83,7 +83,7 @@ texto_botao_abrir_pasta = botao_abrir_pasta = pygame.Rect(DISTANCIA_LATERAL_QUAD
 
 botao_fundo_branco = botao_fundo_roxo = botao_fundo_cinza  = botao_fundo_azul = botao_fundo_vermelho = botao_fundo_rosa = pygame.Rect(0, 0 - 8, 40, 40)
 botao_botoes_branco = botao_botoes_roxo = botao_botoes_cinza = botao_botoes_vermelho = botao_botoes_azul = botao_botoes_rosa = pygame.Rect(0, 0 - 8, 40, 40)
-    
+
 def transformar_tamanho_imagem(caminho):
     imagem = pygame.image.load(caminho)
     imagem_redimensionada = pygame.transform.smoothscale(imagem, (quadrado.width, quadrado.height))
@@ -208,7 +208,7 @@ def atualizar_tamanho(largura, altura):
     botao_ajuda.y = (260 + 80) * escala_y
 
 def atualizar_tamanho_quadrado(largura, altura):
-    global coordenada_desenhar_imagens
+    global coordenada_desenhar_imagens, DISTANCIA_LATERAL_QUADRADO
     escala_x = largura / LARGURA
     escala_y = altura / ALTURA
 
@@ -223,6 +223,8 @@ def atualizar_tamanho_quadrado(largura, altura):
 
     quadrado_cinza.x = DISTANCIA_LATERAL_QUADRADO * escala_x
     quadrado_cinza.y = 30 * escala_y
+
+    DISTANCIA_LATERAL_QUADRADO = DISTANCIA_LATERAL_QUADRADO * escala_x
 
     coordenada_desenhar_imagens = (quadrado_cinza.x, quadrado_cinza.y)
 
