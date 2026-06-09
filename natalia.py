@@ -502,6 +502,10 @@ while running:
                     pagina_inicial = False
                     pagina_configuracoes_aberta = False
                     pagina_personalisar_galeria_aberta = False
+                else:
+                    pagina_de_ajuda = False
+                    pagina_inicial = True
+                    mostrar_botoes_laterais = True
                 
 
     screen.fill(cor_fundo_atual)
