@@ -35,6 +35,7 @@ pagina_configuracoes_aberta = False
 pagina_editar_aberta = False
 pagina_ler_aberta = False
 pagina_supresa_aberta = False
+pagina_de_ajuda = False
 
 abriu_primeira_vez_configuracoes = False
 
@@ -329,6 +330,35 @@ def funcao_pagina_personalisar():
     pygame.draw.rect(screen, cores_botoes, botao_voltar)
     screen.blit(texto_botao_voltar, coordenadas_texto_voltar)
 
+def funcao_mostrar_pagina_ajuda():
+    fonte_atual = calculo_tamanho_fonte_atual(30)
+    fonte_texto = calculo_tamanho_fonte_atual(25)
+    texto_titulo = fonte_atual.render("Guia/Ajuda", True, "black")
+
+    texto = """<  ===> Ir para a imagem da esquerda, você pode segurar esse botão\n> ===> Ir para a imagem da direita, você pode segurar esse botão\n1 ===> Ir para primeira imagem\n2 ===> Ir para ultima imagem\nSpace ===> Escolher uma foto aleatoria\nA ===> Embaralhar as fotos\nS ===> Desembaralhar as fotos\n↑ ===> Trocar de música\n↓ ===> Trocar de música\nL ===> Abrir página de ajuda
+    """
+
+    linhas = texto.split('\n')
+
+
+    coordenadas_titulo_texto = texto_titulo.get_rect()
+    coordenadas_titulo_texto.centerx = largura_atual / 2
+    coordenadas_titulo_texto.top = 15
+
+    DISTANCIA_TEXTO_DO_TITULO = coordenadas_titulo_texto.bottom + 40
+
+    for i, linha in enumerate(linhas):
+        tranformar_texto = fonte.render(linha, True, "black")
+        pos_y = DISTANCIA_TEXTO_DO_TITULO + (i * 40)
+        screen.blit(tranformar_texto, (30, pos_y))
+
+    screen.blit(texto_titulo, coordenadas_titulo_texto)
+    pygame.draw.line(screen, cor_linha_borda, (0, coordenadas_titulo_texto.bottom + 3), (largura_atual, coordenadas_titulo_texto.bottom + 3), 1)
+
+    coordenadas_texto_voltar = texto_botao_voltar.get_rect(center=botao_voltar.center)
+    pygame.draw.rect(screen, cores_botoes, botao_voltar)
+    screen.blit(texto_botao_voltar, coordenadas_texto_voltar)
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -407,6 +437,10 @@ while running:
                     pagina_inicial = False
                     pagina_personalisar_galeria_aberta = True
                     pagina_configuracoes_aberta = False
+                if botao_ajuda.collidepoint(mouse_pos):
+                    pagina_inicial = False
+                    pagina_configuracoes_aberta = False
+                    pagina_de_ajuda = True
             if pagina_personalisar_galeria_aberta:
                 if botao_voltar.collidepoint(mouse_pos):
                     pagina_configuracoes_aberta = True
@@ -432,6 +466,11 @@ while running:
                     cores_botoes = "#FFFFFF"
                 if botao_botoes_cinza.collidepoint(mouse_pos):
                     cores_botoes = "#6B7074"
+            if pagina_de_ajuda:
+                if botao_voltar.collidepoint(mouse_pos):
+                    pagina_inicial = True
+                    pagina_configuracoes_aberta = True
+                    pagina_de_ajuda = False
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
@@ -457,6 +496,12 @@ while running:
                         indice_foto_atual = 0
                     if event.key == pygame.K_2: 
                         indice_foto_atual = numero_fotos - 1
+            if event.key == pygame.K_l:
+                if pagina_de_ajuda is False:
+                    pagina_de_ajuda = True
+                    pagina_inicial = False
+                    pagina_configuracoes_aberta = False
+                    pagina_personalisar_galeria_aberta = False
                 
 
     screen.fill(cor_fundo_atual)
@@ -506,6 +551,8 @@ while running:
             funcao_mostrar_pagina_configuracoes()
     if pagina_personalisar_galeria_aberta:
         funcao_pagina_personalisar()
+    if pagina_de_ajuda:
+        funcao_mostrar_pagina_ajuda()
 
     pygame.display.flip()
 
