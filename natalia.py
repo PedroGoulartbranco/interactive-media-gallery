@@ -81,8 +81,8 @@ posicao_texto_musica = (0, 0)
 
 texto_botao_abrir_pasta = botao_abrir_pasta = pygame.Rect(DISTANCIA_LATERAL_QUADRADO, 30, LARGURA_QUADRADO, ALTURA_QUADRADO)
 
-botao_fundo_branco = botao_fundo_roxo = botao_fundo_cinza  = botao_fundo_azul = botao_fundo_vermelho = pygame.Rect(0, 0 - 8, 40, 40)
-botao_botoes_branco = botao_botoes_roxo = botao_botoes_cinza = botao_botoes_vermelho = botao_botoes_azul = pygame.Rect(0, 0 - 8, 40, 40)
+botao_fundo_branco = botao_fundo_roxo = botao_fundo_cinza  = botao_fundo_azul = botao_fundo_vermelho = botao_fundo_rosa = pygame.Rect(0, 0 - 8, 40, 40)
+botao_botoes_branco = botao_botoes_roxo = botao_botoes_cinza = botao_botoes_vermelho = botao_botoes_azul = botao_botoes_rosa = pygame.Rect(0, 0 - 8, 40, 40)
     
 def transformar_tamanho_imagem(caminho):
     imagem = pygame.image.load(caminho)
@@ -252,8 +252,8 @@ def atualizar_botoes_de_imagem(largura, altura):
 
 
 def funcao_pagina_personalisar():
-    global botao_fundo_azul, botao_fundo_branco, botao_fundo_vermelho, botao_fundo_cinza, botao_fundo_roxo
-    global botao_botoes_azul, botao_botoes_branco, botao_botoes_cinza, botao_botoes_roxo, botao_botoes_vermelho
+    global botao_fundo_azul, botao_fundo_branco, botao_fundo_vermelho, botao_fundo_cinza, botao_fundo_roxo, botao_fundo_rosa
+    global botao_botoes_azul, botao_botoes_branco, botao_botoes_cinza, botao_botoes_roxo, botao_botoes_vermelho, botao_botoes_rosa
     DISTANCIA_TEXTO_PERSONALIZAR = 25
 
     fonte_atual = calculo_tamanho_fonte_atual(30)
@@ -282,6 +282,7 @@ def funcao_pagina_personalisar():
     botao_fundo_cinza = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 160, coordenadas_texto_personalizar_fundo.y - 8, 40, 40)
     botao_fundo_azul = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 240, coordenadas_texto_personalizar_fundo.y - 8, 40, 40)
     botao_fundo_vermelho = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 320, coordenadas_texto_personalizar_fundo.y - 8, 40, 40)
+    botao_fundo_rosa = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 400, coordenadas_texto_personalizar_fundo.y - 8, 40, 40)
 
     #Botoes
     botao_botoes_branco = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR, coordenadas_texto_personalizar_botoes.y - 8, 40, 40)
@@ -289,13 +290,15 @@ def funcao_pagina_personalisar():
     botao_botoes_cinza = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 160, coordenadas_texto_personalizar_botoes.y - 8, 40, 40)
     botao_botoes_azul = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 240, coordenadas_texto_personalizar_botoes.y - 8, 40, 40)
     botao_botoes_vermelho = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 320, coordenadas_texto_personalizar_botoes.y - 8, 40, 40)
+    botao_botoes_rosa = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 400, coordenadas_texto_personalizar_botoes.y - 8, 40, 40)
 
     dicionario_cor_fundo = {
         "#FFFFFF": botao_fundo_branco,
         "#AC01F4": botao_fundo_roxo,
         "#6B7074": botao_fundo_cinza,
         "#FD0E0E": botao_fundo_vermelho,
-        "#1F8BE4": botao_fundo_azul
+        "#1F8BE4": botao_fundo_azul,
+        "#F4C2C2": botao_fundo_rosa
     }
 
     dicionario_cor_botao = {
@@ -303,7 +306,8 @@ def funcao_pagina_personalisar():
         "#6503A6": botao_botoes_roxo,
         "#6B7074": botao_botoes_cinza,
         "#FD0E0E": botao_botoes_vermelho,
-        "#1F8BE4": botao_botoes_azul
+        "#1F8BE4": botao_botoes_azul,
+        "#F4C2C2": botao_botoes_rosa
     }
 
     screen.blit(texto_titulo, coordenadas_titulo_texto)
@@ -456,6 +460,8 @@ while running:
                     cor_fundo_atual = "#1F8BE4"
                 if botao_fundo_cinza.collidepoint(mouse_pos):
                     cor_fundo_atual = "#6B7074"
+                if botao_fundo_rosa.collidepoint(mouse_pos):
+                    cor_fundo_atual = "#F4C2C2"
                 if botao_botoes_vermelho.collidepoint(mouse_pos):
                     cores_botoes = "#FD0E0E"
                 if botao_botoes_azul.collidepoint(mouse_pos):
@@ -466,6 +472,8 @@ while running:
                     cores_botoes = "#FFFFFF"
                 if botao_botoes_cinza.collidepoint(mouse_pos):
                     cores_botoes = "#6B7074"
+                if botao_botoes_rosa.collidepoint(mouse_pos):
+                    cores_botoes = "#F4C2C2"
             if pagina_de_ajuda:
                 if botao_voltar.collidepoint(mouse_pos):
                     pagina_inicial = True
