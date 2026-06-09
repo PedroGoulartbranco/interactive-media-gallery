@@ -22,6 +22,7 @@ altura_atual = ALTURA
 i = None
 angulo_atual = 0
 imagem_girada = False
+imagem_foi_girada_alguma_vez = False
 
 pygame.display.set_caption("Te Amo Natalia")
 fonte = pygame.font.SysFont('consolas', 20)
@@ -704,10 +705,8 @@ while running:
                         indice_foto_atual += 1
                         print(angulo_atual)
                         if mudancas_nas_imagens:
-                            if angulo_atual != 0:
-                                print(angulo_atual)
-                                imagem_girada = True
-                                eh_para_girar = False
+                            imagem_girada = True
+                            eh_para_girar = False
 
         if mostrar_botoes_laterais:
             abriu_primeira_vez_configuracoes = False
