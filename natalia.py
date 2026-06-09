@@ -383,7 +383,6 @@ def funcao_mostrar_pagina_ajuda():
 
     linhas = texto.split('\n')
 
-
     coordenadas_titulo_texto = texto_titulo.get_rect()
     coordenadas_titulo_texto.centerx = largura_atual / 2
     coordenadas_titulo_texto.top = 15
@@ -401,6 +400,22 @@ def funcao_mostrar_pagina_ajuda():
     coordenadas_texto_voltar = texto_botao_voltar.get_rect(center=botao_voltar.center)
     pygame.draw.rect(screen, cores_botoes, botao_voltar)
     screen.blit(texto_botao_voltar, coordenadas_texto_voltar)
+
+def funcao_mostrar_pagina_editar_imagens():
+    fonte_atual = calculo_tamanho_fonte_atual(20)
+    texto_girar_foto = fonte_atual.render("Girar Foto", True, "black")
+    texto_botao_cores = fonte_atual.render("Cores", True, "black")
+    texto_botao_desenho = fonte_atual.render("Desenho", True, "black")
+    texto_botao_desfoque = fonte_atual.render("Desfoque", True, "black")
+    texto_botao_vinheta = fonte_atual.render("Vinheta", True, "black")
+    texto_botao_espelhar = fonte_atual.render("Espelhar", True, "black")
+
+    coordenadas_texto_girar_foto = texto_girar_foto.get_rect(center=botao_girar_foto.center)
+
+    for botao in lista_botoes_editar:
+        pygame.draw.rect(screen, cores_botoes, botao)
+
+    screen.blit(texto_girar_foto, coordenadas_texto_girar_foto)
 
 while running:
     for event in pygame.event.get():
@@ -446,6 +461,7 @@ while running:
                     mostrar_botoes_laterais = False
                     pagina_configuracoes_aberta = True
                 if botao_editar_imagens.collidepoint(mouse_pos):
+                    pagina_editar_aberta = True
                     mostrar_botoes_laterais = False
                 if botao_ler.collidepoint(mouse_pos):
                     mostrar_botoes_laterais = False
@@ -616,6 +632,9 @@ while running:
         
         if pagina_configuracoes_aberta:
             funcao_mostrar_pagina_configuracoes()
+
+        if pagina_editar_aberta:
+            funcao_mostrar_pagina_editar_imagens()
     if pagina_personalisar_galeria_aberta:
         funcao_pagina_personalisar()
     if pagina_de_ajuda:
