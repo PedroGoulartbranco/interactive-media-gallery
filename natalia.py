@@ -3,6 +3,7 @@ from utils import *
 from quadrados import *
 from editar_imagens import *
 from PIL import Image, ImageFilter, ImageOps, ImageEnhance, ImageChops, ImageDraw
+from random import choice
 
 pygame.init()
 LARGURA, ALTURA = 1000, 600
@@ -620,7 +621,6 @@ def aplicar_efeitos(imagem_pillow):
     #     img_temp = img_temp.convert("RGB", imagem_vermelho)
 
 
-    # 3. Conversão para o Pygame
     modo = img_temp.mode
     tamanho = img_temp.size
     dados = img_temp.tobytes()
@@ -633,6 +633,25 @@ def resetar_imagem():
     imagem_vinheta = imagem_raioX = imagem_desenha = imagem_espelhada =imagem_desfoque = False
     posicao_giro = 0
 
+def aleatorizar_efeitos():
+    global imagem_raioX, imagem_desenha, imagem_espelhada, posicao_giro, imagem_desfoque, imagem_vinheta
+    lista_numeros_aleatorios = []
+    numero_efeitos = 4
+    resetar_imagem()
+    for i in range(numero_efeitos):
+        lista_numeros_aleatorios.append(choice([True, False]))
+    
+    posicao_giro = choice([1, 2, 3, 0])
+    
+    for indice, i in enumerate(lista_numeros_aleatorios):
+        if indice == 0:
+            imagem_desenha = i
+        elif indice == 1:
+            imagem_espelhada = i
+        elif indice == 2:
+            imagem_desfoque = i
+        elif indice == 3:
+            imagem_vinheta = i
 
 while running:
     for event in pygame.event.get():
@@ -804,6 +823,8 @@ while running:
                                 imagem_vinheta = True
                         if botao_resetar_foto.collidepoint(mouse_pos):
                             resetar_imagem()
+                        if botao_aleatorizar_foto.collidepoint(mouse_pos):
+                            aleatorizar_efeitos()
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
@@ -839,6 +860,9 @@ while running:
                     pagina_de_ajuda = False
                     pagina_inicial = True
                     mostrar_botoes_laterais = True
+            if event.key == pygame.K_r:
+                if pasta_aberta:
+                    resetar_imagem()
                 
 
     screen.fill(cor_fundo_atual)
