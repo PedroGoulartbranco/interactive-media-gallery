@@ -2,7 +2,7 @@ import pygame
 from utils import *
 from quadrados import *
 from editar_imagens import *
-from PIL import Image
+from PIL import Image, ImageFilter, ImageOps
 
 pygame.init()
 LARGURA, ALTURA = 1000, 600
@@ -46,8 +46,11 @@ pagina_de_ajuda = False
 
 mudancas_nas_imagens = False
 eh_para_girar = True
+efeito_desenho = False
+imagem_esta_desenhada = False
+imagem_foi_girada = False
 
-abriu_primeira_vez_configuracoes = False
+abriu_primeira_aba_vez = False
 
 pagina_personalisar_galeria_aberta = False
 pagina_inicial = True #Pagina normal
@@ -446,33 +449,48 @@ def funcao_mostrar_pagina_editar_imagens():
     screen.blit(texto_botao_resetar, coordenadas_texto_botao_resetar)
     screen.blit(texto_botao_voltar, coordenadas_texto_botao_voltar)
 
-def girar_imagem(caminho, largura, altura, angulo, quer_girar=True):
-    if quer_girar:
-        angulo = (angulo - 90) % 360
+def girar_imagem(surface_pygame, largura, altura, angulo, quer_girar=True):
+    # if quer_girar:
+    #     angulo = (angulo - 90) % 360
 
-    imagem = Image.open(caminho)
-    imagem = imagem.rotate(angulo, expand=True)
-    imagem = imagem.resize((largura, altura))
-
-    # modo = "RGBA" if surface_pygame.get_alpha() else "RGB"
-    
-    # imagem_bytes = pygame.image.tobytes(surface_pygame, modo)
-    # tamanho_atual = surface_pygame.get_size()
-    
-    # imagem = Image.frombytes(modo, tamanho_atual, imagem_bytes)
-
-    # imagem = imagem.transpose(Image.ROTATE_270)
-
+    # imagem = Image.open(caminho)
+    # imagem = imagem.rotate(angulo, expand=True)
     # imagem = imagem.resize((largura, altura))
+
+    modo = "RGBA" if surface_pygame.get_alpha() else "RGB"
+    
+    imagem_bytes = pygame.image.tobytes(surface_pygame, modo)
+    tamanho_atual = surface_pygame.get_size()
+    
+    imagem = Image.frombytes(modo, tamanho_atual, imagem_bytes)
+
+    imagem = imagem.transpose(Image.ROTATE_270)
+
+    imagem = imagem.resize((largura, altura))
 
     novo_tamanho = imagem.size
     bytes_girados = imagem.tobytes()
     try:
-        surface_girada = pygame.image.frombytes(bytes_girados, novo_tamanho, "RBGA")
+         surface_girada = pygame.image.frombytes(bytes_girados, novo_tamanho, "RBGA")
     except:
-        surface_girada = pygame.image.frombytes(bytes_girados, novo_tamanho, "RGB")
+         surface_girada = pygame.image.frombytes(bytes_girados, novo_tamanho, "RGB")
     
     return surface_girada, angulo
+
+def funcao_efeito_desenho(surface_pygame):
+    modo = "RGBA" if surface_pygame.get_alpha() else "RGB"
+
+    imagem_bytes = pygame.image.tobytes(surface_pygame, modo)
+    imagem_pil = Image.frombytes(modo, surface_pygame.get_size(), imagem_bytes)
+    
+    imagem_desenho = imagem_pil.convert("L").filter(ImageFilter.FIND_EDGES)
+    
+    imagem_desenho = ImageOps.invert(imagem_desenho)
+    
+    imagem_desenho = imagem_desenho.convert(modo)
+    surface_desenho = pygame.image.frombytes(imagem_desenho.tobytes(), imagem_desenho.size, modo)
+    
+    return surface_desenho
 
 while running:
     for event in pygame.event.get():
@@ -526,10 +544,10 @@ while running:
                     mostrar_botoes_laterais = False
             #Se a pagina de configurações estiver aberta
             if pagina_configuracoes_aberta:
-                if abriu_primeira_vez_configuracoes is False:
-                    abriu_primeira_vez_configuracoes = True
+                if abriu_primeira_aba_vez is False:
+                    abriu_primeira_aba_vez = True
                 else:
-                    abriu_primeira_vez_configuracoes = False
+                    abriu_primeira_aba_vez = False
                 if botao_voltar.collidepoint(mouse_pos):
                     pagina_configuracoes_aberta = False
                     mostrar_botoes_laterais = True
@@ -541,7 +559,7 @@ while running:
                     nome_musica_atual, caminho_musica_atual = tocar_musica(indice_musica)
                     pygame.mixer.music.load(caminho_musica_atual)
                     pygame.mixer.music.play(-1)
-                if botao_abrir_nova_pasta.collidepoint(mouse_pos) and abriu_primeira_vez_configuracoes  is False:
+                if botao_abrir_nova_pasta.collidepoint(mouse_pos) and abriu_primeira_aba_vez  is False:
                     caminho_novo = abrir_pasta()
                     if verificar_pasta(caminho_novo):
                         pasta_aberta = True
@@ -608,6 +626,10 @@ while running:
                     pagina_configuracoes_aberta = True
                     pagina_de_ajuda = False
             if pagina_editar_aberta:
+                if abriu_primeira_aba_vez is False:
+                    abriu_primeira_aba_vez = True
+                else:
+                    abriu_primeira_aba_vez = False
                 if botao_voltar_editar.collidepoint(mouse_pos):
                     mostrar_botoes_laterais = True
                     pagina_editar_aberta = False
@@ -616,6 +638,11 @@ while running:
                         mudancas_nas_imagens = True
                         imagem_girada = True
                         eh_para_girar = True
+                        imagem_foi_girada = True
+                    if botao_desenho_foto.collidepoint(mouse_pos) and abriu_primeira_aba_vez is False:
+                        mudancas_nas_imagens = True
+                        efeito_desenho = True
+                        imagem_esta_desenhada = True
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
@@ -660,9 +687,14 @@ while running:
         if pasta_aberta:
             if mudancas_nas_imagens:
                 if imagem_girada:
+                    if imagem_esta_desenhada is False:
+                        i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
                     print("entrou")
-                    i, angulo_atual = girar_imagem(lista_fotos[indice_foto_atual], quadrado.width, quadrado.height, angulo_atual, eh_para_girar)
+                    i, angulo_atual = girar_imagem(i, quadrado.width, quadrado.height, angulo_atual, eh_para_girar)
                     imagem_girada = False
+                if efeito_desenho:
+                    i = funcao_efeito_desenho(i)
+                    efeito_desenho = False
                 screen.blit(i, coordenada_desenhar_imagens)
                 mostrar_numero_foto_atual(indice_foto_atual)
             else:
@@ -700,16 +732,20 @@ while running:
                         if angulo_atual != 0:
                             print(angulo_atual)
                             imagem_girada = True
-                            eh_para_girar
+                            eh_para_girar = False
                     else:
                         indice_foto_atual += 1
+                        i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
                         print(angulo_atual)
                         if mudancas_nas_imagens:
-                            imagem_girada = True
-                            eh_para_girar = False
+                            if imagem_foi_girada:
+                                imagem_girada = True
+                                eh_para_girar = False
+                            if imagem_esta_desenhada:
+                                efeito_desenho = True
 
         if mostrar_botoes_laterais:
-            abriu_primeira_vez_configuracoes = False
+            abriu_primeira_aba_vez = False
             funcao_mostrar_botoes_laterais()
         
         if pagina_configuracoes_aberta:
