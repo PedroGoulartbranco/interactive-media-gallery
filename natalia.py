@@ -2,7 +2,7 @@ import pygame
 from utils import *
 from quadrados import *
 from editar_imagens import *
-from PIL import Image, ImageFilter, ImageOps, ImageEnhance, ImageChops
+from PIL import Image, ImageFilter, ImageOps, ImageEnhance, ImageChops, ImageDraw
 
 pygame.init()
 LARGURA, ALTURA = 1000, 600
@@ -36,7 +36,7 @@ pygame.display.set_icon(imagem_coracao)
 
 pygame.mixer.init()
 
-tempo_para_segurar = 250 #Tempo de cooldown para um clique nao contar como dois
+tempo_para_segurar = 230 #Tempo de cooldown para um clique nao contar como dois
 ultimo_click = 0
 
 pasta_aberta = False
@@ -102,21 +102,6 @@ texto_botao_abrir_pasta = botao_abrir_pasta = pygame.Rect(DISTANCIA_LATERAL_QUAD
 botao_fundo_branco = botao_fundo_roxo = botao_fundo_cinza  = botao_fundo_azul = botao_fundo_vermelho = botao_fundo_rosa = pygame.Rect(0, 0 - 8, 40, 40)
 botao_botoes_branco = botao_botoes_roxo = botao_botoes_cinza = botao_botoes_vermelho = botao_botoes_azul = botao_botoes_rosa = pygame.Rect(0, 0 - 8, 40, 40)
 botao_borda_azul = botao_borda_branco = botao_borda_cinza = botao_borda_rosa = botao_borda_roxo = botao_borda_vermelho = botao_borda_preto = pygame.Rect(0, 0 - 8, 40, 40)
-
-def pygame_para_pillow(imagem):
-
-    if type(imagem) == str:
-        imagem = pygame.image.load(imagem)
-
-    modo = "RGBA" if imagem.get_alpha() else "RGB"
-
-    dados = pygame.image.tobytes(imagem, modo)
-
-    return Image.frombytes(
-        modo,
-        imagem.get_size(),
-        dados
-    )
 
 def transformar_tamanho_imagem(caminho):
     imagem = pygame.image.load(caminho)
@@ -539,19 +524,43 @@ def pygame_para_pillow(surface):
 
     return imagem_pil
 
+vinheta_mask = Image.new("L", (quadrado.width, quadrado.height), 0)
+draw = ImageDraw.Draw(vinheta_mask)
+
+
+def criar_vinheta():
+    global largura, altura, vinheta_mask, draw
+
+
+    vinheta_mask = Image.new("L", (quadrado.width, quadrado.height), 0)
+    draw = ImageDraw.Draw(vinheta_mask)
+
+
+    for i in range(max(quadrado.width, quadrado.height), 0, -5):
+        cor = int(255 * (1 - (i / max(quadrado.width, quadrado.height))))
+        x0 = (quadrado.height / 2) - i
+        y0 = (quadrado.width / 2) - i
+        x1 = (quadrado.height / 2) + i
+        y1 = (quadrado.width / 2) + i
+        draw.ellipse([x0, y0, x1, y1], fill=cor)
+
+    vinheta_mask = vinheta_mask.convert("RGB")
+
+
+criar_vinheta()
+
+
 def aplicar_efeitos(imagem_pillow):
     global posicao_giro, imagem_desenha, quadrado
    
     img_temp = imagem_pillow.copy()
    
-    # 1. Aplica o giro fixo baseado na posição atual
-    if posicao_giro == 1:
-        img_temp = img_temp.transpose(Image.ROTATE_90)   # Esquerda
+    if posicao_giro == 3:
+        img_temp = img_temp.transpose(Image.ROTATE_90)   # Direita
     elif posicao_giro == 2:
         img_temp = img_temp.transpose(Image.ROTATE_180)  # De ponta-cabeça (Cima)
-    elif posicao_giro == 3:
-        img_temp = img_temp.transpose(Image.ROTATE_270)  # Direita
-    # Se for 0, não entra em nenhum if e fica Original!
+    elif posicao_giro == 1:
+        img_temp = img_temp.transpose(Image.ROTATE_270)  # Esquerda
 
     img_temp = img_temp.resize((quadrado.width, quadrado.height))
 
@@ -563,12 +572,12 @@ def aplicar_efeitos(imagem_pillow):
         img_temp = ImageOps.invert(img_temp)
 
 
-    # if imagem_vinheta:
-    #     img_temp = ImageChops.multiply(img_temp, vinheta_mask)
-    #     img_temp = ImageChops.multiply(img_temp, vinheta_mask)
+    if imagem_vinheta:
+        img_temp = ImageChops.multiply(img_temp, vinheta_mask)
+        img_temp = ImageChops.multiply(img_temp, vinheta_mask)
 
     if imagem_desfoque:
-        img_temp = img_temp.filter(ImageFilter.GaussianBlur(radius=10))
+        img_temp = img_temp.filter(ImageFilter.GaussianBlur(radius=5))
 
     if imagem_raioX:
         # Primeiro, garante que está em RGB e inverte as cores (negativo)
@@ -747,20 +756,28 @@ while running:
                     pagina_editar_aberta = False
                 if pasta_aberta:
                     if botao_girar_foto.collidepoint(mouse_pos):
+                        print(imagem_desenha)
                         posicao_giro = (posicao_giro + 1) % 4
                     if botao_desenho_foto.collidepoint(mouse_pos) and abriu_primeira_aba_vez is False:
-                        if imagem_esta_desenhada:
-                            print("oi")
-                            efeito_desenho = False
-                            imagem_esta_desenhada = False
-                            abriu_primeira_aba_vez = True
-                            # i = i_antes_desenho
+                        if imagem_desenha:
+                            imagem_desenha = False
                         else:
-                            mudancas_nas_imagens = True
-                            efeito_desenho = True
-                            imagem_esta_desenhada = True
-                            abriu_primeira_aba_vez = True
-                            contador_mudancas += 1
+                            imagem_desenha = True
+                    if botao_desfoque_foto.collidepoint(mouse_pos) and abriu_primeira_aba_vez is False:
+                        if imagem_desfoque:
+                            imagem_desfoque = False
+                        else:
+                            imagem_desfoque = True
+                    if botao_espelhar_foto.collidepoint(mouse_pos):
+                        if imagem_espelhada:
+                            imagem_espelhada = False
+                        else:
+                            imagem_espelhada = True
+                    if botao_vinheta_foto.collidepoint(mouse_pos):
+                        if imagem_vinheta:
+                            imagem_vinheta = False
+                        else:
+                            imagem_vinheta = True
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
@@ -854,20 +871,8 @@ while running:
                 if pasta_aberta:
                     if indice_foto_atual== numero_fotos - 1:
                         indice_foto_atual = 0
-                        if angulo_atual != 0:
-                            print(angulo_atual)
-                            imagem_girada = True
-                            eh_para_girar = False
                     else:
                         indice_foto_atual += 1
-                        # i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
-                        print(angulo_atual)
-                        if mudancas_nas_imagens:
-                            if imagem_foi_girada:
-                                imagem_girada = True
-                                eh_para_girar = False
-                            if imagem_esta_desenhada:
-                                efeito_desenho = True
 
         if mostrar_botoes_laterais:
             abriu_primeira_aba_vez = False
