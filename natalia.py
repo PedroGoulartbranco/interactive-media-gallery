@@ -604,8 +604,13 @@ def aplicar_efeitos(imagem_pillow):
         img_temp = img_temp.transpose(Image.FLIP_LEFT_RIGHT)
    
     if imagem_desenha:
+        img_temp = img_temp.convert("L") 
+        
         img_temp = img_temp.filter(ImageFilter.FIND_EDGES)
+        
         img_temp = ImageOps.invert(img_temp)
+        
+        img_temp = img_temp.convert("RGB")
 
 
     if imagem_vinheta:
