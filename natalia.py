@@ -2,7 +2,7 @@ import pygame
 from utils import *
 from quadrados import *
 from editar_imagens import *
-from PIL import Image, ImageFilter, ImageOps
+from PIL import Image, ImageFilter, ImageOps, ImageEnhance, ImageChops
 
 pygame.init()
 LARGURA, ALTURA = 1000, 600
@@ -24,6 +24,8 @@ angulo_atual = 0
 imagem_girada = False
 imagem_foi_girada_alguma_vez = False
 contador_mudancas = 0
+
+lista_imagens_pil = []
 
 pygame.display.set_caption("Te Amo Natalia")
 fonte = pygame.font.SysFont('consolas', 20)
@@ -101,6 +103,20 @@ botao_fundo_branco = botao_fundo_roxo = botao_fundo_cinza  = botao_fundo_azul = 
 botao_botoes_branco = botao_botoes_roxo = botao_botoes_cinza = botao_botoes_vermelho = botao_botoes_azul = botao_botoes_rosa = pygame.Rect(0, 0 - 8, 40, 40)
 botao_borda_azul = botao_borda_branco = botao_borda_cinza = botao_borda_rosa = botao_borda_roxo = botao_borda_vermelho = botao_borda_preto = pygame.Rect(0, 0 - 8, 40, 40)
 
+def pygame_para_pillow(imagem):
+
+    if type(imagem) == str:
+        imagem = pygame.image.load(imagem)
+
+    modo = "RGBA" if imagem.get_alpha() else "RGB"
+
+    dados = pygame.image.tobytes(imagem, modo)
+
+    return Image.frombytes(
+        modo,
+        imagem.get_size(),
+        dados
+    )
 
 def transformar_tamanho_imagem(caminho):
     imagem = pygame.image.load(caminho)
@@ -486,14 +502,103 @@ def funcao_efeito_desenho(surface_pygame):
     imagem_bytes = pygame.image.tobytes(surface_pygame, modo)
     imagem_pil = Image.frombytes(modo, surface_pygame.get_size(), imagem_bytes)
     
-    imagem_desenho = imagem_pil.convert("L").filter(ImageFilter.FIND_EDGES)
+    imagem_cinza = imagem_pil.convert("L")
     
-    imagem_desenho = ImageOps.invert(imagem_desenho)
+    bordas = imagem_cinza.filter(ImageFilter.FIND_EDGES)
+    traços_do_lapis = ImageOps.invert(bordas)
+    
+    imagem_desenho = Image.blend(imagem_cinza, traços_do_lapis, alpha=0.6)
+
+    imagem_desenho = ImageEnhance.Contrast(imagem_desenho).enhance(1.5) 
+    imagem_desenho = ImageEnhance.Brightness(imagem_desenho).enhance(1.2) 
     
     imagem_desenho = imagem_desenho.convert(modo)
     surface_desenho = pygame.image.frombytes(imagem_desenho.tobytes(), imagem_desenho.size, modo)
     
     return surface_desenho
+
+imagem_girada = False
+imagem_desenha = False
+imagem_mudaca = False
+imagem_desfoque = False
+imagem_vinheta = False
+imagem_espelhada = False
+imagem_raioX = False
+posicao_giro = 0
+
+def pygame_para_pillow(surface):
+    modo = "RGBA" if surface.get_alpha() else "RGB"
+
+    dados = pygame.image.tobytes(surface, modo)
+
+    imagem_pil = Image.frombytes(
+        modo,
+        surface.get_size(),
+        dados
+    )
+
+    return imagem_pil
+
+def aplicar_efeitos(imagem_pillow):
+    global posicao_giro, imagem_desenha, quadrado
+   
+    img_temp = imagem_pillow.copy()
+   
+    # 1. Aplica o giro fixo baseado na posição atual
+    if posicao_giro == 1:
+        img_temp = img_temp.transpose(Image.ROTATE_90)   # Esquerda
+    elif posicao_giro == 2:
+        img_temp = img_temp.transpose(Image.ROTATE_180)  # De ponta-cabeça (Cima)
+    elif posicao_giro == 3:
+        img_temp = img_temp.transpose(Image.ROTATE_270)  # Direita
+    # Se for 0, não entra em nenhum if e fica Original!
+
+    img_temp = img_temp.resize((quadrado.width, quadrado.height))
+
+    if imagem_espelhada:
+        img_temp = img_temp.transpose(Image.FLIP_LEFT_RIGHT)
+   
+    if imagem_desenha:
+        img_temp = img_temp.filter(ImageFilter.FIND_EDGES)
+        img_temp = ImageOps.invert(img_temp)
+
+
+    # if imagem_vinheta:
+    #     img_temp = ImageChops.multiply(img_temp, vinheta_mask)
+    #     img_temp = ImageChops.multiply(img_temp, vinheta_mask)
+
+    if imagem_desfoque:
+        img_temp = img_temp.filter(ImageFilter.GaussianBlur(radius=10))
+
+    if imagem_raioX:
+        # Primeiro, garante que está em RGB e inverte as cores (negativo)
+        img_temp = img_temp.convert("RGB")
+        img_temp = ImageOps.invert(img_temp)
+       
+        # Matriz que destaca o Azul/Ciano e remove o Vermelho
+        matriz_raiox = (
+            0.0, 0.0, 0.0, 0,    # Remove totalmente o Vermelho (R)
+            0.0, 0.5, 0.3, 0,    # Deixa o Verde (G) mais suave
+            0.0, 0.4, 1.0, 0     # Dá foco total no Azul (B)
+        )
+        img_temp = img_temp.convert("RGB", matriz_raiox)
+
+
+    # if imagem_preto is not False:
+    #     img_temp = img_temp.convert("RGB", imagem_preto)
+    # if imagem_sepia is not False:
+    #     img_temp = img_temp.convert("RGB", imagem_sepia)
+    # if imagem_vermelho is not False:
+    #     img_temp = img_temp.convert("RGB", imagem_vermelho)
+
+
+    # 3. Conversão para o Pygame
+    modo = img_temp.mode
+    tamanho = img_temp.size
+    dados = img_temp.tobytes()
+   
+    return pygame.image.fromstring(dados, tamanho, modo)
+
 
 while running:
     for event in pygame.event.get():
@@ -532,6 +637,8 @@ while running:
                         if verificar_pasta(caminho):
                             pasta_aberta = True
                             numero_fotos, lista_fotos = listar_fotos(caminho)
+                            # lista_imagens_pil = []
+                            # lista_imagens_pil = tranformar_imagens_para_pilow_lista(lista_fotos, lista_imagens_pil)
                             if numero_fotos == 0:
                                 pasta_aberta = False
             if mostrar_botoes_laterais:
@@ -568,6 +675,8 @@ while running:
                         pasta_aberta = True
                         caminho = caminho_novo
                         numero_fotos, lista_fotos = listar_fotos(caminho)
+                        # lista_imagens_pil = []
+                        # lista_imagens_pil = tranformar_imagens_para_pilow_lista(lista_fotos, lista_imagens_pil)
                         if numero_fotos == 0:
                             pasta_aberta = False
                 if botao_personalizar.collidepoint(mouse_pos):
@@ -638,18 +747,14 @@ while running:
                     pagina_editar_aberta = False
                 if pasta_aberta:
                     if botao_girar_foto.collidepoint(mouse_pos):
-                        mudancas_nas_imagens = True
-                        imagem_girada = True
-                        eh_para_girar = True
-                        imagem_foi_girada = True
-                        abriu_primeira_aba_vez = True
+                        posicao_giro = (posicao_giro + 1) % 4
                     if botao_desenho_foto.collidepoint(mouse_pos) and abriu_primeira_aba_vez is False:
                         if imagem_esta_desenhada:
                             print("oi")
                             efeito_desenho = False
                             imagem_esta_desenhada = False
                             abriu_primeira_aba_vez = True
-                            i = i_antes_desenho
+                            # i = i_antes_desenho
                         else:
                             mudancas_nas_imagens = True
                             efeito_desenho = True
@@ -699,25 +804,27 @@ while running:
 
     if pagina_inicial:
         if pasta_aberta:
-            if mudancas_nas_imagens:
-                if imagem_girada:
-                    if imagem_esta_desenhada is False:
-                        i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
-                    if i_giro_atual is not None:
-                        i = i_giro_atual
-                    print("entrou")
-                    i, angulo_atual = girar_imagem(i, quadrado.width, quadrado.height, angulo_atual, eh_para_girar)
-                    i_giro_atual = i
-                    imagem_girada = False
-                if efeito_desenho:
-                    i_antes_desenho = i
-                    i = funcao_efeito_desenho(i)
-                    efeito_desenho = False
-                screen.blit(i, coordenada_desenhar_imagens)
-                mostrar_numero_foto_atual(indice_foto_atual)
-            else:
-                i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
-                screen.blit(i, coordenada_desenhar_imagens)
+            # if mudancas_nas_imagens:
+            #     if imagem_girada:
+            #         if imagem_esta_desenhada is False:
+            #             i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
+            #         if i_giro_atual is not None:
+            #             i = i_giro_atual
+            #         print("entrou")
+            #         i, angulo_atual = girar_imagem(i, quadrado.width, quadrado.height, angulo_atual, eh_para_girar)
+            #         i_giro_atual = i
+            #         imagem_girada = False
+            #     if efeito_desenho:
+            #         i_antes_desenho = i
+            #         i = funcao_efeito_desenho(i)
+            #         efeito_desenho = False
+            #     screen.blit(i, coordenada_desenhar_imagens)
+            #     mostrar_numero_foto_atual(indice_foto_atual)
+            # else:
+            surface = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
+            #surface = pygame.image.load(lista_fotos[indice_foto_atual])
+            i= pygame_para_pillow(surface)
+            screen.blit(aplicar_efeitos(i), coordenada_desenhar_imagens)
             mostrar_numero_foto_atual(indice_foto_atual)
             if clicou_botao_randomizar:
                 if (ticks_atuais - ticks_clicou_randozimar >= 1000):
@@ -753,8 +860,7 @@ while running:
                             eh_para_girar = False
                     else:
                         indice_foto_atual += 1
-                        i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
-                        i_giro_atual = i
+                        # i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
                         print(angulo_atual)
                         if mudancas_nas_imagens:
                             if imagem_foi_girada:
