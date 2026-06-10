@@ -23,6 +23,7 @@ i = None
 angulo_atual = 0
 imagem_girada = False
 imagem_foi_girada_alguma_vez = False
+contador_mudancas = 0
 
 pygame.display.set_caption("Te Amo Natalia")
 fonte = pygame.font.SysFont('consolas', 20)
@@ -50,7 +51,9 @@ efeito_desenho = False
 imagem_esta_desenhada = False
 imagem_foi_girada = False
 
-abriu_primeira_aba_vez = False
+i_giro_atual = None
+
+abriu_primeira_aba_vez = True
 
 pagina_personalisar_galeria_aberta = False
 pagina_inicial = True #Pagina normal
@@ -639,10 +642,20 @@ while running:
                         imagem_girada = True
                         eh_para_girar = True
                         imagem_foi_girada = True
+                        abriu_primeira_aba_vez = True
                     if botao_desenho_foto.collidepoint(mouse_pos) and abriu_primeira_aba_vez is False:
-                        mudancas_nas_imagens = True
-                        efeito_desenho = True
-                        imagem_esta_desenhada = True
+                        if imagem_esta_desenhada:
+                            print("oi")
+                            efeito_desenho = False
+                            imagem_esta_desenhada = False
+                            abriu_primeira_aba_vez = True
+                            i = i_antes_desenho
+                        else:
+                            mudancas_nas_imagens = True
+                            efeito_desenho = True
+                            imagem_esta_desenhada = True
+                            abriu_primeira_aba_vez = True
+                            contador_mudancas += 1
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
@@ -683,16 +696,21 @@ while running:
     screen.fill(cor_fundo_atual)
     keys = pygame.key.get_pressed()
     tempo_atual = pygame.time.get_ticks()
+
     if pagina_inicial:
         if pasta_aberta:
             if mudancas_nas_imagens:
                 if imagem_girada:
                     if imagem_esta_desenhada is False:
                         i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
+                    if i_giro_atual is not None:
+                        i = i_giro_atual
                     print("entrou")
                     i, angulo_atual = girar_imagem(i, quadrado.width, quadrado.height, angulo_atual, eh_para_girar)
+                    i_giro_atual = i
                     imagem_girada = False
                 if efeito_desenho:
+                    i_antes_desenho = i
                     i = funcao_efeito_desenho(i)
                     efeito_desenho = False
                 screen.blit(i, coordenada_desenhar_imagens)
@@ -736,6 +754,7 @@ while running:
                     else:
                         indice_foto_atual += 1
                         i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
+                        i_giro_atual = i
                         print(angulo_atual)
                         if mudancas_nas_imagens:
                             if imagem_foi_girada:
