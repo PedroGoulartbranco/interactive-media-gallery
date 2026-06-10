@@ -180,7 +180,11 @@ def atualizar_tamanho(largura, altura):
     nova_largura = 300 * escala_x
     nova_altura = 80 * escala_y
 
+    nova_largura_botoes_menores = botao_girar_foto.width * escala_x
+    nova_altura_botoes_menores = botao_girar_foto.height * escala_y
+
     x_pos = (600 * escala_x) + (70 * escala_x)
+    x_pos_botoes_menores = (300 * escala_x) + (70 * escala_x)
 
     botao_configuracoes.width = nova_largura
     botao_configuracoes.height = nova_altura
@@ -227,6 +231,51 @@ def atualizar_tamanho(largura, altura):
     botao_ajuda.height = nova_altura
     botao_ajuda.x = x_pos
     botao_ajuda.y = (260 + 80) * escala_y
+
+    botao_girar_foto.width = nova_largura_botoes_menores
+    botao_girar_foto.height = nova_altura_botoes_menores
+    botao_girar_foto.x = x_pos
+    botao_girar_foto.y = 30 * escala_y
+
+    botao_cores_foto.width = nova_largura_botoes_menores
+    botao_cores_foto.height = nova_altura_botoes_menores
+    botao_cores_foto.x = x_pos + botao_girar_foto.width + 20
+    botao_cores_foto.y = 30 * escala_y
+
+    botao_desenho_foto.width = nova_largura_botoes_menores
+    botao_desenho_foto.height = nova_altura_botoes_menores
+    botao_desenho_foto.x = x_pos
+    botao_desenho_foto.y = 130 * escala_y
+
+    botao_desfoque_foto.width = nova_largura_botoes_menores
+    botao_desfoque_foto.height = nova_altura_botoes_menores
+    botao_desfoque_foto.x = x_pos + botao_desenho_foto.width + 20
+    botao_desfoque_foto.y = 130 * escala_y
+
+    botao_vinheta_foto.width = nova_largura_botoes_menores
+    botao_vinheta_foto.height = nova_altura_botoes_menores
+    botao_vinheta_foto.x = x_pos
+    botao_vinheta_foto.y = botao_desfoque_foto.y + 100 * escala_y
+
+    botao_espelhar_foto.width = nova_largura_botoes_menores
+    botao_espelhar_foto.height = nova_altura_botoes_menores
+    botao_espelhar_foto.x = x_pos + botao_desenho_foto.width + 20
+    botao_espelhar_foto.y = botao_desfoque_foto.y + 100 * escala_y
+
+    botao_aleatorizar_foto.width = nova_largura_botoes_menores
+    botao_aleatorizar_foto.height = nova_altura_botoes_menores
+    botao_aleatorizar_foto.x = x_pos
+    botao_aleatorizar_foto.y = botao_vinheta_foto.y + 100 * escala_y
+
+    botao_resetar_foto.width = nova_largura_botoes_menores
+    botao_resetar_foto.height = nova_altura_botoes_menores
+    botao_resetar_foto.x = x_pos + botao_aleatorizar_foto.width + 20
+    botao_resetar_foto.y = botao_vinheta_foto.y + 100 * escala_y
+
+    botao_voltar_editar.width = (botao_vinheta_foto.width + 20 + botao_espelhar_foto.width)
+    botao_voltar_editar.height = nova_altura
+    botao_voltar_editar.x = x_pos
+    botao_voltar_editar.y = botao_aleatorizar_foto.y + 100 * escala_y
 
 def atualizar_tamanho_quadrado(largura, altura):
     global coordenada_desenhar_imagens, DISTANCIA_LATERAL_QUADRADO
