@@ -13,6 +13,7 @@ running = True
 pygame.key.set_repeat(400, 150)
 
 caminho = None
+musica_tocando = True
 
 cores_botoes = "#6503A6"
 cor_fundo_atual = "#AC01F4"
@@ -446,7 +447,7 @@ def funcao_mostrar_pagina_ajuda():
     fonte_texto = calculo_tamanho_fonte_atual(25)
     texto_titulo = fonte_atual.render("Guia/Ajuda", True, "black")
 
-    texto = """<  ===> Ir para a imagem da esquerda, você pode segurar esse botão\n> ===> Ir para a imagem da direita, você pode segurar esse botão\n1 ===> Ir para primeira imagem\n2 ===> Ir para ultima imagem\nSpace ===> Escolher uma foto aleatoria\nA ===> Embaralhar as fotos\nS ===> Desembaralhar as fotos\n↑ ===> Trocar de música\n↓ ===> Trocar de música\nL ===> Abrir página de ajuda
+    texto = """<  ===> Ir para a imagem da esquerda, você pode segurar esse botão\n> ===> Ir para a imagem da direita, você pode segurar esse botão\n1 ===> Ir para primeira imagem\n2 ===> Ir para ultima imagem\nSpace ===> Escolher uma foto aleatoria\nA ===> Embaralhar as fotos\nS ===> Desembaralhar as fotos\n↑ ===> Trocar de música\n↓ ===> Trocar de música\nL ===> Abrir página de ajuda\nR ===> Resetar Imagem (Deixar ela original)
     """
 
     linhas = texto.split('\n')
@@ -503,34 +504,6 @@ def funcao_mostrar_pagina_editar_imagens():
     screen.blit(texto_botao_aleatorizar, coordenadas_texto_botao_aleatorizar)
     screen.blit(texto_botao_resetar, coordenadas_texto_botao_resetar)
     screen.blit(texto_botao_voltar, coordenadas_texto_botao_voltar)
-
-def girar_imagem(surface_pygame, largura, altura, angulo, quer_girar=True):
-    # if quer_girar:
-    #     angulo = (angulo - 90) % 360
-
-    # imagem = Image.open(caminho)
-    # imagem = imagem.rotate(angulo, expand=True)
-    # imagem = imagem.resize((largura, altura))
-
-    modo = "RGBA" if surface_pygame.get_alpha() else "RGB"
-    
-    imagem_bytes = pygame.image.tobytes(surface_pygame, modo)
-    tamanho_atual = surface_pygame.get_size()
-    
-    imagem = Image.frombytes(modo, tamanho_atual, imagem_bytes)
-
-    imagem = imagem.transpose(Image.ROTATE_270)
-
-    imagem = imagem.resize((largura, altura))
-
-    novo_tamanho = imagem.size
-    bytes_girados = imagem.tobytes()
-    try:
-         surface_girada = pygame.image.frombytes(bytes_girados, novo_tamanho, "RBGA")
-    except:
-         surface_girada = pygame.image.frombytes(bytes_girados, novo_tamanho, "RGB")
-    
-    return surface_girada, angulo
 
 def funcao_efeito_desenho(surface_pygame):
     modo = "RGBA" if surface_pygame.get_alpha() else "RGB"
@@ -885,6 +858,7 @@ while running:
                 nome_musica_atual, caminho_musica_atual = tocar_musica(indice_musica)
                 pygame.mixer.music.load(caminho_musica_atual)
                 pygame.mixer.music.play(-1)
+                musica_tocando = True
             if pagina_inicial:
                 if pasta_aberta:
                     if event.key == pygame.K_SPACE:
@@ -925,6 +899,12 @@ while running:
                         indice_foto_atual = numero_fotos - 1
                     else:
                         indice_foto_atual -= 1
+            if event.key == pygame.K_m:
+                if musica_tocando:
+                    pygame.mixer.music.pause()
+                    musica_tocando = False
+                else:
+                    pygame.mixer.music.unpause()
                 
 
     screen.fill(cor_fundo_atual)
