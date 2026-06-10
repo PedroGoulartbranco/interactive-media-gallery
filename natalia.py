@@ -584,9 +584,7 @@ def criar_vinheta():
 
     vinheta_mask = vinheta_mask.convert("RGB")
 
-
 criar_vinheta()
-
 
 def aplicar_efeitos(imagem_pillow):
     global posicao_giro, imagem_desenha, quadrado
@@ -676,6 +674,34 @@ def aleatorizar_efeitos():
         elif indice == 3:
             imagem_vinheta = i
 
+def funcao_mostrar_pagina_ler():
+    fonte_atual = calculo_tamanho_fonte_atual(30)
+    fonte_texto = calculo_tamanho_fonte_atual(20)
+    texto_titulo = fonte_atual.render("EU TE AMO MUITO", True, "black")
+
+    texto = """  Não existem palavras para descrever o quanto eu te amo do fundo do meu coração, \no quanto eu gosto de passar meu tempo com você, de ouvir sua risada, de conversar\ncom você, jogar com você entre infinitas outras coisas. Eu quero que continuemos\njuntos para todo sempre, porque além de ser minha namorada você é minha melhor amiga,\nminha parceira, minha tudo.\n Espero que você goste dessa galeria que eu fiz para nós, minha maior diversão \nfazendo for ver nossas fotos e perceber o quanto fomos ficando mais próximos e mais\na vontade um com o outro.\nASS: Espero que tenha gostado com Amor Pedro!"""
+
+    linhas = texto.split('\n')
+
+    coordenadas_titulo_texto = texto_titulo.get_rect()
+    coordenadas_titulo_texto.centerx = largura_atual / 2
+    coordenadas_titulo_texto.top = 15
+
+    DISTANCIA_TEXTO_DO_TITULO = coordenadas_titulo_texto.bottom + 40
+
+    screen.blit(texto_titulo, coordenadas_titulo_texto)
+    pygame.draw.line(screen, cor_borda_linhas_atual, (0, coordenadas_titulo_texto.bottom + 3), (largura_atual, coordenadas_titulo_texto.bottom + 3), 1)
+
+    for i, linha in enumerate(linhas):
+        tranformar_texto = fonte_texto.render(linha, True, "black")
+        pos_y = DISTANCIA_TEXTO_DO_TITULO + (i * 40)
+        screen.blit(tranformar_texto, (30, pos_y))
+
+    coordenadas_texto_voltar = texto_botao_voltar.get_rect(center=botao_voltar.center)
+    pygame.draw.rect(screen, cores_botoes, botao_voltar)
+    screen.blit(texto_botao_voltar, coordenadas_texto_voltar)
+
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -727,6 +753,8 @@ while running:
                     mostrar_botoes_laterais = False
                 if botao_ler.collidepoint(mouse_pos):
                     mostrar_botoes_laterais = False
+                    pagina_inicial = False
+                    pagina_ler_aberta = True
                 if botao_supresa.collidepoint(mouse_pos):
                     mostrar_botoes_laterais = False
             #Se a pagina de configurações estiver aberta
@@ -752,8 +780,6 @@ while running:
                         pasta_aberta = True
                         caminho = caminho_novo
                         numero_fotos, lista_fotos = listar_fotos(caminho)
-                        # lista_imagens_pil = []
-                        # lista_imagens_pil = tranformar_imagens_para_pilow_lista(lista_fotos, lista_imagens_pil)
                         if numero_fotos == 0:
                             pasta_aberta = False
                 if botao_personalizar.collidepoint(mouse_pos):
@@ -848,6 +874,11 @@ while running:
                             resetar_imagem()
                         if botao_aleatorizar_foto.collidepoint(mouse_pos):
                             aleatorizar_efeitos()
+            if pagina_ler_aberta:
+                if botao_voltar_editar.collidepoint(mouse_pos):
+                    pagina_ler_aberta = False
+                    pagina_inicial = True
+                    mostrar_botoes_laterais = True
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
@@ -940,10 +971,12 @@ while running:
 
         if pagina_editar_aberta:
             funcao_mostrar_pagina_editar_imagens()
-    if pagina_personalisar_galeria_aberta:
+    elif pagina_personalisar_galeria_aberta:
         funcao_pagina_personalisar()
-    if pagina_de_ajuda:
+    elif pagina_de_ajuda:
         funcao_mostrar_pagina_ajuda()
+    elif pagina_ler_aberta:
+        funcao_mostrar_pagina_ler()
 
     pygame.display.flip()
 
