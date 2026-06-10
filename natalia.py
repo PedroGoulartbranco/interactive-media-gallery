@@ -675,6 +675,7 @@ while running:
                     pagina_configuracoes_aberta = True
                 if botao_editar_imagens.collidepoint(mouse_pos):
                     pagina_editar_aberta = True
+                    tempo_quando_abriu_editar = ticks_atuais
                     mostrar_botoes_laterais = False
                 if botao_ler.collidepoint(mouse_pos):
                     mostrar_botoes_laterais = False
@@ -766,37 +767,35 @@ while running:
                     pagina_configuracoes_aberta = True
                     pagina_de_ajuda = False
             if pagina_editar_aberta:
-                if abriu_primeira_aba_vez is False:
-                    abriu_primeira_aba_vez = True
-                else:
-                    abriu_primeira_aba_vez = False
-                if botao_voltar_editar.collidepoint(mouse_pos):
-                    mostrar_botoes_laterais = True
-                    pagina_editar_aberta = False
-                if pasta_aberta:
-                    if botao_girar_foto.collidepoint(mouse_pos):
-                        print(imagem_desenha)
-                        posicao_giro = (posicao_giro + 1) % 4
-                    if botao_desenho_foto.collidepoint(mouse_pos) and abriu_primeira_aba_vez is False:
-                        if imagem_desenha:
-                            imagem_desenha = False
-                        else:
-                            imagem_desenha = True
-                    if botao_desfoque_foto.collidepoint(mouse_pos) and abriu_primeira_aba_vez is False:
-                        if imagem_desfoque:
-                            imagem_desfoque = False
-                        else:
-                            imagem_desfoque = True
-                    if botao_espelhar_foto.collidepoint(mouse_pos):
-                        if imagem_espelhada:
-                            imagem_espelhada = False
-                        else:
-                            imagem_espelhada = True
-                    if botao_vinheta_foto.collidepoint(mouse_pos):
-                        if imagem_vinheta:
-                            imagem_vinheta = False
-                        else:
-                            imagem_vinheta = True
+                if ticks_atuais - tempo_quando_abriu_editar >= 200:
+                    if botao_voltar_editar.collidepoint(mouse_pos):
+                        mostrar_botoes_laterais = True
+                        pagina_editar_aberta = False
+                    if pasta_aberta:
+                        if botao_girar_foto.collidepoint(mouse_pos):
+                            print(imagem_desenha)
+                            posicao_giro = (posicao_giro + 1) % 4
+                        if botao_desenho_foto.collidepoint(mouse_pos):
+                            if imagem_desenha:
+                                imagem_desenha = False
+                            else:
+                                imagem_desenha = True
+                            abriu_primeira_aba_vez = False
+                        if botao_desfoque_foto.collidepoint(mouse_pos):
+                            if imagem_desfoque:
+                                imagem_desfoque = False
+                            else:
+                                imagem_desfoque = True
+                        if botao_espelhar_foto.collidepoint(mouse_pos):
+                            if imagem_espelhada:
+                                imagem_espelhada = False
+                            else:
+                                imagem_espelhada = True
+                        if botao_vinheta_foto.collidepoint(mouse_pos):
+                            if imagem_vinheta:
+                                imagem_vinheta = False
+                            else:
+                                imagem_vinheta = True
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
