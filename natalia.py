@@ -627,6 +627,12 @@ def aplicar_efeitos(imagem_pillow):
    
     return pygame.image.fromstring(dados, tamanho, modo)
 
+def resetar_imagem():
+    global imagem_raioX, imagem_desenha, imagem_espelhada, posicao_giro, imagem_desfoque, imagem_vinheta
+
+    imagem_vinheta = imagem_raioX = imagem_desenha = imagem_espelhada =imagem_desfoque = False
+    posicao_giro = 0
+
 
 while running:
     for event in pygame.event.get():
@@ -796,6 +802,8 @@ while running:
                                 imagem_vinheta = False
                             else:
                                 imagem_vinheta = True
+                        if botao_resetar_foto.collidepoint(mouse_pos):
+                            resetar_imagem()
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
