@@ -10,6 +10,7 @@ LARGURA, ALTURA = 1000, 600
 screen = pygame.display.set_mode((LARGURA, ALTURA), pygame.RESIZABLE)
 clock = pygame.time.Clock()
 running = True
+pygame.key.set_repeat(400, 150)
 
 caminho = None
 
@@ -863,6 +864,18 @@ while running:
             if event.key == pygame.K_r:
                 if pasta_aberta:
                     resetar_imagem()
+            if event.key == pygame.K_RIGHT:
+                if pasta_aberta:
+                    if indice_foto_atual== numero_fotos - 1:
+                        indice_foto_atual = 0
+                    else:
+                        indice_foto_atual += 1
+            if event.key == pygame.K_LEFT:
+                if pasta_aberta:
+                    if indice_foto_atual - 1 == -1:
+                        indice_foto_atual = numero_fotos - 1
+                    else:
+                        indice_foto_atual -= 1
                 
 
     screen.fill(cor_fundo_atual)
@@ -871,25 +884,7 @@ while running:
 
     if pagina_inicial:
         if pasta_aberta:
-            # if mudancas_nas_imagens:
-            #     if imagem_girada:
-            #         if imagem_esta_desenhada is False:
-            #             i = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
-            #         if i_giro_atual is not None:
-            #             i = i_giro_atual
-            #         print("entrou")
-            #         i, angulo_atual = girar_imagem(i, quadrado.width, quadrado.height, angulo_atual, eh_para_girar)
-            #         i_giro_atual = i
-            #         imagem_girada = False
-            #     if efeito_desenho:
-            #         i_antes_desenho = i
-            #         i = funcao_efeito_desenho(i)
-            #         efeito_desenho = False
-            #     screen.blit(i, coordenada_desenhar_imagens)
-            #     mostrar_numero_foto_atual(indice_foto_atual)
-            # else:
             surface = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
-            #surface = pygame.image.load(lista_fotos[indice_foto_atual])
             i= pygame_para_pillow(surface)
             screen.blit(aplicar_efeitos(i), coordenada_desenhar_imagens)
             mostrar_numero_foto_atual(indice_foto_atual)
@@ -906,23 +901,6 @@ while running:
         screen.blit(seta_direita, posicao_seta_direita)
         screen.blit(seta_esquerda, posicao_seta_esqurda)
         screen.blit(ponto_interrogacao, posicao_ponto_interrogacao)
-        
-        if keys[pygame.K_LEFT]:
-            if pasta_aberta:
-                if tempo_atual - ultimo_click > tempo_para_segurar:
-                    ultimo_click = tempo_atual
-                    if indice_foto_atual - 1 == -1:
-                        indice_foto_atual = numero_fotos - 1
-                    else:
-                        indice_foto_atual -= 1
-        if keys[pygame.K_RIGHT]:
-            if tempo_atual - ultimo_click > tempo_para_segurar:
-                ultimo_click = tempo_atual
-                if pasta_aberta:
-                    if indice_foto_atual== numero_fotos - 1:
-                        indice_foto_atual = 0
-                    else:
-                        indice_foto_atual += 1
 
         if mostrar_botoes_laterais:
             abriu_primeira_aba_vez = False
