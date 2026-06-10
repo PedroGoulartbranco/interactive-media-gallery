@@ -526,23 +526,37 @@ def pygame_para_pillow(surface):
 
 vinheta_mask = Image.new("L", (quadrado.width, quadrado.height), 0)
 draw = ImageDraw.Draw(vinheta_mask)
-
+ultimo_tamanho_vinheta = None
 
 def criar_vinheta():
-    global largura, altura, vinheta_mask, draw
+    global vinheta_mask, ultimo_tamanho_vinheta
 
+    largura = quadrado.width
+    altura = quadrado.height
 
-    vinheta_mask = Image.new("L", (quadrado.width, quadrado.height), 0)
+    ultimo_tamanho_vinheta = (largura, altura)
+
+    vinheta_mask = Image.new("L", (largura, altura), 0)
+
     draw = ImageDraw.Draw(vinheta_mask)
 
+    maior = max(largura, altura)
 
-    for i in range(max(quadrado.width, quadrado.height), 0, -5):
-        cor = int(255 * (1 - (i / max(quadrado.width, quadrado.height))))
-        x0 = (quadrado.height / 2) - i
-        y0 = (quadrado.width / 2) - i
-        x1 = (quadrado.height / 2) + i
-        y1 = (quadrado.width / 2) + i
-        draw.ellipse([x0, y0, x1, y1], fill=cor)
+    for i in range(maior, 0, -5):
+
+        cor = int(255 * (1 - (i / maior)))
+
+        draw.ellipse(
+            (
+                largura/2-i,
+                altura/2-i,
+                largura/2+i,
+                altura/2+i
+            ),
+            fill=cor
+        )
+
+    # vinheta_mask = ImageOps.invert(vinheta_mask)
 
     vinheta_mask = vinheta_mask.convert("RGB")
 
@@ -573,8 +587,13 @@ def aplicar_efeitos(imagem_pillow):
 
 
     if imagem_vinheta:
-        img_temp = ImageChops.multiply(img_temp, vinheta_mask)
-        img_temp = ImageChops.multiply(img_temp, vinheta_mask)
+        if ultimo_tamanho_vinheta != (quadrado.width,quadrado.height):
+            criar_vinheta()
+
+        img_temp = ImageChops.multiply(
+            img_temp,
+            vinheta_mask
+        )
 
     if imagem_desfoque:
         img_temp = img_temp.filter(ImageFilter.GaussianBlur(radius=5))
