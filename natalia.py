@@ -684,7 +684,7 @@ def funcao_mostrar_pagina_ler():
     fonte_texto = calculo_tamanho_fonte_atual(20)
     texto_titulo = fonte_atual.render("EU TE AMO MUITO", True, "black")
 
-    texto = """  Não existem palavras para descrever o quanto eu te amo do fundo do meu coração, \no quanto eu gosto de passar meu tempo com você, de ouvir sua risada, de conversar\ncom você, jogar com você entre infinitas outras coisas. Eu quero que continuemos\njuntos para todo sempre, porque além de ser minha namorada você é minha melhor amiga,\nminha parceira, minha tudo.\n Espero que você goste dessa galeria que eu fiz para nós, minha maior diversão \nfazendo for ver nossas fotos e perceber o quanto fomos ficando mais próximos e mais\na vontade um com o outro.\nASS: Espero que tenha gostado com Amor Pedro!"""
+    texto = """  Não existem palavras para descrever o quanto eu te amo do fundo do meu coração, \no quanto eu gosto de passar meu tempo com você, de ouvir sua risada, de conversar\ncom você, jogar com você entre infinitas outras coisas. Eu quero que continuemos\njuntos para todo sempre, porque além de ser minha namorada você é minha melhor amiga,\nminha parceira, minha tudo.\n Espero que você goste dessa galeria que eu fiz para nós, minha maior diversão \nfazendo for ver nossas fotos e perceber o quanto fomos ficando mais próximos e mais\na vontade um com o outro.\nASS: Com Amor Pedro!"""
 
     linhas = texto.split('\n')
 
@@ -761,7 +761,8 @@ while running:
                     pagina_inicial = False
                     pagina_ler_aberta = True
                 if botao_supresa.collidepoint(mouse_pos):
-                    mostrar_botoes_laterais = False
+                    pass
+                    #mostrar_botoes_laterais = False
             #Se a pagina de configurações estiver aberta
             if pagina_configuracoes_aberta:
                 if abriu_primeira_aba_vez is False:
