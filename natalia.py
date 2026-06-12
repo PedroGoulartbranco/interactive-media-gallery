@@ -4,6 +4,7 @@ from quadrados import *
 from editar_imagens import *
 from PIL import Image, ImageFilter, ImageOps, ImageEnhance, ImageChops, ImageDraw
 from random import choice
+from matrizes_cores import *
 
 pygame.init()
 LARGURA, ALTURA = 1000, 600
@@ -29,6 +30,9 @@ imagem_foi_girada_alguma_vez = False
 contador_mudancas = 0
 
 lista_imagens_pil = []
+
+imagem_vermelho = False
+imagem_branca = False
 
 pygame.display.set_caption("Te Amo Natalia")
 fonte = pygame.font.SysFont('consolas', 20)
@@ -106,6 +110,8 @@ texto_botao_abrir_pasta = botao_abrir_pasta = pygame.Rect(DISTANCIA_LATERAL_QUAD
 botao_fundo_branco = botao_fundo_roxo = botao_fundo_cinza  = botao_fundo_azul = botao_fundo_vermelho = botao_fundo_rosa = pygame.Rect(0, 0 - 8, 40, 40)
 botao_botoes_branco = botao_botoes_roxo = botao_botoes_cinza = botao_botoes_vermelho = botao_botoes_azul = botao_botoes_rosa = pygame.Rect(0, 0 - 8, 40, 40)
 botao_borda_azul = botao_borda_branco = botao_borda_cinza = botao_borda_rosa = botao_borda_roxo = botao_borda_vermelho = botao_borda_preto = pygame.Rect(0, 0 - 8, 40, 40)
+botao_branco = botao_vermelho = pygame.Rect(1 + 60, 0, 40, 40)
+
 
 def transformar_tamanho_imagem(caminho):
     imagem = pygame.image.load(caminho)
@@ -448,7 +454,7 @@ def funcao_mostrar_pagina_ajuda():
     fonte_texto = calculo_tamanho_fonte_atual(25)
     texto_titulo = fonte_atual.render("Guia/Ajuda", True, "black")
 
-    texto = """<  ===> Ir para a imagem da esquerda, você pode segurar esse botão\n> ===> Ir para a imagem da direita, você pode segurar esse botão\n1 ===> Ir para primeira imagem\n2 ===> Ir para ultima imagem\nSpace ===> Escolher uma foto aleatoria\nA ===> Embaralhar as fotos\nS ===> Desembaralhar as fotos\n↑ ===> Trocar de música\n↓ ===> Trocar de música\nL ===> Abrir página de ajuda\nR ===> Resetar Imagem (Deixar ela original)
+    texto = """<  ===> Ir para a imagem da esquerda, você pode segurar esse botão\n> ===> Ir para a imagem da direita, você pode segurar esse botão\n1 ===> Ir para primeira imagem\n2 ===> Ir para ultima imagem\nSpace ===> Escolher uma foto aleatoria\nA ===> Embaralhar as fotos\nS ===> Desembaralhar as fotos\n↑ ===> Trocar de música\n↓ ===> Trocar de música\nL ===> Abrir página de ajuda\nR ===> Resetar Imagem (Deixar ela original)\nP ===> Pausar Música
     """
 
     linhas = texto.split('\n')
@@ -644,8 +650,10 @@ def aplicar_efeitos(imagem_pillow):
     #     img_temp = img_temp.convert("RGB", imagem_preto)
     # if imagem_sepia is not False:
     #     img_temp = img_temp.convert("RGB", imagem_sepia)
-    # if imagem_vermelho is not False:
-    #     img_temp = img_temp.convert("RGB", imagem_vermelho)
+    if imagem_vermelho is not False:
+        img_temp = img_temp.convert("RGB", imagem_vermelho)
+    if imagem_branca is not False:
+        img_temp = img_temp.convert("RGB", imagem_branca)
 
 
     modo = img_temp.mode
@@ -656,9 +664,12 @@ def aplicar_efeitos(imagem_pillow):
 
 def resetar_imagem():
     global imagem_raioX, imagem_desenha, imagem_espelhada, posicao_giro, imagem_desfoque, imagem_vinheta
+    global imagem_vermelho, imagem_branca
+
 
     imagem_vinheta = imagem_raioX = imagem_desenha = imagem_espelhada =imagem_desfoque = False
     posicao_giro = 0
+    imagem_branca = imagem_vermelho = False
 
 def aleatorizar_efeitos():
     global imagem_raioX, imagem_desenha, imagem_espelhada, posicao_giro, imagem_desfoque, imagem_vinheta
@@ -708,6 +719,7 @@ def funcao_mostrar_pagina_ler():
     screen.blit(texto_botao_voltar, coordenadas_texto_voltar)
 
 def funcao_mostrar_botoes_cores():
+    global botao_branco, botao_vermelho
     fonte_atual = calculo_tamanho_fonte_atual(20)
     texto_botao_voltar = fonte_atual.render("Voltar", True, "black")
 
@@ -715,6 +727,24 @@ def funcao_mostrar_botoes_cores():
 
     pygame.draw.rect(screen, cores_botoes, botao_voltar_editar)
     screen.blit(texto_botao_voltar, coordenadas_texto_botao_voltar)
+
+    DISTANCIA_PAREDE_BOTOES_COR =  botao_abrir_nova_pasta.x
+    y_distancia_cor = botao_abrir_pasta.y
+    #Fundo
+    botao_branco = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR, y_distancia_cor, 40, 40)
+    botao_vermelho = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 60, y_distancia_cor, 40, 40)
+    # "#AC01F4": botao_fundo_roxo,
+    # "#6B7074": botao_fundo_cinza,
+    # "#1F8BE4": botao_fundo_azul,
+    # "#F4C2C2": botao_fundo_rosa
+    
+    dicionario_cor = {
+        "#FFFFFF": botao_branco,
+        "#FD0E0E": botao_vermelho,
+    }
+
+    for botao in dicionario_cor:
+        pygame.draw.rect(screen, botao, dicionario_cor[botao])
 
 
 while running:
@@ -904,6 +934,17 @@ while running:
                 if botao_voltar_editar.collidepoint(mouse_pos):
                     pagina_editar_aberta = True
                     pagina_de_cores = False
+                if botao_vermelho.collidepoint(mouse_pos):
+                    if imagem_vermelho is False:
+                        imagem_vermelho = matriz_vermelho
+
+                    else:
+                        imagem_vermelho = False
+                if botao_branco.collidepoint(mouse_pos):
+                    if imagem_branca is False:
+                        imagem_branca = matriz_branca
+                    else:
+                        imagem_branca = False
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
@@ -955,7 +996,7 @@ while running:
                         indice_foto_atual = numero_fotos - 1
                     else:
                         indice_foto_atual -= 1
-            if event.key == pygame.K_m:
+            if event.key == pygame.K_p:
                 if musica_tocando:
                     pygame.mixer.music.pause()
                     musica_tocando = False
