@@ -49,6 +49,7 @@ pagina_editar_aberta = False
 pagina_ler_aberta = False
 pagina_supresa_aberta = False
 pagina_de_ajuda = False
+pagina_de_cores = False
 
 mudancas_nas_imagens = False
 eh_para_girar = True
@@ -706,6 +707,15 @@ def funcao_mostrar_pagina_ler():
     pygame.draw.rect(screen, cores_botoes, botao_voltar)
     screen.blit(texto_botao_voltar, coordenadas_texto_voltar)
 
+def funcao_mostrar_botoes_cores():
+    fonte_atual = calculo_tamanho_fonte_atual(20)
+    texto_botao_voltar = fonte_atual.render("Voltar", True, "black")
+
+    coordenadas_texto_botao_voltar = texto_botao_voltar.get_rect(center=botao_voltar_editar.center)
+
+    pygame.draw.rect(screen, cores_botoes, botao_voltar_editar)
+    screen.blit(texto_botao_voltar, coordenadas_texto_botao_voltar)
+
 
 while running:
     for event in pygame.event.get():
@@ -880,11 +890,20 @@ while running:
                             resetar_imagem()
                         if botao_aleatorizar_foto.collidepoint(mouse_pos):
                             aleatorizar_efeitos()
+                        if botao_cores_foto.collidepoint(mouse_pos):
+                            pagina_inicial = True
+                            pagina_editar_aberta = False
+                            mostrar_botoes_laterais = False
+                            pagina_de_cores = True
             if pagina_ler_aberta:
                 if botao_voltar_editar.collidepoint(mouse_pos):
                     pagina_ler_aberta = False
                     pagina_inicial = True
                     mostrar_botoes_laterais = True
+            if pagina_de_cores:
+                if botao_voltar_editar.collidepoint(mouse_pos):
+                    pagina_editar_aberta = True
+                    pagina_de_cores = False
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
@@ -971,6 +990,8 @@ while running:
         if mostrar_botoes_laterais:
             abriu_primeira_aba_vez = False
             funcao_mostrar_botoes_laterais()
+        elif pagina_de_cores:
+            funcao_mostrar_botoes_cores()
         
         if pagina_configuracoes_aberta:
             funcao_mostrar_pagina_configuracoes()
