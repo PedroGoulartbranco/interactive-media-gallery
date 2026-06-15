@@ -1,7 +1,6 @@
 import pygame
 from utils import *
 from quadrados import *
-from editar_imagens import *
 from PIL import Image, ImageFilter, ImageOps, ImageEnhance, ImageChops, ImageDraw
 from random import choice
 from matrizes_cores import *
@@ -13,10 +12,10 @@ clock = pygame.time.Clock()
 running = True
 pygame.key.set_repeat(400, 150)
 
-caminho = None
+caminho = None 
 musica_tocando = True
 
-cores_botoes = "#6503A6"
+cores_botoes = "#6503A6"  
 cor_fundo_atual = "#AC01F4"
 cor_borda_linhas_atual = "#000000"
 
@@ -33,6 +32,7 @@ lista_imagens_pil = []
 
 imagem_vermelho = False
 imagem_branca = False
+imagem_roxa = False
 
 pygame.display.set_caption("Te Amo Natalia")
 fonte = pygame.font.SysFont('consolas', 20)
@@ -110,7 +110,7 @@ texto_botao_abrir_pasta = botao_abrir_pasta = pygame.Rect(DISTANCIA_LATERAL_QUAD
 botao_fundo_branco = botao_fundo_roxo = botao_fundo_cinza  = botao_fundo_azul = botao_fundo_vermelho = botao_fundo_rosa = pygame.Rect(0, 0 - 8, 40, 40)
 botao_botoes_branco = botao_botoes_roxo = botao_botoes_cinza = botao_botoes_vermelho = botao_botoes_azul = botao_botoes_rosa = pygame.Rect(0, 0 - 8, 40, 40)
 botao_borda_azul = botao_borda_branco = botao_borda_cinza = botao_borda_rosa = botao_borda_roxo = botao_borda_vermelho = botao_borda_preto = pygame.Rect(0, 0 - 8, 40, 40)
-botao_branco = botao_vermelho = pygame.Rect(1 + 60, 0, 40, 40)
+botao_branco = botao_vermelho = botao_roxo =  pygame.Rect(1 + 60, 0, 40, 40)
 
 
 def transformar_tamanho_imagem(caminho):
@@ -637,12 +637,6 @@ def aplicar_efeitos(imagem_pillow):
         img_temp = img_temp.convert("RGB")
         img_temp = ImageOps.invert(img_temp)
        
-        # Matriz que destaca o Azul/Ciano e remove o Vermelho
-        matriz_raiox = (
-            0.0, 0.0, 0.0, 0,    # Remove totalmente o Vermelho (R)
-            0.0, 0.5, 0.3, 0,    # Deixa o Verde (G) mais suave
-            0.0, 0.4, 1.0, 0     # Dá foco total no Azul (B)
-        )
         img_temp = img_temp.convert("RGB", matriz_raiox)
 
 
@@ -654,6 +648,8 @@ def aplicar_efeitos(imagem_pillow):
         img_temp = img_temp.convert("RGB", imagem_vermelho)
     if imagem_branca is not False:
         img_temp = img_temp.convert("RGB", imagem_branca)
+    if imagem_roxa is not False:
+        img_temp = img_temp.convert("RGB", imagem_roxa)
 
 
     modo = img_temp.mode
@@ -719,7 +715,7 @@ def funcao_mostrar_pagina_ler():
     screen.blit(texto_botao_voltar, coordenadas_texto_voltar)
 
 def funcao_mostrar_botoes_cores():
-    global botao_branco, botao_vermelho
+    global botao_branco, botao_vermelho, botao_roxo
     fonte_atual = calculo_tamanho_fonte_atual(20)
     texto_botao_voltar = fonte_atual.render("Voltar", True, "black")
 
@@ -729,10 +725,13 @@ def funcao_mostrar_botoes_cores():
     screen.blit(texto_botao_voltar, coordenadas_texto_botao_voltar)
 
     DISTANCIA_PAREDE_BOTOES_COR =  botao_abrir_nova_pasta.x
-    y_distancia_cor = botao_abrir_pasta.y
+    y_distancia_cor = quadrado.y
     #Fundo
     botao_branco = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR, y_distancia_cor, 40, 40)
     botao_vermelho = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 60, y_distancia_cor, 40, 40)
+    botao_roxo = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 120, y_distancia_cor, 40, 40)
+    botao_amarelo = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 180, y_distancia_cor, 40, 40)
+
     # "#AC01F4": botao_fundo_roxo,
     # "#6B7074": botao_fundo_cinza,
     # "#1F8BE4": botao_fundo_azul,
@@ -741,6 +740,8 @@ def funcao_mostrar_botoes_cores():
     dicionario_cor = {
         "#FFFFFF": botao_branco,
         "#FD0E0E": botao_vermelho,
+        "#6503A6": botao_roxo,
+        "#ffee00": botao_amarelo
     }
 
     for botao in dicionario_cor:
@@ -945,6 +946,11 @@ while running:
                         imagem_branca = matriz_branca
                     else:
                         imagem_branca = False
+                if botao_roxo.collidepoint(mouse_pos):
+                    if imagem_roxa is False:
+                        imagem_roxa = matriz_roxa
+                    else:
+                        imagem_roxa = False
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
