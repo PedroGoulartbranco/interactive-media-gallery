@@ -44,4 +44,16 @@ matriz_raiox = (
             0.0, 0.0, 0.0, 0,    # Remove totalmente o Vermelho (R)
             0.0, 0.5, 0.3, 0,    # Deixa o Verde (G) mais suave
             0.0, 0.4, 1.0, 0     # Dá foco total no Azul (B)
-        )
+)
+
+matriz_rosa = (
+    0.5, 0.0, 0.0, 127,  # Mantém 50% do R e soma 127 de luz vermelha
+    0.0, 0.5, 0.0, 0,    # Mantém 50% do G (sem alterar o fundo)
+    0.0, 0.0, 0.5, 127   # Mantém 50% do B e soma 127 de luz azul
+)
+
+matriz_preta = (
+    0.4, 0.0, 0.0, 0,  # Reduz o Vermelho original para apenas 40% da força
+    0.0, 0.4, 0.0, 0,  # Reduz o Verde original para apenas 40% da força
+    0.0, 0.0, 0.4, 0   # Reduz o Azul original para apenas 40% da força
+)
