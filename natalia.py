@@ -744,10 +744,6 @@ def funcao_mostrar_botoes_cores():
     botao_verde  = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR, y_distancia_cor + botao_branco.height + 10, 40, 40)
     botao_rosa = pygame.Rect(botao_vermelho.x, y_distancia_cor + botao_branco.height + 10, 40, 40)
     botao_preto = pygame.Rect(botao_roxo.x, y_distancia_cor + botao_branco.height + 10, 40, 40)
-    # "#AC01F4": botao_fundo_roxo,
-    # "#6B7074": botao_fundo_cinza,
-    # "#1F8BE4": botao_fundo_azul,
-    # "#F4C2C2": botao_fundo_rosa
     
     dicionario_cor = {
         "#FFFFFF": botao_branco,
@@ -1047,6 +1043,7 @@ while running:
                     musica_tocando = False
                 else:
                     pygame.mixer.music.unpause()
+                    musica_tocando = True
                 
 
     screen.fill(cor_fundo_atual)
