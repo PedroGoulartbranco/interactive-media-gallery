@@ -57,3 +57,15 @@ matriz_preta = (
     0.0, 0.4, 0.0, 0,  # Reduz o Verde original para apenas 40% da força
     0.0, 0.0, 0.4, 0   # Reduz o Azul original para apenas 40% da força
 )
+
+matriz_laranja = (
+    1.0, 0.0, 0.0, 0,  # Vermelho no máximo
+    0.0, 0.5, 0.0, 0,  # Verde pela metade
+    0.0, 0.0, 0.0, 0   # Sem Azul
+)
+
+matriz_verde_menta = (
+    0.4, 0.0, 0.0, 0,    # Reduz o Vermelho original
+    0.0, 0.6, 0.0, 120,  # Mantém o Verde e injeta +120 de névoa verde
+    0.0, 0.0, 0.6, 100   # Mantém o Azul e injeta +100 de névoa azul
+)

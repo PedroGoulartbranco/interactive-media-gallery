@@ -38,6 +38,8 @@ imagem_azul = False
 imagem_verde = False
 imagem_rosa = False
 imagem_preto = False
+imagem_laranja = False
+imagem_verde_menta = False
 
 pygame.display.set_caption("Te Amo Natalia")
 fonte = pygame.font.SysFont('consolas', 20)
@@ -115,7 +117,7 @@ texto_botao_abrir_pasta = botao_abrir_pasta = pygame.Rect(DISTANCIA_LATERAL_QUAD
 botao_fundo_branco = botao_fundo_roxo = botao_fundo_cinza  = botao_fundo_azul = botao_fundo_vermelho = botao_fundo_rosa = pygame.Rect(0, 0 - 8, 40, 40)
 botao_botoes_branco = botao_botoes_roxo = botao_botoes_cinza = botao_botoes_vermelho = botao_botoes_azul = botao_botoes_rosa = pygame.Rect(0, 0 - 8, 40, 40)
 botao_borda_azul = botao_borda_branco = botao_borda_cinza = botao_borda_rosa = botao_borda_roxo = botao_borda_vermelho = botao_borda_preto = pygame.Rect(0, 0 - 8, 40, 40)
-botao_branco = botao_vermelho = botao_roxo = botao_amarelo = botao_azul = botao_verde = botao_rosa =  botao_preto = pygame.Rect(1 + 60, 0, 40, 40)
+botao_branco = botao_vermelho = botao_roxo = botao_amarelo = botao_azul = botao_verde = botao_rosa =  botao_preto = botao_laranja = botao_verde_menta =  pygame.Rect(1 + 60, 0, 40, 40)
 
 
 def transformar_tamanho_imagem(caminho):
@@ -659,6 +661,10 @@ def aplicar_efeitos(imagem_pillow):
         img_temp = img_temp.convert("RGB", imagem_rosa)
     if imagem_preto is not False:
         img_temp = img_temp.convert("RGB", imagem_preto)
+    if imagem_laranja is not False:
+        img_temp = img_temp.convert("RGB", imagem_laranja)
+    if imagem_verde_menta is not False:
+        img_temp = img_temp.convert("RGB", imagem_verde_menta)
 
 
     modo = img_temp.mode
@@ -725,6 +731,7 @@ def funcao_mostrar_pagina_ler():
 
 def funcao_mostrar_botoes_cores():
     global botao_branco, botao_vermelho, botao_roxo, botao_amarelo, botao_azul, botao_verde, botao_rosa, botao_preto
+    global botao_laranja, botao_verde_menta
     fonte_atual = calculo_tamanho_fonte_atual(20)
     texto_botao_voltar = fonte_atual.render("Voltar", True, "black")
 
@@ -744,6 +751,8 @@ def funcao_mostrar_botoes_cores():
     botao_verde  = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR, y_distancia_cor + botao_branco.height + 10, 40, 40)
     botao_rosa = pygame.Rect(botao_vermelho.x, y_distancia_cor + botao_branco.height + 10, 40, 40)
     botao_preto = pygame.Rect(botao_roxo.x, y_distancia_cor + botao_branco.height + 10, 40, 40)
+    botao_laranja = pygame.Rect(botao_amarelo.x, y_distancia_cor + botao_branco.height + 10, 40, 40)
+    botao_verde_menta = pygame.Rect(botao_azul.x, y_distancia_cor + botao_branco.height + 10, 40, 40)
     
     dicionario_cor = {
         "#FFFFFF": botao_branco,
@@ -753,7 +762,9 @@ def funcao_mostrar_botoes_cores():
         "#1F8BE4": botao_azul,
         "#3bfc00": botao_verde,
         "#c958d3": botao_rosa,
-        "#000000": botao_preto
+        "#000000": botao_preto,
+        "#f36f03": botao_laranja,
+        "#8CDCC8": botao_verde_menta
     }
 
     for botao in dicionario_cor:
@@ -986,6 +997,16 @@ while running:
                         imagem_preto = matriz_preta
                     else:
                         imagem_preto = False
+                if botao_laranja.collidepoint(mouse_pos):
+                    if imagem_laranja is False:
+                        imagem_laranja = matriz_laranja
+                    else:
+                        imagem_laranja = False
+                if botao_verde_menta.collidepoint(mouse_pos):
+                    if imagem_verde_menta is False:
+                        imagem_verde_menta = matriz_verde_menta
+                    else:
+                        imagem_verde_menta = False
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
