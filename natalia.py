@@ -770,6 +770,31 @@ def funcao_mostrar_botoes_cores():
     for botao in dicionario_cor:
         pygame.draw.rect(screen, botao, dicionario_cor[botao])
 
+    fonte_atual = calculo_tamanho_fonte_atual(17)
+    texto_visao_noturna = fonte_atual.render("Visão Noturna", True, "black")
+    texto_preto_branco = fonte_atual.render("Preto e Branco", True, "black")
+    texto_raio_x = fonte_atual.render("Raio X", True, "black")
+    texto_raio_x = fonte_atual.render("Psicodélico", True, "black")
+    
+    # coordenadas_texto_visao_noturna = texto_visao_noturna.get_rect(center=botao_visao_noturna.center)
+    # coordenadas_texto_preto_branco = texto_visao_noturna.get_rect(center=botao_preto_branco.center)
+    # coordenadas_texto_raio_x = texto_raio_x.get_rect(center=botao_raio_x.center)
+
+    dicionario_texto_botoes = {
+        texto_visao_noturna:  texto_visao_noturna.get_rect(center=botao_visao_noturna.center),
+        texto_preto_branco: texto_visao_noturna.get_rect(center=botao_preto_branco.center),
+        texto_raio_x: texto_raio_x.get_rect(center=botao_raio_x.center)
+    }
+
+    for botao in lista_botoes_especiais_editar:
+        pygame.draw.rect(screen, cores_botoes, botao)
+
+    for texto in dicionario_texto_botoes:
+        screen.blit(texto, dicionario_texto_botoes[texto])
+
+    # screen.blit(texto_visao_noturna, coordenadas_texto_visao_noturna)
+    # screen.blit(texto_preto_branco, coordenadas_texto_preto_branco)
+
 
 while running:
     for event in pygame.event.get():
