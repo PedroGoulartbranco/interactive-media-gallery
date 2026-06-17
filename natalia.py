@@ -40,6 +40,10 @@ imagem_rosa = False
 imagem_preto = False
 imagem_laranja = False
 imagem_verde_menta = False
+imagem_preto_branco = False
+imagem_psicodelico = False
+imagem_polaroid = False
+imagem_raioX = False
 
 pygame.display.set_caption("Te Amo Natalia")
 fonte = pygame.font.SysFont('consolas', 20)
@@ -639,10 +643,8 @@ def aplicar_efeitos(imagem_pillow):
         img_temp = img_temp.filter(ImageFilter.GaussianBlur(radius=5))
 
     if imagem_raioX:
-        # Primeiro, garante que está em RGB e inverte as cores (negativo)
         img_temp = img_temp.convert("RGB")
         img_temp = ImageOps.invert(img_temp)
-       
         img_temp = img_temp.convert("RGB", matriz_raiox)
 
     if imagem_vermelho is not False:
@@ -665,6 +667,12 @@ def aplicar_efeitos(imagem_pillow):
         img_temp = img_temp.convert("RGB", imagem_laranja)
     if imagem_verde_menta is not False:
         img_temp = img_temp.convert("RGB", imagem_verde_menta)
+    if imagem_preto_branco is not False:
+        img_temp = img_temp.convert("RGB", imagem_preto_branco)
+    if imagem_psicodelico is not False:
+        img_temp = img_temp.convert("RGB", imagem_psicodelico)
+    if imagem_polaroid is not False:
+        img_temp = img_temp.convert("RGB", imagem_polaroid)
 
 
     modo = img_temp.mode
@@ -775,15 +783,15 @@ def funcao_mostrar_botoes_cores():
     fonte_atual = calculo_tamanho_fonte_atual(17)
     fonte_segunda = calculo_tamanho_fonte_atual(20)
 
-    texto_visao_noturna = fonte_atual.render("Visão Noturna", True, "black")
+    texto_polaroid = fonte_atual.render("Polaroid", True, "black")
     texto_preto_branco = fonte_atual.render("Preto e Branco", True, "black")
     texto_raio_x = fonte_atual.render("Raio X", True, "black")
     texto_psicodelico = fonte_atual.render("Psicodélico", True, "black")
     texto_resetar_cor = fonte_segunda.render("Resetar Cores", True, "black")
 
     dicionario_texto_botoes = {
-        texto_visao_noturna:  texto_visao_noturna.get_rect(center=botao_visao_noturna.center),
-        texto_preto_branco: texto_visao_noturna.get_rect(center=botao_preto_branco.center),
+        texto_polaroid:  texto_polaroid.get_rect(center=botao_polaroid.center),
+        texto_preto_branco: texto_preto_branco.get_rect(center=botao_preto_branco.center),
         texto_raio_x: texto_raio_x.get_rect(center=botao_raio_x.center),
         texto_psicodelico: texto_psicodelico.get_rect(center=botao_psicodelico.center),
         texto_resetar_cor: texto_resetar_cor.get_rect(center=botao_resetar_cores.center)
@@ -1035,6 +1043,26 @@ while running:
                         imagem_verde_menta = matriz_verde_menta
                     else:
                         imagem_verde_menta = False
+                if botao_preto_branco.collidepoint(mouse_pos):
+                    if imagem_preto_branco is False:
+                        imagem_preto_branco = matriz_preto_e_branco
+                    else:
+                        imagem_preto_branco = False
+                if botao_psicodelico.collidepoint(mouse_pos):
+                    if imagem_psicodelico is False:
+                        imagem_psicodelico = matriz_psicodelica
+                    else:
+                        imagem_psicodelico = False
+                if botao_polaroid.collidepoint(mouse_pos):
+                    if imagem_polaroid is False:
+                        imagem_polaroid = matriz_polaroid
+                    else:
+                        imagem_polaroid = False
+                if botao_raio_x.collidepoint(mouse_pos):
+                    if imagem_raioX:
+                        imagem_raioX = False
+                    else:
+                        imagem_raioX = True
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:

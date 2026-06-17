@@ -69,3 +69,21 @@ matriz_verde_menta = (
     0.0, 0.6, 0.0, 120,  # Mantém o Verde e injeta +120 de névoa verde
     0.0, 0.0, 0.6, 100   # Mantém o Azul e injeta +100 de névoa azul
 )
+
+matriz_preto_e_branco = (
+    0.35, 0.65, 0.15, -30,  # Aumenta os fatores e puxa o offset para o negativo
+    0.35, 0.65, 0.15, -30,  # (Isso "esmaga" as sombras, deixando-as bem pretas)
+    0.35, 0.65, 0.15, -30
+)
+
+matriz_psicodelica = (
+    1.2, 0.0, 0.3, 40,  # Força o Vermelho e injeta luz rosa
+    0.0, 0.9, 0.0, 0,   # Segura um pouco o Verde
+    0.3, 0.0, 1.4, 20   # Força o Azul e cria os tons cianos
+)
+
+matriz_polaroid = (
+    1.3, 0.0, 0.0, 20,   # Dá um ganho no Vermelho e aquece a imagem
+    0.0, 1.1, 0.0, 15,   # Ajusta o Verde suavemente
+    -0.1, 0.0, 0.8, -10  # Reduz o Azul nas sombras para criar o tom amarelado
+)
