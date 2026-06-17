@@ -683,12 +683,31 @@ def aplicar_efeitos(imagem_pillow):
 
 def resetar_imagem():
     global imagem_raioX, imagem_desenha, imagem_espelhada, posicao_giro, imagem_desfoque, imagem_vinheta
-    global imagem_vermelho, imagem_branca
 
 
     imagem_vinheta = imagem_raioX = imagem_desenha = imagem_espelhada =imagem_desfoque = False
     posicao_giro = 0
-    imagem_branca = imagem_vermelho = False
+    resetar_cores_efeitos()
+
+def resetar_cores_efeitos():
+    global imagem_vermelho, imagem_branca, imagem_amarela, imagem_azul, imagem_roxa, imagem_verde
+    global imagem_rosa, imagem_preto, imagem_laranja, imagem_verde_menta, imagem_preto_branco
+    global imagem_psicodelico, imagem_polaroid, imagem_raioX
+
+    imagem_vermelho = False
+    imagem_branca = False
+    imagem_roxa = False
+    imagem_amarela = False
+    imagem_azul = False
+    imagem_verde = False
+    imagem_rosa = False
+    imagem_preto = False
+    imagem_laranja = False
+    imagem_verde_menta = False
+    imagem_preto_branco = False
+    imagem_psicodelico = False
+    imagem_polaroid = False
+    imagem_raioX = False
 
 def aleatorizar_efeitos():
     global imagem_raioX, imagem_desenha, imagem_espelhada, posicao_giro, imagem_desfoque, imagem_vinheta
@@ -1063,6 +1082,8 @@ while running:
                         imagem_raioX = False
                     else:
                         imagem_raioX = True
+                if botao_resetar_cores.collidepoint(mouse_pos):
+                    resetar_cores_efeitos()
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
