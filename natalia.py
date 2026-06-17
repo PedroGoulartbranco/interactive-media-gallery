@@ -742,17 +742,19 @@ def funcao_mostrar_botoes_cores():
 
     DISTANCIA_PAREDE_BOTOES_COR =  quadrado.width + 70
     y_distancia_cor = quadrado.y
+
+    largura_quadrado_cores = 40
     #Fundo
-    botao_branco = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR, y_distancia_cor, 40, 40)
-    botao_vermelho = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 60, y_distancia_cor, 40, 40)
-    botao_roxo = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 120, y_distancia_cor, 40, 40)
-    botao_amarelo = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 180, y_distancia_cor, 40, 40)
-    botao_azul = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 240, y_distancia_cor, 40, 40)
-    botao_verde  = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR, y_distancia_cor + botao_branco.height + 10, 40, 40)
-    botao_rosa = pygame.Rect(botao_vermelho.x, y_distancia_cor + botao_branco.height + 10, 40, 40)
-    botao_preto = pygame.Rect(botao_roxo.x, y_distancia_cor + botao_branco.height + 10, 40, 40)
-    botao_laranja = pygame.Rect(botao_amarelo.x, y_distancia_cor + botao_branco.height + 10, 40, 40)
-    botao_verde_menta = pygame.Rect(botao_azul.x, y_distancia_cor + botao_branco.height + 10, 40, 40)
+    botao_branco = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR, y_distancia_cor, largura_quadrado_cores, 40)
+    botao_vermelho = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 70, y_distancia_cor, largura_quadrado_cores, 40)
+    botao_roxo = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 140, y_distancia_cor, largura_quadrado_cores, 40)
+    botao_amarelo = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 210, y_distancia_cor, largura_quadrado_cores, 40)
+    botao_azul = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 280, y_distancia_cor, largura_quadrado_cores, 40)
+    botao_verde  = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR, y_distancia_cor + botao_branco.height + 10, largura_quadrado_cores, 40)
+    botao_rosa = pygame.Rect(botao_vermelho.x, y_distancia_cor + botao_branco.height + 10, largura_quadrado_cores, 40)
+    botao_preto = pygame.Rect(botao_roxo.x, y_distancia_cor + botao_branco.height + 10, largura_quadrado_cores, 40)
+    botao_laranja = pygame.Rect(botao_amarelo.x, y_distancia_cor + botao_branco.height + 10, largura_quadrado_cores, 40)
+    botao_verde_menta = pygame.Rect(botao_azul.x, y_distancia_cor + botao_branco.height + 10, largura_quadrado_cores, 40)
     
     dicionario_cor = {
         "#FFFFFF": botao_branco,
@@ -771,19 +773,20 @@ def funcao_mostrar_botoes_cores():
         pygame.draw.rect(screen, botao, dicionario_cor[botao])
 
     fonte_atual = calculo_tamanho_fonte_atual(17)
+    fonte_segunda = calculo_tamanho_fonte_atual(20)
+
     texto_visao_noturna = fonte_atual.render("Visão Noturna", True, "black")
     texto_preto_branco = fonte_atual.render("Preto e Branco", True, "black")
     texto_raio_x = fonte_atual.render("Raio X", True, "black")
-    texto_raio_x = fonte_atual.render("Psicodélico", True, "black")
-    
-    # coordenadas_texto_visao_noturna = texto_visao_noturna.get_rect(center=botao_visao_noturna.center)
-    # coordenadas_texto_preto_branco = texto_visao_noturna.get_rect(center=botao_preto_branco.center)
-    # coordenadas_texto_raio_x = texto_raio_x.get_rect(center=botao_raio_x.center)
+    texto_psicodelico = fonte_atual.render("Psicodélico", True, "black")
+    texto_resetar_cor = fonte_segunda.render("Resetar Cores", True, "black")
 
     dicionario_texto_botoes = {
         texto_visao_noturna:  texto_visao_noturna.get_rect(center=botao_visao_noturna.center),
         texto_preto_branco: texto_visao_noturna.get_rect(center=botao_preto_branco.center),
-        texto_raio_x: texto_raio_x.get_rect(center=botao_raio_x.center)
+        texto_raio_x: texto_raio_x.get_rect(center=botao_raio_x.center),
+        texto_psicodelico: texto_psicodelico.get_rect(center=botao_psicodelico.center),
+        texto_resetar_cor: texto_resetar_cor.get_rect(center=botao_resetar_cores.center)
     }
 
     for botao in lista_botoes_especiais_editar:
