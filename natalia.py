@@ -199,11 +199,12 @@ def atualizar_tamanho(largura, altura):
     nova_largura = 300 * escala_x
     nova_altura = 80 * escala_y
 
-    nova_largura_botoes_menores = botao_girar_foto.width * escala_x
-    nova_altura_botoes_menores = botao_girar_foto.height * escala_y
+    nova_largura_botoes_menores = 150 * escala_x
+    nova_altura_botoes_menores = 80 * escala_y
 
     x_pos = (600 * escala_x) + (70 * escala_x)
     x_pos_botoes_menores = (300 * escala_x) + (70 * escala_x)
+    x_pos_botoes_medios = (150 * escala_x) + (80 * escala_x)
 
     botao_configuracoes.width = nova_largura
     botao_configuracoes.height = nova_altura
@@ -295,6 +296,36 @@ def atualizar_tamanho(largura, altura):
     botao_voltar_editar.height = nova_altura
     botao_voltar_editar.x = x_pos
     botao_voltar_editar.y = botao_aleatorizar_foto.y + 100 * escala_y
+
+    botao_polaroid.width = (LARGURA_BOTOES * 0.5) * escala_x
+    botao_polaroid.height = ALTURA_BOTOES_EDITAR * escala_y
+    botao_polaroid.x = DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES * escala_x
+    botao_polaroid.y = 150 * escala_y
+
+    botao_preto_branco.width = (LARGURA_BOTOES * 0.5) * escala_x
+    botao_preto_branco.height = (ALTURA_BOTOES_EDITAR) * escala_y
+    botao_preto_branco.x = (DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES * escala_x + botao_polaroid.width + (20 * escala_x))
+    botao_preto_branco.y = botao_polaroid.y
+
+    botao_raio_x.width = (LARGURA_BOTOES * 0.5) * escala_x
+    botao_raio_x.height = ALTURA_BOTOES_EDITAR * escala_y
+    botao_raio_x.x = DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES * escala_x
+    botao_raio_x.y =  botao_polaroid.y + botao_polaroid.height + (30 * escala_y)
+
+    botao_psicodelico.width = (LARGURA_BOTOES * 0.5) * escala_x
+    botao_psicodelico.height = (ALTURA_BOTOES_EDITAR) * escala_y
+    botao_psicodelico.x = (DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES * escala_x + botao_raio_x.width + (20 * escala_x))
+    botao_psicodelico.y = botao_raio_x.y
+
+    botao_resetar_cores.width = (botao_vinheta_foto.width + 20 + botao_espelhar_foto.width)
+    botao_resetar_cores.height = nova_altura
+    botao_resetar_cores.x = x_pos
+    botao_resetar_cores.y = (botao_raio_x.y + botao_raio_x.height + (20 * escala_y))
+
+    botao_resetar_cores.width = (botao_vinheta_foto.width + 20 + botao_espelhar_foto.width)
+    botao_resetar_cores.height = nova_altura
+    botao_resetar_cores.x = x_pos
+    botao_resetar_cores.y = (botao_resetar_cores.y + botao_resetar_cores.height + (20 * escala_y))
 
 def atualizar_tamanho_quadrado(largura, altura):
     global coordenada_desenhar_imagens, DISTANCIA_LATERAL_QUADRADO
@@ -762,11 +793,6 @@ def funcao_mostrar_botoes_cores():
     fonte_atual = calculo_tamanho_fonte_atual(20)
     texto_botao_voltar = fonte_atual.render("Voltar", True, "black")
 
-    coordenadas_texto_botao_voltar = texto_botao_voltar.get_rect(center=botao_voltar_editar.center)
-
-    pygame.draw.rect(screen, cores_botoes, botao_voltar_editar)
-    screen.blit(texto_botao_voltar, coordenadas_texto_botao_voltar)
-
     DISTANCIA_PAREDE_BOTOES_COR =  quadrado.width + 70
     y_distancia_cor = quadrado.y
 
@@ -813,7 +839,8 @@ def funcao_mostrar_botoes_cores():
         texto_preto_branco: texto_preto_branco.get_rect(center=botao_preto_branco.center),
         texto_raio_x: texto_raio_x.get_rect(center=botao_raio_x.center),
         texto_psicodelico: texto_psicodelico.get_rect(center=botao_psicodelico.center),
-        texto_resetar_cor: texto_resetar_cor.get_rect(center=botao_resetar_cores.center)
+        texto_resetar_cor: texto_resetar_cor.get_rect(center=botao_resetar_cores.center),
+        texto_botao_voltar: texto_botao_voltar.get_rect(center=botao_voltar_cores.center)
     }
 
     for botao in lista_botoes_especiais_editar:
@@ -1008,7 +1035,7 @@ while running:
                     pagina_inicial = True
                     mostrar_botoes_laterais = True
             if pagina_de_cores:
-                if botao_voltar_editar.collidepoint(mouse_pos):
+                if botao_voltar_cores.collidepoint(mouse_pos):
                     pagina_editar_aberta = True
                     pagina_de_cores = False
                 if botao_vermelho.collidepoint(mouse_pos):

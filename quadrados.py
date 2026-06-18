@@ -47,5 +47,8 @@ botao_raio_x = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, botao_
 botao_psicodelico = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES + botao_vinheta_foto.width + 20, botao_desfoque_foto.y + 120, LARGURA_BOTOES * 0.5, ALTURA_BOTOES_EDITAR)
 
 botao_resetar_cores = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 260 + ALTURA_BOTOES, botao_vinheta_foto.width + 20 + botao_espelhar_foto.width, ALTURA_BOTOES)
+botao_voltar_cores = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, botao_aleatorizar_foto.y + 100, botao_vinheta_foto.width + 20 + botao_espelhar_foto.width, ALTURA_BOTOES_EDITAR)
 
-lista_botoes_especiais_editar = [botao_polaroid, botao_preto_branco, botao_raio_x, botao_psicodelico, botao_resetar_cores]
+
+
+lista_botoes_especiais_editar = [botao_polaroid, botao_preto_branco, botao_raio_x, botao_psicodelico, botao_resetar_cores, botao_voltar_cores]
