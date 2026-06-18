@@ -317,15 +317,15 @@ def atualizar_tamanho(largura, altura):
     botao_psicodelico.x = (DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES * escala_x + botao_raio_x.width + (20 * escala_x))
     botao_psicodelico.y = botao_raio_x.y
 
-    botao_resetar_cores.width = (botao_vinheta_foto.width + 20 + botao_espelhar_foto.width)
+    botao_resetar_cores.width = (botao_vinheta_foto.width + (20 * escala_x) + botao_espelhar_foto.width)
     botao_resetar_cores.height = nova_altura
     botao_resetar_cores.x = x_pos
     botao_resetar_cores.y = (botao_raio_x.y + botao_raio_x.height + (20 * escala_y))
 
-    botao_resetar_cores.width = (botao_vinheta_foto.width + 20 + botao_espelhar_foto.width)
-    botao_resetar_cores.height = nova_altura
-    botao_resetar_cores.x = x_pos
-    botao_resetar_cores.y = (botao_resetar_cores.y + botao_resetar_cores.height + (20 * escala_y))
+    botao_voltar_cores.width = (botao_vinheta_foto.width + (20 * escala_x) + botao_espelhar_foto.width)
+    botao_voltar_cores.height = nova_altura
+    botao_voltar_cores.x = x_pos
+    botao_voltar_cores.y = (botao_resetar_cores.y + botao_resetar_cores.height + (20 * escala_y))
 
 def atualizar_tamanho_quadrado(largura, altura):
     global coordenada_desenhar_imagens, DISTANCIA_LATERAL_QUADRADO
