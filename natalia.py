@@ -202,7 +202,7 @@ def atualizar_tamanho(largura, altura):
     nova_largura_botoes_menores = 150 * escala_x
     nova_altura_botoes_menores = 80 * escala_y
 
-    x_pos = (600 * escala_x) + (70 * escala_x)
+    x_pos = DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES * escala_x
     x_pos_botoes_menores = (300 * escala_x) + (70 * escala_x)
     x_pos_botoes_medios = (150 * escala_x) + (80 * escala_x)
 
@@ -214,17 +214,17 @@ def atualizar_tamanho(largura, altura):
     botao_editar_imagens.width = nova_largura
     botao_editar_imagens.height = nova_altura
     botao_editar_imagens.x = x_pos
-    botao_editar_imagens.y = (60 + 80) * escala_y
+    botao_editar_imagens.y = botao_configuracoes.y + botao_configuracoes.height + (30 * escala_y)
 
     botao_ler.width = nova_largura
     botao_ler.height = nova_altura
     botao_ler.x = x_pos
-    botao_ler.y = (160 + 80) * escala_y
+    botao_ler.y = botao_editar_imagens.y + botao_editar_imagens.height + (30 * escala_y)
 
     botao_supresa.width = nova_largura
     botao_supresa.height = nova_altura
     botao_supresa.x = x_pos
-    botao_supresa.y = (260 + 80) * escala_y
+    botao_supresa.y = botao_ler.y + botao_ler.height + (30 * escala_y)
 
     #Botoes de configurações
     botao_abrir_nova_pasta.width = nova_largura
@@ -343,8 +343,6 @@ def atualizar_tamanho_quadrado(largura, altura):
 
     quadrado_cinza.x = DISTANCIA_LATERAL_QUADRADO * escala_x
     quadrado_cinza.y = 30 * escala_y
-
-    DISTANCIA_LATERAL_QUADRADO = DISTANCIA_LATERAL_QUADRADO * escala_x
 
     coordenada_desenhar_imagens = (quadrado_cinza.x, quadrado_cinza.y)
 
@@ -859,8 +857,8 @@ while running:
             running = False
         if event.type == pygame.VIDEORESIZE:
             screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
-            atualizar_tamanho(event.w, event.h)
             atualizar_tamanho_quadrado(event.w, event.h)
+            atualizar_tamanho(event.w, event.h)
             atualizar_botoes_de_imagem(event.w, event.h)
             largura_atual = event.w
             altura_atual = event.h
