@@ -326,7 +326,6 @@ def atualizar_tamanho(largura, altura):
     botao_voltar_cores.height = nova_altura
     botao_voltar_cores.x = x_pos
     botao_voltar_cores.y = (botao_resetar_cores.y + botao_resetar_cores.height + (20 * escala_y))
-
 def atualizar_tamanho_quadrado(largura, altura):
     global coordenada_desenhar_imagens, DISTANCIA_LATERAL_QUADRADO
     escala_x = largura / LARGURA
@@ -369,7 +368,6 @@ def atualizar_botoes_de_imagem(largura, altura):
     rect_ponto_interrogacao.x = (DISTANCIA_LATERAL_QUADRADO + 250) * escala_x
     rect_ponto_interrogacao.y = 490 * escala_y
     posicao_ponto_interrogacao = (rect_ponto_interrogacao.x, rect_ponto_interrogacao.y)
-
 
 def funcao_pagina_personalisar():
     global botao_fundo_azul, botao_fundo_branco, botao_fundo_vermelho, botao_fundo_cinza, botao_fundo_roxo, botao_fundo_rosa
@@ -627,8 +625,6 @@ def criar_vinheta():
             fill=cor
         )
 
-    # vinheta_mask = ImageOps.invert(vinheta_mask)
-
     vinheta_mask = vinheta_mask.convert("RGB")
 
 criar_vinheta()
@@ -785,27 +781,43 @@ def funcao_mostrar_pagina_ler():
     pygame.draw.rect(screen, cores_botoes, botao_voltar)
     screen.blit(texto_botao_voltar, coordenadas_texto_voltar)
 
+
+LARGURA_COR_ORIGINAL = 40 
+ALTURA_COR_ORIGINAL = 40
 def funcao_mostrar_botoes_cores():
+    escala_x = largura_atual / LARGURA
+    escala_y = altura_atual / ALTURA
+    distancia_base = (quadrado.width + (70 * escala_x))
+
     global botao_branco, botao_vermelho, botao_roxo, botao_amarelo, botao_azul, botao_verde, botao_rosa, botao_preto
-    global botao_laranja, botao_verde_menta
+    global botao_laranja, botao_verde_menta, DISTANCIA_PAREDE_BOTOES_COR
     fonte_atual = calculo_tamanho_fonte_atual(20)
     texto_botao_voltar = fonte_atual.render("Voltar", True, "black")
 
     DISTANCIA_PAREDE_BOTOES_COR =  quadrado.width + 70
-    y_distancia_cor = quadrado.y
 
-    largura_quadrado_cores = 40
+    distancia_base = DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES * escala_x
+    y_distancia_cor = 30 * escala_y
+
+    largura_quadrado_cores =LARGURA_COR_ORIGINAL * escala_x
+    altura_quadrado_cores = ALTURA_COR_ORIGINAL * escala_y
+
+    dis_70 = 70 * escala_x
+    dis_140 = 140 * escala_x
+    dis_210 = 210 * escala_x
+    dis_280 = 280 * escala_x
+
     #Fundo
-    botao_branco = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR, y_distancia_cor, largura_quadrado_cores, 40)
-    botao_vermelho = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 70, y_distancia_cor, largura_quadrado_cores, 40)
-    botao_roxo = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 140, y_distancia_cor, largura_quadrado_cores, 40)
-    botao_amarelo = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 210, y_distancia_cor, largura_quadrado_cores, 40)
-    botao_azul = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR + 280, y_distancia_cor, largura_quadrado_cores, 40)
-    botao_verde  = pygame.Rect(DISTANCIA_PAREDE_BOTOES_COR, y_distancia_cor + botao_branco.height + 10, largura_quadrado_cores, 40)
-    botao_rosa = pygame.Rect(botao_vermelho.x, y_distancia_cor + botao_branco.height + 10, largura_quadrado_cores, 40)
-    botao_preto = pygame.Rect(botao_roxo.x, y_distancia_cor + botao_branco.height + 10, largura_quadrado_cores, 40)
-    botao_laranja = pygame.Rect(botao_amarelo.x, y_distancia_cor + botao_branco.height + 10, largura_quadrado_cores, 40)
-    botao_verde_menta = pygame.Rect(botao_azul.x, y_distancia_cor + botao_branco.height + 10, largura_quadrado_cores, 40)
+    botao_branco = pygame.Rect(distancia_base, y_distancia_cor, largura_quadrado_cores, altura_quadrado_cores)
+    botao_vermelho = pygame.Rect(distancia_base + dis_70, y_distancia_cor, largura_quadrado_cores, altura_quadrado_cores)
+    botao_roxo = pygame.Rect(distancia_base + dis_140, y_distancia_cor, largura_quadrado_cores, altura_quadrado_cores)
+    botao_amarelo = pygame.Rect(distancia_base + dis_210, y_distancia_cor, largura_quadrado_cores, altura_quadrado_cores)
+    botao_azul = pygame.Rect(distancia_base + dis_280, y_distancia_cor, largura_quadrado_cores, altura_quadrado_cores)
+    botao_verde  = pygame.Rect(distancia_base, y_distancia_cor + botao_branco.height + 10, largura_quadrado_cores, altura_quadrado_cores)
+    botao_rosa = pygame.Rect(distancia_base + dis_70, y_distancia_cor + botao_branco.height + 10, largura_quadrado_cores, altura_quadrado_cores)
+    botao_preto = pygame.Rect(distancia_base + dis_140, y_distancia_cor + botao_branco.height + 10, largura_quadrado_cores, altura_quadrado_cores)
+    botao_laranja = pygame.Rect(distancia_base + dis_210, y_distancia_cor + botao_branco.height + 10, largura_quadrado_cores, altura_quadrado_cores)
+    botao_verde_menta = pygame.Rect(distancia_base + dis_280, y_distancia_cor + botao_branco.height + 10, largura_quadrado_cores, altura_quadrado_cores)
     
     dicionario_cor = {
         "#FFFFFF": botao_branco,
