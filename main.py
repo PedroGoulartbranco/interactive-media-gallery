@@ -165,25 +165,27 @@ def calculo_tamanho_fonte_atual(tamanho_base):
     return pygame.font.SysFont('consolas', novo_tamanho)
 
 def funcao_mostrar_botoes_laterais():
-    texto_botao_configuracoes = fonte.render("Configurações", True, "black")
-    texto_botao_editar = fonte.render("Editar", True, "black")
-    texto_botao_ler = fonte.render("Leitura", True, "black")
-    texto_botao_supresa = fonte.render("Mais", True, "black")
+    fonte_atual = calculo_tamanho_fonte_atual(20)
+    texto_botao_configuracoes = fonte_atual.render("Configurações", True, "black")
+    texto_botao_editar = fonte_atual.render("Editar", True, "black")
+    texto_botao_ler = fonte_atual.render("Leitura", True, "black")
+    texto_botao_supresa = fonte_atual.render("Mais", True, "black")
+    texto_jogo = fonte_atual.render("Jogar", True, "black")
 
-    coordenadas_texto_configuracoes = texto_botao_configuracoes.get_rect(center=botao_configuracoes.center)
-    coordenadas_texto_editar = texto_botao_editar.get_rect(center=botao_editar_imagens.center)
-    coordenadas_texto_ler = texto_botao_ler.get_rect(center=botao_ler.center)
-    coordenadas_texto_supresa = texto_botao_supresa.get_rect(center=botao_supresa.center)
+    dicionario_coordenadas = {
+        texto_botao_configuracoes:  texto_botao_configuracoes.get_rect(center=botao_configuracoes.center),
+        texto_botao_editar: texto_botao_editar.get_rect(center=botao_editar_imagens.center),
+        texto_botao_ler: texto_botao_ler.get_rect(center=botao_ler.center),
+        texto_botao_supresa: texto_botao_supresa.get_rect(center=botao_supresa.center),
+        texto_jogo: texto_jogo.get_rect(center=botao_jogar.center)
+    }
 
-    pygame.draw.rect(screen, cores_botoes, botao_configuracoes)
-    pygame.draw.rect(screen,  cores_botoes, botao_editar_imagens)
-    pygame.draw.rect(screen,  cores_botoes, botao_ler)
-    pygame.draw.rect(screen,  cores_botoes, botao_supresa)
+    for botao in lista_botoes_principais:
+        pygame.draw.rect(screen, cores_botoes, botao)
 
-    screen.blit(texto_botao_configuracoes, coordenadas_texto_configuracoes)
-    screen.blit(texto_botao_editar, coordenadas_texto_editar)
-    screen.blit(texto_botao_ler, coordenadas_texto_ler)
-    screen.blit(texto_botao_supresa, coordenadas_texto_supresa)
+    for texto in dicionario_coordenadas:
+            screen.blit(texto, dicionario_coordenadas[texto])
+
 
 #Pagina de configurações
 def funcao_mostrar_pagina_configuracoes():
@@ -950,8 +952,9 @@ while running:
                     pagina_inicial = False
                     pagina_ler_aberta = True
                 if botao_supresa.collidepoint(mouse_pos):
-                    mostrar_botoes_laterais = False
+                    print("aaa")
                     pagina_extra_aberta = True
+                    mostrar_botoes_laterais = False
             #Se a pagina de configurações estiver aberta
             if pagina_configuracoes_aberta:
                 if abriu_primeira_aba_vez is False:
@@ -1157,7 +1160,11 @@ while running:
                 if botao_resetar_cores.collidepoint(mouse_pos):
                     resetar_cores_efeitos()
             if pagina_extra_aberta:
-                if botao_voltar_extra.collidepoint(mouse_pos):
+                if abriu_primeira_aba_vez is False:
+                    abriu_primeira_aba_vez = True
+                else:
+                    abriu_primeira_aba_vez = False
+                if botao_voltar_extra.collidepoint(mouse_pos) and abriu_primeira_aba_vez is False:
                     mostrar_botoes_laterais = True
                     pagina_extra_aberta = False
                 if botao_salvar_caminho_pasta.collidepoint(mouse_pos):
