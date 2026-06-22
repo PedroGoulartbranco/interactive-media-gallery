@@ -3,6 +3,7 @@ import sys
 from random import choice, shuffle
 import tkinter
 from tkinter import filedialog
+import json
 
 lista_musicas = [
     {"nome": "So Easy to Fall in Love","caminho": "sons\olivia_dean___so_easy__to_fall_in_love___lyrics_.mp3"},
@@ -62,3 +63,26 @@ def tocar_musica(indice):
 
 def embaralhar_fotos(lista_fotos):
     return shuffle(lista_fotos)
+
+def salvar_caminho_json(caminho):
+    caminho_json = caminho_recurso("configuracoes.json")
+    dados = {}
+    with open(caminho_json, "r", encoding="utf-8") as arquivo:
+        dados = json.load(arquivo)
+
+    dados["caminho"] = caminho
+
+    with open(caminho_json, "w", encoding="utf-8") as arquivo:
+        json.dump(dados, arquivo, indent=4, ensure_ascii=False)
+
+def limpar_caminho_json():
+    caminho_json = caminho_recurso("configuracoes.json")
+    dados = {}
+
+    with open(caminho_json, "r", encoding="utf-8") as arquivo:
+        dados = json.load(arquivo)
+
+    dados["caminho"] = ""
+
+    with open(caminho_json, "w", encoding="utf-8") as arquivo:
+        json.dump(dados, arquivo, indent=4, ensure_ascii=False)

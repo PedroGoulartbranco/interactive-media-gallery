@@ -1143,6 +1143,11 @@ while running:
                 if botao_voltar_extra.collidepoint(mouse_pos):
                     mostrar_botoes_laterais = True
                     pagina_extra_aberta = False
+                if botao_salvar_caminho_pasta.collidepoint(mouse_pos):
+                    if caminho is not None:
+                        salvar_caminho_json(caminho)
+                if botao_limpar_caminho_pasta.collidepoint(mouse_pos):
+                    limpar_caminho_json()
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
