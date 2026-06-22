@@ -782,8 +782,6 @@ def funcao_mostrar_pagina_ler():
     screen.blit(texto_botao_voltar, coordenadas_texto_voltar)
 
 
-LARGURA_COR_ORIGINAL = 40 
-ALTURA_COR_ORIGINAL = 40
 def funcao_mostrar_botoes_cores():
     escala_x = largura_atual / LARGURA
     escala_y = altura_atual / ALTURA
