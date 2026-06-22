@@ -15,9 +15,11 @@ pygame.key.set_repeat(400, 150)
 caminho = None 
 musica_tocando = True
 
-cores_botoes = "#6503A6"  
-cor_fundo_atual = "#AC01F4"
-cor_borda_linhas_atual = "#000000"
+dados_salvos = pegar_configuracoes_salvas()
+
+# cores_botoes = "#6503A6"  
+# cor_fundo_atual = "#AC01F4"
+# cor_borda_linhas_atual = "#000000"
 
 largura_atual = LARGURA
 altura_atual = ALTURA
@@ -67,6 +69,22 @@ pagina_de_ajuda = False
 pagina_de_cores = False
 pagina_extra_aberta = False
 
+cores_botoes = dados_salvos["cor_botoes"]
+cor_fundo_atual = dados_salvos["cor_fundo"]
+cor_borda_linhas_atual = dados_salvos["cor_borda"]
+caminho = dados_salvos["caminho"]
+
+numero_fotos = lista_fotos = None
+
+if caminho == "":
+    caminho = None
+else:
+    print(caminho)
+    pasta_aberta = True
+    numero_fotos, lista_fotos = listar_fotos(caminho)
+    if numero_fotos == 0:
+        pasta_aberta = False
+
 mudancas_nas_imagens = False
 eh_para_girar = True
 efeito_desenho = False
@@ -85,7 +103,6 @@ texto_botao_voltar = fonte.render("Voltar", True, "black")
 
 quadrado = pygame.Rect(DISTANCIA_LATERAL_QUADRADO, 30, LARGURA_QUADRADO, ALTURA_QUADRADO)
 coordenada_desenhar_imagens = (DISTANCIA_LATERAL_QUADRADO, 30)
-numero_fotos = lista_fotos = None
 indice_foto_atual = 0
 ponto_interrogacao = pygame.image.load(caminho_recurso("imagens/interrogacao.png")).convert_alpha()
 ponto_interrogacao = pygame.transform.scale(ponto_interrogacao, (100, 100))

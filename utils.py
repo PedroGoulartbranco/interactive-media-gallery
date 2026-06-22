@@ -86,3 +86,12 @@ def limpar_caminho_json():
 
     with open(caminho_json, "w", encoding="utf-8") as arquivo:
         json.dump(dados, arquivo, indent=4, ensure_ascii=False)
+
+def pegar_configuracoes_salvas():
+    caminho_json = caminho_recurso("configuracoes.json")
+    dados = {}
+
+    with open(caminho_json, "r", encoding="utf-8") as arquivo:
+        dados = json.load(arquivo)
+
+    return dados
