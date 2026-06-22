@@ -47,7 +47,7 @@ imagem_psicodelico = False
 imagem_polaroid = False
 imagem_raioX = False
 
-pygame.display.set_caption("Te Amo Natalia")
+pygame.display.set_caption("Nossa Galeria")
 fonte = pygame.font.SysFont('consolas', 20)
 
 imagem_coracao = pygame.image.load(caminho_recurso("imagens/coracao_icon.png")).convert_alpha()
@@ -880,13 +880,13 @@ def funcao_mostrar_pagina_mais():
     texto_botao_salvar_caminho = fonte_atual.render("Salvar Pasta", True, "black")
     texto_botao_limpar = fonte_atual.render("Limpar Caminho", True, "black")
     texto_botao_salvar_imagem = fonte_atual.render("Baixar Imagem", True, "black")
-    texto_botao_jogo = fonte_atual.render("Jogar", True, "black")
+    texto_botao_salvar_edicoes = fonte_atual.render("Salvar Edições", True, "black")
     texto_botao_voltar = fonte_atual.render("Voltar", True, "black")
 
     dicionario_texto_botoes = {
         texto_botao_salvar_caminho: texto_botao_salvar_caminho.get_rect(center=botao_salvar_caminho_pasta.center),
         texto_botao_limpar: texto_botao_limpar.get_rect(center=botao_limpar_caminho_pasta.center),
-        texto_botao_jogo: texto_botao_jogo.get_rect(center=botao_jogo.center),
+        texto_botao_salvar_edicoes: texto_botao_salvar_edicoes.get_rect(center=botao_salvar_edicoes.center),
         texto_botao_voltar: texto_botao_voltar.get_rect(center=botao_voltar_extra.center),
         texto_botao_salvar_imagem: texto_botao_salvar_imagem.get_rect(center=botao_baixar_imagem.center)
     }
@@ -1165,6 +1165,8 @@ while running:
                         salvar_caminho_json(caminho)
                 if botao_limpar_caminho_pasta.collidepoint(mouse_pos):
                     limpar_caminho_json()
+                if botao_salvar_edicoes.collidepoint(mouse_pos):
+                    salvar_configuracoes_json(cor_fundo_atual, cores_botoes, cor_borda_linhas_atual)
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:

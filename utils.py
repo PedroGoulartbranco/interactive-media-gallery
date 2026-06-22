@@ -95,3 +95,19 @@ def pegar_configuracoes_salvas():
         dados = json.load(arquivo)
 
     return dados
+
+def salvar_configuracoes_json(cor_fundo, cor_botoes, cor_borda):
+    caminho_json = caminho_recurso("configuracoes.json")
+    dados = {}
+
+    with open(caminho_json, "r", encoding="utf-8") as arquivo:
+        dados = json.load(arquivo)
+
+    dados["cor_fundo"] = cor_fundo
+    dados["cor_botoes"] = cor_botoes
+    dados["cor_borda"] = cor_borda
+
+    with open(caminho_json, "w", encoding="utf-8") as arquivo:
+        json.dump(dados, arquivo, indent=4, ensure_ascii=False)
+
+    return dados

@@ -19,7 +19,7 @@ botao_configuracoes = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES,
 botao_editar_imagens = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 60 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
 botao_ler = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 160 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
 botao_supresa = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 260 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
-
+botao_jogar = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 360 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
 #Criar botao de voltar
 botao_voltar = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 360 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
 
@@ -58,7 +58,7 @@ lista_botoes_especiais_editar = [botao_polaroid, botao_preto_branco, botao_raio_
 botao_salvar_caminho_pasta = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 30, LARGURA_BOTOES, ALTURA_BOTOES)
 botao_limpar_caminho_pasta = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 60 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
 botao_baixar_imagem = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 160 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
-botao_jogo = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 260 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
+botao_salvar_edicoes = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 260 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
 botao_voltar_extra = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 360 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
 
-lista_botoes_mais = [botao_salvar_caminho_pasta, botao_limpar_caminho_pasta, botao_baixar_imagem, botao_jogo, botao_voltar_extra]
+lista_botoes_mais = [botao_salvar_caminho_pasta, botao_limpar_caminho_pasta, botao_baixar_imagem, botao_salvar_edicoes, botao_voltar_extra]
