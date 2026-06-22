@@ -65,6 +65,7 @@ pagina_ler_aberta = False
 pagina_supresa_aberta = False
 pagina_de_ajuda = False
 pagina_de_cores = False
+pagina_extra_aberta = False
 
 mudancas_nas_imagens = False
 eh_para_girar = True
@@ -857,8 +858,9 @@ def funcao_mostrar_botoes_cores():
     for texto in dicionario_texto_botoes:
         screen.blit(texto, dicionario_texto_botoes[texto])
 
-    # screen.blit(texto_visao_noturna, coordenadas_texto_visao_noturna)
-    # screen.blit(texto_preto_branco, coordenadas_texto_preto_branco)
+def funcao_mostrar_pagina_mais():
+    for botao in lista_botoes_mais:
+        pygame.draw.rect(screen, cores_botoes, botao)
 
 
 while running:
@@ -913,8 +915,8 @@ while running:
                     pagina_inicial = False
                     pagina_ler_aberta = True
                 if botao_supresa.collidepoint(mouse_pos):
-                    pass
-                    #mostrar_botoes_laterais = False
+                    mostrar_botoes_laterais = False
+                    pagina_extra_aberta = True
             #Se a pagina de configurações estiver aberta
             if pagina_configuracoes_aberta:
                 if abriu_primeira_aba_vez is False:
@@ -1214,6 +1216,9 @@ while running:
 
         if pagina_editar_aberta:
             funcao_mostrar_pagina_editar_imagens()
+
+        if pagina_extra_aberta:
+            funcao_mostrar_pagina_mais()
     elif pagina_personalisar_galeria_aberta:
         funcao_pagina_personalisar()
     elif pagina_de_ajuda:
