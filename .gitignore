@@ -4,4 +4,6 @@ seta.png
 interrogacao.png
 sons
 coracao_icon.png
-foto_icon.ico
+imagens/foto_icon.ico
+__pycache__
+.vscode

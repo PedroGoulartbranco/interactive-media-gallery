@@ -48,7 +48,7 @@ imagem_raioX = False
 pygame.display.set_caption("Te Amo Natalia")
 fonte = pygame.font.SysFont('consolas', 20)
 
-imagem_coracao = pygame.image.load(caminho_recurso("coracao_icon.png")).convert_alpha()
+imagem_coracao = pygame.image.load(caminho_recurso("imagens/coracao_icon.png")).convert_alpha()
 imagem_coracao = pygame.transform.scale(imagem_coracao, (128, 128))
 pygame.display.set_icon(imagem_coracao)
 
@@ -86,13 +86,13 @@ quadrado = pygame.Rect(DISTANCIA_LATERAL_QUADRADO, 30, LARGURA_QUADRADO, ALTURA_
 coordenada_desenhar_imagens = (DISTANCIA_LATERAL_QUADRADO, 30)
 numero_fotos = lista_fotos = None
 indice_foto_atual = 0
-ponto_interrogacao = pygame.image.load(caminho_recurso("interrogacao.png")).convert_alpha()
+ponto_interrogacao = pygame.image.load(caminho_recurso("imagens/interrogacao.png")).convert_alpha()
 ponto_interrogacao = pygame.transform.scale(ponto_interrogacao, (100, 100))
 
-seta_direita = pygame.image.load(caminho_recurso("seta.png")).convert_alpha()
+seta_direita = pygame.image.load(caminho_recurso("imagens/seta.png")).convert_alpha()
 seta_direita = pygame.transform.scale(seta_direita, (100, 100))
 
-seta_esquerda = pygame.image.load(caminho_recurso("seta.png")).convert_alpha()
+seta_esquerda = pygame.image.load(caminho_recurso("imagens/seta.png")).convert_alpha()
 seta_esquerda = pygame.transform.scale(seta_esquerda, (100, 100))
 seta_esquerda = pygame.transform.flip(seta_esquerda, True, False)
 
