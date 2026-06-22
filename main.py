@@ -859,8 +859,26 @@ def funcao_mostrar_botoes_cores():
         screen.blit(texto, dicionario_texto_botoes[texto])
 
 def funcao_mostrar_pagina_mais():
+    fonte_atual = calculo_tamanho_fonte_atual(20)
+    texto_botao_salvar_caminho = fonte_atual.render("Salvar Pasta", True, "black")
+    texto_botao_limpar = fonte_atual.render("Limpar Caminho", True, "black")
+    texto_botao_salvar_imagem = fonte_atual.render("Baixar Imagem", True, "black")
+    texto_botao_jogo = fonte_atual.render("Jogar", True, "black")
+    texto_botao_voltar = fonte_atual.render("Voltar", True, "black")
+
+    dicionario_texto_botoes = {
+        texto_botao_salvar_caminho: texto_botao_salvar_caminho.get_rect(center=botao_salvar_caminho_pasta.center),
+        texto_botao_limpar: texto_botao_limpar.get_rect(center=botao_limpar_caminho_pasta.center),
+        texto_botao_jogo: texto_botao_jogo.get_rect(center=botao_jogo.center),
+        texto_botao_voltar: texto_botao_voltar.get_rect(center=botao_voltar_extra.center),
+        texto_botao_salvar_imagem: texto_botao_salvar_imagem.get_rect(center=botao_baixar_imagem.center)
+    }
+
     for botao in lista_botoes_mais:
         pygame.draw.rect(screen, cores_botoes, botao)
+
+    for texto in dicionario_texto_botoes:
+        screen.blit(texto, dicionario_texto_botoes[texto])
 
 
 while running:
@@ -1121,6 +1139,10 @@ while running:
                         imagem_raioX = True
                 if botao_resetar_cores.collidepoint(mouse_pos):
                     resetar_cores_efeitos()
+            if pagina_extra_aberta:
+                if botao_voltar_extra.collidepoint(mouse_pos):
+                    mostrar_botoes_laterais = True
+                    pagina_extra_aberta = False
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
