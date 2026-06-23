@@ -123,7 +123,7 @@ def baixar_imagem(imagem):
 
     caminho_arquivo = filedialog.asksaveasfilename(
         defaultextension=".png",
-        filetypes=[("Imagem PNG (Qualidade Máxima)", "*.png")],
+        filetypes=[("Imagem PNG", "*.png")],
         title="Escolha onde salvar sua imagem"
     )
 
