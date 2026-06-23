@@ -2,8 +2,10 @@ import os
 import sys
 from random import choice, shuffle
 import tkinter
-from tkinter import filedialog
+from tkinter import filedialog, Tk
 import json
+import pygame
+from PIL import Image, ImageFilter, ImageOps, ImageEnhance, ImageChops, ImageDraw
 
 lista_musicas = [
     {"nome": "So Easy to Fall in Love","caminho": "sons\olivia_dean___so_easy__to_fall_in_love___lyrics_.mp3"},
@@ -111,3 +113,32 @@ def salvar_configuracoes_json(cor_fundo, cor_botoes, cor_borda):
         json.dump(dados, arquivo, indent=4, ensure_ascii=False)
 
     return dados
+
+def baixar_imagem(imagem):
+    imagem_pillow = pygame_para_pillow(imagem)
+
+    root = Tk()
+    root.withdraw()
+    root.attributes('-topmost', True) # Força a janela de salvar a ficar na frente de tudo
+
+    caminho_arquivo = filedialog.asksaveasfilename(
+        defaultextension=".png",
+        filetypes=[("Imagem PNG (Qualidade Máxima)", "*.png")],
+        title="Escolha onde salvar sua imagem"
+    )
+
+    if caminho_arquivo:
+        imagem_pillow.save(caminho_arquivo, format="PNG")
+
+def pygame_para_pillow(surface):
+    modo = "RGBA" if surface.get_alpha() else "RGB"
+
+    dados = pygame.image.tobytes(surface, modo)
+
+    imagem_pil = Image.frombytes(
+        modo,
+        surface.get_size(),
+        dados
+    )
+
+    return imagem_pil

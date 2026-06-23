@@ -600,18 +600,6 @@ imagem_espelhada = False
 imagem_raioX = False
 posicao_giro = 0
 
-def pygame_para_pillow(surface):
-    modo = "RGBA" if surface.get_alpha() else "RGB"
-
-    dados = pygame.image.tobytes(surface, modo)
-
-    imagem_pil = Image.frombytes(
-        modo,
-        surface.get_size(),
-        dados
-    )
-
-    return imagem_pil
 
 vinheta_mask = Image.new("L", (quadrado.width, quadrado.height), 0)
 draw = ImageDraw.Draw(vinheta_mask)
@@ -1174,6 +1162,10 @@ while running:
                     limpar_caminho_json()
                 if botao_salvar_edicoes.collidepoint(mouse_pos):
                     salvar_configuracoes_json(cor_fundo_atual, cores_botoes, cor_borda_linhas_atual)
+                if botao_baixar_imagem.collidepoint(mouse_pos):
+                    if i is not None:
+                        print("oi")
+                        baixar_imagem(i)
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
@@ -1242,7 +1234,8 @@ while running:
         if pasta_aberta:
             surface = transformar_tamanho_imagem(lista_fotos[indice_foto_atual])
             i= pygame_para_pillow(surface)
-            screen.blit(aplicar_efeitos(i), coordenada_desenhar_imagens)
+            i = aplicar_efeitos(i)
+            screen.blit(i, coordenada_desenhar_imagens)
             mostrar_numero_foto_atual(indice_foto_atual)
             if clicou_botao_randomizar:
                 if (ticks_atuais - ticks_clicou_randozimar >= 1000):
