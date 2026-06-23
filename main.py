@@ -873,6 +873,30 @@ def funcao_mostrar_pagina_mais():
     texto_botao_salvar_edicoes = fonte_atual.render("Salvar Edições", True, "black")
     texto_botao_voltar = fonte_atual.render("Voltar", True, "black")
 
+    escala_x = largura_atual / LARGURA
+    escala_y = altura_atual / ALTURA
+
+    largura_quadrado =LARGURA_BOTOES * escala_x
+    altura_quadrado = ALTURA_BOTOES * escala_y
+
+    x_pos = DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES * escala_x
+    
+    ys_originais = [
+        30,
+        60 + ALTURA_BOTOES,
+        160 + ALTURA_BOTOES,
+        260 + ALTURA_BOTOES,
+        360 + ALTURA_BOTOES
+    ]
+
+    for i, botao in enumerate(lista_botoes_mais):
+        botao.width = largura_quadrado
+        botao.height = altura_quadrado
+        botao.x = x_pos
+        botao.y = ys_originais[i] * escala_y
+        pygame.draw.rect(screen, cores_botoes, botao)
+
+
     dicionario_texto_botoes = {
         texto_botao_salvar_caminho: texto_botao_salvar_caminho.get_rect(center=botao_salvar_caminho_pasta.center),
         texto_botao_limpar: texto_botao_limpar.get_rect(center=botao_limpar_caminho_pasta.center),
@@ -880,9 +904,6 @@ def funcao_mostrar_pagina_mais():
         texto_botao_voltar: texto_botao_voltar.get_rect(center=botao_voltar_extra.center),
         texto_botao_salvar_imagem: texto_botao_salvar_imagem.get_rect(center=botao_baixar_imagem.center)
     }
-
-    for botao in lista_botoes_mais:
-        pygame.draw.rect(screen, cores_botoes, botao)
 
     for texto in dicionario_texto_botoes:
         screen.blit(texto, dicionario_texto_botoes[texto])
