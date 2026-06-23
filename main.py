@@ -76,6 +76,9 @@ caminho = dados_salvos["caminho"]
 
 numero_fotos = lista_fotos = None
 
+tick_quando_entrou_aba = 0
+tempo_delay_botao = 150
+
 if caminho == "":
     caminho = None
 else:
@@ -1082,6 +1085,7 @@ while running:
                         if botao_aleatorizar_foto.collidepoint(mouse_pos):
                             aleatorizar_efeitos()
                         if botao_cores_foto.collidepoint(mouse_pos):
+                            tick_quando_entrou_aba = tempo_atual
                             pagina_inicial = True
                             pagina_editar_aberta = False
                             mostrar_botoes_laterais = False
@@ -1092,60 +1096,58 @@ while running:
                     pagina_inicial = True
                     mostrar_botoes_laterais = True
             if pagina_de_cores:
-                if botao_voltar_cores.collidepoint(mouse_pos):
-                    pagina_editar_aberta = True
-                    pagina_de_cores = False
-                if botao_vermelho.collidepoint(mouse_pos):
-                    if imagem_vermelho is False:
-                        imagem_vermelho = matriz_vermelho
+                if tempo_atual - tick_quando_entrou_aba >= tempo_delay_botao:
+                    if botao_vermelho.collidepoint(mouse_pos):
+                        if imagem_vermelho is False:
+                            imagem_vermelho = matriz_vermelho
 
-                    else:
-                        imagem_vermelho = False
-                if botao_branco.collidepoint(mouse_pos):
-                    if imagem_branca is False:
-                        imagem_branca = matriz_branca
-                    else:
-                        imagem_branca = False
-                if botao_roxo.collidepoint(mouse_pos):
-                    if imagem_roxa is False:
-                        imagem_roxa = matriz_roxa
-                    else:
-                        imagem_roxa = False
-                if botao_amarelo.collidepoint(mouse_pos):
-                    if imagem_amarela is False:
-                        imagem_amarela = matriz_amarela
-                    else:
-                        imagem_amarela = False
-                if botao_azul.collidepoint(mouse_pos):
-                    if imagem_azul is False:
-                        imagem_azul = matriz_azul
-                    else:
-                        imagem_azul = False
-                if botao_verde.collidepoint(mouse_pos):
-                    if imagem_verde is False:
-                        imagem_verde = matriz_verde
-                    else:
-                        imagem_verde = False
-                if botao_rosa.collidepoint(mouse_pos):
-                    if imagem_rosa is False:
-                        imagem_rosa = matriz_rosa
-                    else:
-                        imagem_rosa = False
-                if botao_preto.collidepoint(mouse_pos):
-                    if imagem_preto is False:
-                        imagem_preto = matriz_preta
-                    else:
-                        imagem_preto = False
-                if botao_laranja.collidepoint(mouse_pos):
-                    if imagem_laranja is False:
-                        imagem_laranja = matriz_laranja
-                    else:
-                        imagem_laranja = False
-                if botao_verde_menta.collidepoint(mouse_pos):
-                    if imagem_verde_menta is False:
-                        imagem_verde_menta = matriz_verde_menta
-                    else:
-                        imagem_verde_menta = False
+                        else:
+                            imagem_vermelho = False
+                    if botao_branco.collidepoint(mouse_pos):
+                        if imagem_branca is False:
+                            imagem_branca = matriz_branca
+                        else:
+                            imagem_branca = False
+                    if botao_roxo.collidepoint(mouse_pos):
+                        if imagem_roxa is False:
+                            imagem_roxa = matriz_roxa
+                        else:
+                            imagem_roxa = False
+                    if botao_amarelo.collidepoint(mouse_pos):
+                        if imagem_amarela is False:
+                            imagem_amarela = matriz_amarela
+                        else:
+                            imagem_amarela = False
+                    if botao_azul.collidepoint(mouse_pos):
+                        if imagem_azul is False:
+                            imagem_azul = matriz_azul
+                        else:
+                            imagem_azul = False
+                    if botao_verde.collidepoint(mouse_pos):
+                        if imagem_verde is False:
+                            imagem_verde = matriz_verde
+                        else:
+                            imagem_verde = False
+                    if botao_rosa.collidepoint(mouse_pos):
+                        if imagem_rosa is False:
+                            imagem_rosa = matriz_rosa
+                        else:
+                            imagem_rosa = False
+                    if botao_preto.collidepoint(mouse_pos):
+                        if imagem_preto is False:
+                            imagem_preto = matriz_preta
+                        else:
+                            imagem_preto = False
+                    if botao_laranja.collidepoint(mouse_pos):
+                        if imagem_laranja is False:
+                            imagem_laranja = matriz_laranja
+                        else:
+                            imagem_laranja = False
+                    if botao_verde_menta.collidepoint(mouse_pos):
+                        if imagem_verde_menta is False:
+                            imagem_verde_menta = matriz_verde_menta
+                        else:
+                            imagem_verde_menta = False
                 if botao_preto_branco.collidepoint(mouse_pos):
                     if imagem_preto_branco is False:
                         imagem_preto_branco = matriz_preto_e_branco
