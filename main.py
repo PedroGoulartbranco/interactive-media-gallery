@@ -69,6 +69,11 @@ pagina_de_ajuda = False
 pagina_de_cores = False
 pagina_extra_aberta = False
 
+modo_jogo = False
+em_contagem = False
+jogo_comecou = False
+ticks_clicou_em_jogar = 0
+
 cores_botoes = dados_salvos["cor_botoes"]
 cor_fundo_atual = dados_salvos["cor_fundo"]
 cor_borda_linhas_atual = dados_salvos["cor_borda"]
@@ -912,6 +917,33 @@ def funcao_mostrar_pagina_mais():
         screen.blit(texto, dicionario_texto_botoes[texto])
 
 
+def contagem_jogo(ticks_quando_comecou):
+    tempo_atual = pygame.time.get_ticks()
+    fonte_atual = calculo_tamanho_fonte_atual(40)
+    contador_jogo = 5
+
+    centro_tela_x = int(LARGURA / 2)
+    centro_tela_y = int(ALTURA / 2)
+
+    if tempo_atual - ticks_quando_comecou >= 1000:
+        contador_jogo -= 1
+        ticks_quando_comecou = tempo_atual
+
+        if contador_jogo == 0:
+            return True
+    texto = fonte.render(str(contador_jogo), True, "black")
+    rect_texto = texto.get_rect(center=(centro_tela_x, centro_tela_y))
+    screen.blit(texto, rect_texto)
+
+    for i in range(contador_jogo, 0, -1):
+        screen.fill(cor_fundo_atual)
+        texto_contador = fonte_atual.render(str(i), True, "black")
+        screen.blit(texto_contador, (centro_tela_x, centro_tela_y))
+        pygame.display.flip()
+        pygame.time.wait(1000)
+
+
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -967,6 +999,12 @@ while running:
                     print("aaa")
                     pagina_extra_aberta = True
                     mostrar_botoes_laterais = False
+                if botao_jogar.collidepoint(mouse_pos):
+                    mostrar_botoes_laterais = False
+                    pagina_inicial = False
+                    modo_jogo = True
+                    em_contagem = True
+                    ticks_clicou_em_jogar = tempo_atual
             #Se a pagina de configurações estiver aberta
             if pagina_configuracoes_aberta:
                 if abriu_primeira_aba_vez is False:
@@ -1294,6 +1332,11 @@ while running:
         funcao_mostrar_pagina_ajuda()
     elif pagina_ler_aberta:
         funcao_mostrar_pagina_ler()
+    elif modo_jogo:
+        if em_contagem:
+            modo_jogo = contagem_jogo(ticks_clicou_em_jogar)
+            if modo_jogo:
+                em_contagem = False
 
     pygame.display.flip()
 
