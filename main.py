@@ -73,6 +73,7 @@ modo_jogo = False
 em_contagem = False
 jogo_comecou = False
 ticks_clicou_em_jogar = 0
+contador_jogo = 5
 
 cores_botoes = dados_salvos["cor_botoes"]
 cor_fundo_atual = dados_salvos["cor_fundo"]
@@ -917,30 +918,26 @@ def funcao_mostrar_pagina_mais():
         screen.blit(texto, dicionario_texto_botoes[texto])
 
 
-def contagem_jogo(ticks_quando_comecou):
+def contagem_jogo():
+    global contador_jogo, ticks_clicou_em_jogar
     tempo_atual = pygame.time.get_ticks()
-    fonte_atual = calculo_tamanho_fonte_atual(40)
-    contador_jogo = 5
+    fonte_atual = calculo_tamanho_fonte_atual(100)
 
     centro_tela_x = int(LARGURA / 2)
     centro_tela_y = int(ALTURA / 2)
 
-    if tempo_atual - ticks_quando_comecou >= 1000:
+    if tempo_atual - ticks_clicou_em_jogar >= 1000:
         contador_jogo -= 1
-        ticks_quando_comecou = tempo_atual
+        ticks_clicou_em_jogar = tempo_atual
 
         if contador_jogo == 0:
             return True
-    texto = fonte.render(str(contador_jogo), True, "black")
+    texto = fonte_atual.render(str(contador_jogo), True, "black")
     rect_texto = texto.get_rect(center=(centro_tela_x, centro_tela_y))
     screen.blit(texto, rect_texto)
+    print(contador_jogo)
 
-    for i in range(contador_jogo, 0, -1):
-        screen.fill(cor_fundo_atual)
-        texto_contador = fonte_atual.render(str(i), True, "black")
-        screen.blit(texto_contador, (centro_tela_x, centro_tela_y))
-        pygame.display.flip()
-        pygame.time.wait(1000)
+    return False
 
 
 
@@ -1334,8 +1331,9 @@ while running:
         funcao_mostrar_pagina_ler()
     elif modo_jogo:
         if em_contagem:
-            modo_jogo = contagem_jogo(ticks_clicou_em_jogar)
-            if modo_jogo:
+            jogo_comecou = contagem_jogo()
+            print(modo_jogo)
+            if jogo_comecou:
                 em_contagem = False
 
     pygame.display.flip()
