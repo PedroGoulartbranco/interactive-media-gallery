@@ -87,7 +87,7 @@ else:
     numero_fotos, lista_fotos = listar_fotos(caminho)
     if numero_fotos == 0:
         pasta_aberta = False
-
+ 
 mudancas_nas_imagens = False
 eh_para_girar = True
 efeito_desenho = False
@@ -175,6 +175,29 @@ def funcao_mostrar_botoes_laterais():
     texto_botao_supresa = fonte_atual.render("Mais", True, "black")
     texto_jogo = fonte_atual.render("Jogar", True, "black")
 
+    escala_x = largura_atual / LARGURA
+    escala_y = altura_atual / ALTURA
+
+    largura_quadrado =LARGURA_BOTOES * escala_x
+    altura_quadrado = ALTURA_BOTOES * escala_y
+
+    x_pos = DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES * escala_x
+    
+    ys_originais = [
+        30,
+        60 + ALTURA_BOTOES,
+        160 + ALTURA_BOTOES,
+        260 + ALTURA_BOTOES,
+        360 + ALTURA_BOTOES
+    ]
+
+    for i, botao in enumerate(lista_botoes_principais):
+        botao.width = largura_quadrado
+        botao.height = altura_quadrado
+        botao.x = x_pos
+        botao.y = ys_originais[i] * escala_y
+        pygame.draw.rect(screen, cores_botoes, botao)
+
     dicionario_coordenadas = {
         texto_botao_configuracoes:  texto_botao_configuracoes.get_rect(center=botao_configuracoes.center),
         texto_botao_editar: texto_botao_editar.get_rect(center=botao_editar_imagens.center),
@@ -182,9 +205,6 @@ def funcao_mostrar_botoes_laterais():
         texto_botao_supresa: texto_botao_supresa.get_rect(center=botao_supresa.center),
         texto_jogo: texto_jogo.get_rect(center=botao_jogar.center)
     }
-
-    for botao in lista_botoes_principais:
-        pygame.draw.rect(screen, cores_botoes, botao)
 
     for texto in dicionario_coordenadas:
             screen.blit(texto, dicionario_coordenadas[texto])
@@ -228,26 +248,6 @@ def atualizar_tamanho(largura, altura):
     x_pos = DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES * escala_x
     x_pos_botoes_menores = (300 * escala_x) + (70 * escala_x)
     x_pos_botoes_medios = (150 * escala_x) + (80 * escala_x)
-
-    botao_configuracoes.width = nova_largura
-    botao_configuracoes.height = nova_altura
-    botao_configuracoes.x = x_pos
-    botao_configuracoes.y = 30 * escala_y
-
-    botao_editar_imagens.width = nova_largura
-    botao_editar_imagens.height = nova_altura
-    botao_editar_imagens.x = x_pos
-    botao_editar_imagens.y = botao_configuracoes.y + botao_configuracoes.height + (30 * escala_y)
-
-    botao_ler.width = nova_largura
-    botao_ler.height = nova_altura
-    botao_ler.x = x_pos
-    botao_ler.y = botao_editar_imagens.y + botao_editar_imagens.height + (30 * escala_y)
-
-    botao_supresa.width = nova_largura
-    botao_supresa.height = nova_altura
-    botao_supresa.x = x_pos
-    botao_supresa.y = botao_ler.y + botao_ler.height + (30 * escala_y)
 
     #Botoes de configurações
     botao_abrir_nova_pasta.width = nova_largura
