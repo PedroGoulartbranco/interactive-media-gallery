@@ -75,7 +75,7 @@ em_contagem = False
 jogo_comecou = False
 ticks_clicou_em_jogar = 0
 ticks_acabou_contagem = 0
-contador_jogo = 5
+contador_jogo = 3
 trocou_para_musica_jogo = False
 mosntrou_mensagem_jogo = False
 tamanho_letra_aviso_jogo = 60
@@ -93,7 +93,11 @@ balao_amarelo = pygame.image.load(balao_amarelo).convert_alpha()
 
 lista_baloes = [balao_amarelo, balao_roxo, balao_azul, balao_vermelho]
 
-maximo_baloes = 15
+maximo_baloes = 20
+tempo_maximo_jogo =  30000
+baloes_podem_aparecer = False
+pontuacao = 0
+ticks_baloes_começaram_aparecer = 0
 
 grupo_balao = pygame.sprite.Group()
 
@@ -979,6 +983,13 @@ def mostrar_mensagem_baloes(ticks_acabou_contagem):
         return False
     return True
 
+def calcular_largura_altura_janela():
+    largura = screen.get_width()
+
+
+    altura = screen.get_height()
+
+    return largura, altura
 
 
 while running:
@@ -1269,7 +1280,7 @@ while running:
                         print("oi")
                         baixar_imagem(i)
             if jogo_comecou:
-                for balao in grupo_balao:
+                for balao in reversed(grupo_balao.sprites()):
                     if balao.rect.collidepoint(mouse_pos):
                         rel_x = mouse_pos[0] - balao.rect.x
                         rel_y = mouse_pos[1] - balao.rect.y
@@ -1396,14 +1407,24 @@ while running:
             em_contagem = False
             if mosntrou_mensagem_jogo is False:
                 mosntrou_mensagem_jogo = mostrar_mensagem_baloes(ticks_acabou_contagem)
-            
-            if len(grupo_balao) < maximo_baloes:
-                balao_atual_cor = choice(lista_baloes)
-                novo_balao = Balao(balao_atual_cor, LARGURA, ALTURA)
-                grupo_balao.add(novo_balao)
-      
-            grupo_balao.update()
-            grupo_balao.draw(screen)
+                baloes_podem_aparecer = True
+                ticks_baloes_começaram_aparecer = tempo_atual
+
+            if baloes_podem_aparecer:
+
+                largura_atual_janela, altura_atual_janela = calcular_largura_altura_janela()
+                
+                if len(grupo_balao) < maximo_baloes:
+                    balao_atual_cor = choice(lista_baloes)
+                    novo_balao = Balao(balao_atual_cor, largura_atual_janela, altura_atual_janela)
+                    grupo_balao.add(novo_balao)
+        
+                grupo_balao.update()
+                grupo_balao.draw(screen)
+
+                if tempo_atual - ticks_baloes_começaram_aparecer >= tempo_maximo_jogo:
+                    print("acabou")
+                    baloes_podem_aparecer = False
                 
                 
     pygame.display.flip()
