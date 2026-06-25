@@ -79,7 +79,7 @@ contador_jogo = 5
 trocou_para_musica_jogo = False
 mosntrou_mensagem_jogo = False
 tamanho_letra_aviso_jogo = 60
-imagem_balao_jogo = caminho_recurso("imagens/balao_jogo.png") # ou o nome da sua pasta/arquivo
+imagem_balao_jogo = caminho_recurso("imagens/balao_azul.png") # ou o nome da sua pasta/arquivo
 imagem_balao_jogo = pygame.image.load(imagem_balao_jogo).convert_alpha()
 imagem_balao_jogo = pygame.transform.scale(imagem_balao_jogo, (150, 150))
 maximo_baloes = 15
@@ -1257,6 +1257,15 @@ while running:
                     if i is not None:
                         print("oi")
                         baixar_imagem(i)
+            if jogo_comecou:
+                for balao in grupo_balao:
+                    if balao.rect.collidepoint(mouse_pos):
+                        rel_x = mouse_pos[0] - balao.rect.x
+                        rel_y = mouse_pos[1] - balao.rect.y
+
+                        if balao.mask.get_at((rel_x, rel_y)):
+                            balao.kill() 
+                break
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:

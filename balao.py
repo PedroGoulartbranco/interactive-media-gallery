@@ -9,6 +9,7 @@ class Balao(pygame.sprite.Sprite):
 
         self.image = imagem
         self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
 
         self.rect.x = random.randint(0, tamanho_tela_x)
         self.rect.y = 600  # Começa abaixo da tela
