@@ -145,3 +145,6 @@ def pygame_para_pillow(surface):
 
 def retornar_caminho_musica_jogo():
     return caminho_recurso("sons\musica_jogo.mp3")
+
+def calcular_tamanho_balao():
+    pass

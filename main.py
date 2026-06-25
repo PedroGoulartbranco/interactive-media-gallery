@@ -4,6 +4,7 @@ from quadrados import *
 from PIL import Image, ImageFilter, ImageOps, ImageEnhance, ImageChops, ImageDraw
 from random import choice
 from matrizes_cores import *
+from balao import Balao
 
 pygame.init()
 LARGURA, ALTURA = 1000, 600
@@ -78,6 +79,12 @@ contador_jogo = 5
 trocou_para_musica_jogo = False
 mosntrou_mensagem_jogo = False
 tamanho_letra_aviso_jogo = 60
+imagem_balao_jogo = caminho_recurso("imagens/balao_jogo.png") # ou o nome da sua pasta/arquivo
+imagem_balao_jogo = pygame.image.load(imagem_balao_jogo).convert_alpha()
+imagem_balao_jogo = pygame.transform.scale(imagem_balao_jogo, (150, 150))
+maximo_baloes = 15
+
+grupo_balao = pygame.sprite.Group()
 
 cores_botoes = dados_salvos["cor_botoes"]
 cor_fundo_atual = dados_salvos["cor_fundo"]
@@ -1369,6 +1376,13 @@ while running:
             em_contagem = False
             if mosntrou_mensagem_jogo is False:
                 mosntrou_mensagem_jogo = mostrar_mensagem_baloes(ticks_acabou_contagem)
+            
+            if len(grupo_balao) < maximo_baloes:
+                novo_balao = Balao(imagem_balao_jogo, LARGURA, ALTURA)
+                grupo_balao.add(novo_balao)
+      
+            grupo_balao.update()
+            grupo_balao.draw(screen)
                 
                 
     pygame.display.flip()
