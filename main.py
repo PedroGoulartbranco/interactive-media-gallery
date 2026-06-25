@@ -1205,6 +1205,10 @@ while running:
                         imagem_raioX = True
                 if botao_resetar_cores.collidepoint(mouse_pos):
                     resetar_cores_efeitos()
+                if botao_voltar_cores.collidepoint(mouse_pos):
+                    pagina_de_cores = False
+                    pagina_editar_aberta = True
+
             if pagina_extra_aberta:
                 if abriu_primeira_aba_vez is False:
                     abriu_primeira_aba_vez = True
