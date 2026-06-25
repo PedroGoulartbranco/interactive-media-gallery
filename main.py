@@ -991,6 +991,27 @@ def calcular_largura_altura_janela():
 
     return largura, altura
 
+def desenhar_pontuacao_e_tempo(pontuacao, tick_quando_comecou):
+    tempo_atual = pygame.time.get_ticks()
+    fonte_atual = calculo_tamanho_fonte_atual(20)
+    texto_surface =  fonte_atual.render(f"Pontos: {pontuacao}", True, "black")
+    largura_tela = screen.get_width()
+
+    texto_rect = texto_surface.get_rect()
+    
+    margem = 20  
+    texto_rect.topright = (largura_tela - margem, margem)
+
+    segundos = 30 - ((tempo_atual - tick_quando_comecou) // 1000)
+    texto_segundos =  fonte_atual.render(f"Tempo: {segundos}s", True, "black")
+    texto_segundos_rect = texto_segundos.get_rect()
+    texto_segundos_rect.topright = (largura_atual - margem, margem + texto_rect.y)
+
+    screen.blit(texto_surface, texto_rect)
+    screen.blit(texto_segundos, texto_segundos_rect)
+
+
+
 
 while running:
     for event in pygame.event.get():
@@ -1287,6 +1308,7 @@ while running:
 
                         if balao.mask.get_at((rel_x, rel_y)):
                             balao.kill() 
+                            pontuacao += 5
                             break
                 
         if event.type == pygame.KEYDOWN:
@@ -1422,9 +1444,12 @@ while running:
                 grupo_balao.update()
                 grupo_balao.draw(screen)
 
+                desenhar_pontuacao_e_tempo(pontuacao, ticks_baloes_começaram_aparecer)
+
                 if tempo_atual - ticks_baloes_começaram_aparecer >= tempo_maximo_jogo:
                     print("acabou")
                     baloes_podem_aparecer = False
+                
                 
                 
     pygame.display.flip()

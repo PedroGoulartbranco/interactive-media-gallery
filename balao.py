@@ -5,7 +5,7 @@ import random
 class Balao(pygame.sprite.Sprite):
     def __init__(self, imagem, tamanho_tela_x, tamanho_tela_y):
         super().__init__()
-        self.velocidade = random.randint(2, 7)
+        self.velocidade = random.randint(4, 9)
         self.largura = 150
         self.altura = 150
         imagem = pygame.transform.scale(imagem, (self.largura, self.altura))
