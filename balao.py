@@ -7,6 +7,8 @@ class Balao(pygame.sprite.Sprite):
         super().__init__()
         self.velocidade = random.randint(2, 7)
 
+        imagem = pygame.transform.scale(imagem, (150, 150))
+
         self.image = imagem
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)

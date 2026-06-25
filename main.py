@@ -79,9 +79,20 @@ contador_jogo = 5
 trocou_para_musica_jogo = False
 mosntrou_mensagem_jogo = False
 tamanho_letra_aviso_jogo = 60
-imagem_balao_jogo = caminho_recurso("imagens/balao_azul.png") # ou o nome da sua pasta/arquivo
-imagem_balao_jogo = pygame.image.load(imagem_balao_jogo).convert_alpha()
-imagem_balao_jogo = pygame.transform.scale(imagem_balao_jogo, (150, 150))
+
+
+balao_azul = caminho_recurso("imagens/balao_azul.png")
+balao_vermelho = caminho_recurso("imagens/balao_vermelho.png")
+balao_roxo= caminho_recurso("imagens/balao_roxo.png")
+balao_amarelo = caminho_recurso("imagens/balao_amarelo.png")
+
+balao_azul = pygame.image.load(balao_azul).convert_alpha()
+balao_vermelho = pygame.image.load(balao_vermelho).convert_alpha()
+balao_roxo = pygame.image.load(balao_roxo).convert_alpha()
+balao_amarelo = pygame.image.load(balao_amarelo).convert_alpha()
+
+lista_baloes = [balao_amarelo, balao_roxo, balao_azul, balao_vermelho]
+
 maximo_baloes = 15
 
 grupo_balao = pygame.sprite.Group()
@@ -1265,7 +1276,7 @@ while running:
 
                         if balao.mask.get_at((rel_x, rel_y)):
                             balao.kill() 
-                break
+                            break
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
@@ -1387,7 +1398,8 @@ while running:
                 mosntrou_mensagem_jogo = mostrar_mensagem_baloes(ticks_acabou_contagem)
             
             if len(grupo_balao) < maximo_baloes:
-                novo_balao = Balao(imagem_balao_jogo, LARGURA, ALTURA)
+                balao_atual_cor = choice(lista_baloes)
+                novo_balao = Balao(balao_atual_cor, LARGURA, ALTURA)
                 grupo_balao.add(novo_balao)
       
             grupo_balao.update()
