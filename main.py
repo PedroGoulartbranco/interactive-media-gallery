@@ -73,7 +73,11 @@ modo_jogo = False
 em_contagem = False
 jogo_comecou = False
 ticks_clicou_em_jogar = 0
+ticks_acabou_contagem = 0
 contador_jogo = 5
+trocou_para_musica_jogo = False
+mosntrou_mensagem_jogo = False
+tamanho_letra_aviso_jogo = 60
 
 cores_botoes = dados_salvos["cor_botoes"]
 cor_fundo_atual = dados_salvos["cor_fundo"]
@@ -922,6 +926,7 @@ def contagem_jogo():
     global contador_jogo, ticks_clicou_em_jogar
     tempo_atual = pygame.time.get_ticks()
     fonte_atual = calculo_tamanho_fonte_atual(100)
+    texto_aviso = fonte_atual.render("Estoure o maximo de balões", True, "black")
 
     centro_tela_x = int(LARGURA / 2)
     centro_tela_y = int(ALTURA / 2)
@@ -938,6 +943,23 @@ def contagem_jogo():
     print(contador_jogo)
 
     return False
+
+def mostrar_mensagem_baloes(ticks_acabou_contagem):
+    global tamanho_letra_aviso_jogo
+    tempo_atual = pygame.time.get_ticks()
+    fonte_atual = calculo_tamanho_fonte_atual(tamanho_letra_aviso_jogo)
+    texto_aviso = fonte_atual.render("Estoure o maximo de balões", True, "black")
+
+    centro_tela_x = int(LARGURA / 2)
+    centro_tela_y = int(ALTURA / 2)
+
+    if tempo_atual - ticks_acabou_contagem <= 2000:
+        print(tempo_atual - ticks_acabou_contagem)
+        rect_texto = texto_aviso.get_rect(center=(centro_tela_x, centro_tela_y))
+        screen.blit(texto_aviso, rect_texto)
+        tamanho_letra_aviso_jogo -= 1.5
+        return False
+    return True
 
 
 
@@ -1334,12 +1356,21 @@ while running:
     elif pagina_ler_aberta:
         funcao_mostrar_pagina_ler()
     elif modo_jogo:
+        if trocou_para_musica_jogo is False:
+            pygame.mixer.music.load(retornar_caminho_musica_jogo())
+            pygame.mixer.music.play(-1)
+            trocou_para_musica_jogo = True
         if em_contagem:
             jogo_comecou = contagem_jogo()
-            print(modo_jogo)
+            ticks_acabou_contagem = tempo_atual
             if jogo_comecou:
                 em_contagem = False
-
+        elif jogo_comecou:
+            em_contagem = False
+            if mosntrou_mensagem_jogo is False:
+                mosntrou_mensagem_jogo = mostrar_mensagem_baloes(ticks_acabou_contagem)
+                
+                
     pygame.display.flip()
 
     clock.tick(25)

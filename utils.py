@@ -8,8 +8,8 @@ import pygame
 from PIL import Image, ImageFilter, ImageOps, ImageEnhance, ImageChops, ImageDraw
 
 lista_musicas = [
-    {"nome": "So Easy to Fall in Love","caminho": "sons\olivia_dean___so_easy__to_fall_in_love___lyrics_.mp3"},
-    {"nome": "For Youth","caminho": "sons\o___for_youth__legendado_tradu__o_.mp3"}
+    {"nome": "So Easy to Fall in Love","caminho": "musicas\olivia_dean___so_easy__to_fall_in_love___lyrics_.mp3"},
+    {"nome": "For Youth","caminho": "musicas\o___for_youth__legendado_tradu__o_.mp3"}
 ]
 
 def listar_fotos(caminho):
@@ -142,3 +142,6 @@ def pygame_para_pillow(surface):
     )
 
     return imagem_pil
+
+def retornar_caminho_musica_jogo():
+    return caminho_recurso("sons\musica_jogo.mp3")
