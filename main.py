@@ -18,10 +18,6 @@ musica_tocando = True
 
 dados_salvos = pegar_configuracoes_salvas()
 
-# cores_botoes = "#6503A6"  
-# cor_fundo_atual = "#AC01F4"
-# cor_borda_linhas_atual = "#000000"
-
 largura_atual = LARGURA
 altura_atual = ALTURA
 
@@ -79,6 +75,7 @@ contador_jogo = 3
 trocou_para_musica_jogo = False
 mosntrou_mensagem_jogo = False
 tamanho_letra_aviso_jogo = 60
+jogo_acabou = False
 
 
 balao_azul = caminho_recurso("imagens/balao_azul.png")
@@ -1449,11 +1446,12 @@ while running:
                 if tempo_atual - ticks_baloes_começaram_aparecer >= tempo_maximo_jogo:
                     print("acabou")
                     baloes_podem_aparecer = False
-                
-                
+                    jogo_acabou = True
+            if jogo_acabou:
+                pass
                 
     pygame.display.flip()
 
-    clock.tick(25)
+    clock.tick(60)
 
 pygame.quit()
