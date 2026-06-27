@@ -53,6 +53,9 @@ pygame.display.set_icon(imagem_coracao)
 
 pygame.mixer.init()
 
+som_estouro = pygame.mixer.Sound(caminho_recurso("sons/som_estouro.MP3"))
+som_estouro.set_volume(1.0)
+
 tempo_para_segurar = 230 #Tempo de cooldown para um clique nao contar como dois
 ultimo_click = 0
 
@@ -1306,6 +1309,7 @@ while running:
                         if balao.mask.get_at((rel_x, rel_y)):
                             balao.kill() 
                             pontuacao += 5
+                            som_estouro.play()
                             break
                 
         if event.type == pygame.KEYDOWN:
@@ -1424,6 +1428,7 @@ while running:
                 em_contagem = False
         elif jogo_comecou:
             em_contagem = False
+            pygame.mixer.music.set_volume(0.7)
             if mosntrou_mensagem_jogo is False:
                 mosntrou_mensagem_jogo = mostrar_mensagem_baloes(ticks_acabou_contagem)
                 baloes_podem_aparecer = True
