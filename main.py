@@ -53,7 +53,7 @@ pygame.display.set_icon(imagem_coracao)
 
 pygame.mixer.init()
 
-som_estouro = pygame.mixer.Sound(caminho_recurso("sons/som_estouro.MP3"))
+som_estouro = pygame.mixer.Sound(caminho_recurso("sons/som_estouro.ogg"))
 som_estouro.set_volume(1.0)
 
 tempo_para_segurar = 230 #Tempo de cooldown para um clique nao contar como dois
@@ -1010,6 +1010,12 @@ def desenhar_pontuacao_e_tempo(pontuacao, tick_quando_comecou):
     screen.blit(texto_surface, texto_rect)
     screen.blit(texto_segundos, texto_segundos_rect)
 
+def mensagem_fim_jogo(pontos, baloes_estourados):
+    fonte_atual = calculo_tamanho_fonte_atual(30)
+    titulo =  fonte_atual.render("Fim de jogo", True, "black")
+    texto_informacoes = [f"Pontos: {str(pontos)}",
+                         f"Balões estourados: {str(baloes_estourados)}"
+                         ]
 
 
 
