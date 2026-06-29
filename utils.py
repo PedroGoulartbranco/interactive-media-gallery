@@ -32,6 +32,12 @@ def caminho_recurso(rel_path):
         base_path = os.path.abspath(".")
     return os.path.join(base_path, rel_path)
 
+def caminho_config(caminho):
+    if getattr(sys, 'frozen', False):
+        return os.path.join(os.path.dirname(sys.executable), caminho)
+    else:
+        return os.path.join(os.path.abspath("."), caminho)
+
 def aleatorizar(numero_fotos, indice_foto_atual):
     fotos_opcoes = []
     for indice_foto in range(numero_fotos):
@@ -67,7 +73,7 @@ def embaralhar_fotos(lista_fotos):
     return shuffle(lista_fotos)
 
 def salvar_caminho_json(caminho):
-    caminho_json = caminho_recurso("configuracoes.json")
+    caminho_json = caminho_config("configuracoes.json")
     dados = {}
     with open(caminho_json, "r", encoding="utf-8") as arquivo:
         dados = json.load(arquivo)
@@ -78,7 +84,7 @@ def salvar_caminho_json(caminho):
         json.dump(dados, arquivo, indent=4, ensure_ascii=False)
 
 def limpar_caminho_json():
-    caminho_json = caminho_recurso("configuracoes.json")
+    caminho_json = caminho_config("configuracoes.json")
     dados = {}
 
     with open(caminho_json, "r", encoding="utf-8") as arquivo:
@@ -90,16 +96,25 @@ def limpar_caminho_json():
         json.dump(dados, arquivo, indent=4, ensure_ascii=False)
 
 def pegar_configuracoes_salvas():
-    caminho_json = caminho_recurso("configuracoes.json")
+    caminho = caminho_config("configuracoes.json")
     dados = {}
 
-    with open(caminho_json, "r", encoding="utf-8") as arquivo:
-        dados = json.load(arquivo)
-
-    return dados
+    if not os.path.exists(caminho):
+        print(f"Arquivo não encontrado em {caminho}, criando um novo...")
+        config_padrao = {"cor_fundo": "#AC01F4",
+    "cor_botoes": "#6503A6",
+    "cor_borda": "#000000",
+    "caminho": "",
+    "texto": "  Não existem palavras para descrever o quanto eu te amo do fundo do meu coração, \no quanto eu gosto de passar meu tempo com você, de ouvir sua risada, de conversar\ncom você, jogar com você entre infinitas outras coisas. Eu quero que continuemos\njuntos para todo sempre, porque além de ser minha namorada você é minha melhor amiga,\nminha parceira, minha tudo.\n Espero que você goste dessa galeria que eu fiz para nós, minha maior diversão \nfazendo for ver nossas fotos e perceber o quanto fomos ficando mais próximos e mais\na vontade um com o outro.\nASS: Com Amor Pedro!"} # Defina o padrão aqui
+        with open(caminho, 'w') as f:
+            json.dump(config_padrao, f)
+        return config_padrao
+    
+    with open(caminho, 'r') as f:
+        return json.load(f)
 
 def salvar_configuracoes_json(cor_fundo, cor_botoes, cor_borda):
-    caminho_json = caminho_recurso("configuracoes.json")
+    caminho_json = caminho_config("configuracoes.json")
     dados = {}
 
     with open(caminho_json, "r", encoding="utf-8") as arquivo:

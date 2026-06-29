@@ -1015,7 +1015,7 @@ def mensagem_fim_jogo(pontos, baloes_estourados):
     titulo =  fonte_atual.render("Fim de jogo", True, "black")
     texto_informacoes = [f"Pontos: {str(pontos)}",
                          f"Balões estourados: {str(baloes_estourados)}"
-                         ]
+    ]
 
 
 
