@@ -105,7 +105,7 @@ def pegar_configuracoes_salvas():
     "cor_botoes": "#6503A6",
     "cor_borda": "#000000",
     "caminho": "",
-    "texto": "  Não existem palavras para descrever o quanto eu te amo do fundo do meu coração, \no quanto eu gosto de passar meu tempo com você, de ouvir sua risada, de conversar\ncom você, jogar com você entre infinitas outras coisas. Eu quero que continuemos\njuntos para todo sempre, porque além de ser minha namorada você é minha melhor amiga,\nminha parceira, minha tudo.\n Espero que você goste dessa galeria que eu fiz para nós, minha maior diversão \nfazendo for ver nossas fotos e perceber o quanto fomos ficando mais próximos e mais\na vontade um com o outro.\nASS: Com Amor Pedro!"} # Defina o padrão aqui
+    "texto": "  Escreva seu texto dentro do json\n"} # Defina o padrão aqui
         with open(caminho, 'w') as f:
             json.dump(config_padrao, f)
         return config_padrao
