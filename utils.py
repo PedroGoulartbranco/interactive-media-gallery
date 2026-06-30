@@ -161,5 +161,57 @@ def pygame_para_pillow(surface):
 def retornar_caminho_musica_jogo():
     return caminho_recurso("sons\musica_jogo.mp3")
 
-def calcular_tamanho_balao():
-    pass
+def pegar_pontuacao_no_rank():
+    caminho = caminho_config("rank.json")
+    dados = {}
+
+    if not os.path.exists(caminho):
+        print(f"Arquivo não encontrado em {caminho}, criando um novo...")
+        rank_padrao = {
+    "1": {
+        "nome": "", 
+        "pontos": 0,
+        "baloes": 0
+    },
+    "2": {
+        "nome": "", 
+        "pontos": 0,
+        "baloes": 0
+    },
+    "3": {
+        "nome": "", 
+        "pontos": 0,
+        "baloes": 0
+    },
+    "4": {
+        "nome": "", 
+        "pontos": 0,
+        "baloes": 0
+    },
+    "5": {
+        "nome": "", 
+        "pontos": 0,
+        "baloes": 0
+    }
+} # Defina o padrão aqui
+        with open(caminho, 'w') as f:
+            json.dump(rank_padrao, f)
+        return rank_padrao
+    
+    with open(caminho, 'r') as f:
+        return json.load(f)
+    
+def calcular_posicao_jogador_rank(pontos):
+    dados = pegar_pontuacao_no_rank()
+
+    rank_jogador = 6
+
+    for posicao in ["1", "2", "3", "4", "5"]:
+
+        pontos_do_rank = dados[posicao]["pontos"]
+
+        if pontos > pontos_do_rank:
+            rank_jogador = int(posicao)
+            break
+
+    return rank_jogador

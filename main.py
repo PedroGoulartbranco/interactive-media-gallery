@@ -1034,6 +1034,19 @@ def mensagem_fim_jogo(pontos, baloes_estourados):
 
         y_atual += rect_texto.height + 10
 
+    posicao_rank = calcular_posicao_jogador_rank(pontos)
+    print(posicao_rank)
+    if int(posicao_rank) >= 6:
+        texto_rank = fonte_atual.render(f"Você está fora do Rank!", True, "black")
+    else:
+        texto_rank = fonte_atual.render(f"Você está em {posicao_rank}º no Rank!", True, "black")
+
+    rect_texto_rank = texto_rank.get_rect()
+
+    rect_texto_rank.midtop = ((largura_tela // 2, y_atual + 20))
+
+    screen.blit(texto_rank, rect_texto_rank)
+
     screen.blit(titulo, titulo_rect)
 
 
