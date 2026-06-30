@@ -4,7 +4,7 @@ from quadrados import *
 from PIL import Image, ImageFilter, ImageOps, ImageEnhance, ImageChops, ImageDraw
 from random import choice
 from matrizes_cores import *
-from balao import Balao
+from classes_jogos import Balao, TextoPontos
 
 pygame.init()
 LARGURA, ALTURA = 1000, 600
@@ -98,8 +98,10 @@ tempo_maximo_jogo =  30000
 baloes_podem_aparecer = False
 pontuacao = 0
 ticks_baloes_começaram_aparecer = 0
+baloes_estourados = 0
 
 grupo_balao = pygame.sprite.Group()
+grupo_pontuacao = pygame.sprite.Group()
 
 cores_botoes = dados_salvos["cor_botoes"]
 cor_fundo_atual = dados_salvos["cor_fundo"]
@@ -1011,11 +1013,28 @@ def desenhar_pontuacao_e_tempo(pontuacao, tick_quando_comecou):
     screen.blit(texto_segundos, texto_segundos_rect)
 
 def mensagem_fim_jogo(pontos, baloes_estourados):
+    fonte_titulo = calculo_tamanho_fonte_atual(40)
     fonte_atual = calculo_tamanho_fonte_atual(30)
-    titulo =  fonte_atual.render("Fim de jogo", True, "black")
+    titulo =  fonte_titulo.render("Fim de jogo", True, "black")
     texto_informacoes = [f"Pontos: {str(pontos)}",
-                         f"Balões estourados: {str(baloes_estourados)}"
-    ]
+                         f"Balões estourados: {str(baloes_estourados)}"]
+    largura_tela = screen.get_width()
+    titulo_rect = titulo.get_rect()
+    margem = 20 
+    titulo_rect.midtop = (largura_tela // 2, margem)
+
+    y_atual = titulo_rect.bottom + margem
+
+    for linha in texto_informacoes:
+        texto_surf = fonte_atual.render(linha, True, "black")
+        rect_texto = texto_surf.get_rect()
+        rect_texto.midtop = (largura_tela // 2, y_atual)
+
+        screen.blit(texto_surf, rect_texto)
+
+        y_atual += rect_texto.height + 10
+
+    screen.blit(titulo, titulo_rect)
 
 
 
@@ -1307,6 +1326,7 @@ while running:
                         print("oi")
                         baixar_imagem(i)
             if jogo_comecou:
+                fonte_pontuacao_balao = calculo_tamanho_fonte_atual(20)
                 for balao in reversed(grupo_balao.sprites()):
                     if balao.rect.collidepoint(mouse_pos):
                         rel_x = mouse_pos[0] - balao.rect.x
@@ -1314,8 +1334,11 @@ while running:
 
                         if balao.mask.get_at((rel_x, rel_y)):
                             balao.kill() 
-                            pontuacao += 5
+                            pontuacao += balao.pontos
+                            texto_pontos = TextoPontos(f"+{balao.pontos}", mouse_pos[0], mouse_pos[1], fonte_pontuacao_balao)
+                            grupo_pontuacao.add(texto_pontos)
                             som_estouro.play()
+                            baloes_estourados += 1
                             break
                 
         if event.type == pygame.KEYDOWN:
@@ -1452,14 +1475,18 @@ while running:
                 grupo_balao.update()
                 grupo_balao.draw(screen)
 
+                grupo_pontuacao.update()
+                grupo_pontuacao.draw(screen)
+
                 desenhar_pontuacao_e_tempo(pontuacao, ticks_baloes_começaram_aparecer)
+
 
                 if tempo_atual - ticks_baloes_começaram_aparecer >= tempo_maximo_jogo:
                     print("acabou")
                     baloes_podem_aparecer = False
                     jogo_acabou = True
             if jogo_acabou:
-                pass
+                mensagem_fim_jogo(pontuacao, baloes_estourados)
                 
     pygame.display.flip()
 
