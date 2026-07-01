@@ -80,6 +80,8 @@ mosntrou_mensagem_jogo = False
 tamanho_letra_aviso_jogo = 60
 jogo_acabou = False
 
+modo_digitar = False
+nome_jogador = ""
 
 balao_azul = caminho_recurso("imagens/balao_azul.png")
 balao_vermelho = caminho_recurso("imagens/balao_vermelho.png")
@@ -1013,6 +1015,7 @@ def desenhar_pontuacao_e_tempo(pontuacao, tick_quando_comecou):
     screen.blit(texto_segundos, texto_segundos_rect)
 
 def mensagem_fim_jogo(pontos, baloes_estourados):
+    global rect_botao_salvar_nome, rect_quadrado_digitar
     fonte_titulo = calculo_tamanho_fonte_atual(40)
     fonte_atual = calculo_tamanho_fonte_atual(30)
     titulo =  fonte_titulo.render("Fim de jogo", True, "black")
@@ -1035,17 +1038,29 @@ def mensagem_fim_jogo(pontos, baloes_estourados):
         y_atual += rect_texto.height + 10
 
     posicao_rank = calcular_posicao_jogador_rank(pontos)
-    print(posicao_rank)
     if int(posicao_rank) >= 6:
         texto_rank = fonte_atual.render(f"Você está fora do Rank!", True, "black")
     else:
         texto_rank = fonte_atual.render(f"Você está em {posicao_rank}º no Rank!", True, "black")
+        texto_salvar = fonte_atual.render("Salvar", True, "black")
 
-    rect_texto_rank = texto_rank.get_rect()
+        rect_texto_rank = texto_rank.get_rect()
 
-    rect_texto_rank.midtop = ((largura_tela // 2, y_atual + 20))
+        rect_texto_rank.midtop = ((largura_tela // 2, y_atual + 20))
 
-    screen.blit(texto_rank, rect_texto_rank)
+        screen.blit(texto_rank, rect_texto_rank)
+
+        rect_quadrado_digitar = pygame.Rect(0, 0, 300, 50)
+        rect_botao_salvar_nome = pygame.Rect(0, 0, 200, 50)
+        
+        rect_quadrado_digitar.midtop = (largura_tela // 2, rect_texto_rank.y + 100)
+        rect_botao_salvar_nome.midtop = (largura_tela // 2, rect_quadrado_digitar.y + 100)
+        
+        pygame.draw.rect(screen, "#e4c1c1", rect_quadrado_digitar)
+        pygame.draw.rect(screen, cores_botoes, rect_botao_salvar_nome)
+
+        rect_texto_botao_salvar = texto_salvar.get_rect(center=rect_botao_salvar_nome.center)
+        screen.blit(texto_salvar, rect_texto_botao_salvar)
 
     screen.blit(titulo, titulo_rect)
 
@@ -1353,6 +1368,10 @@ while running:
                             som_estouro.play()
                             baloes_estourados += 1
                             break
+            if jogo_acabou:
+                if rect_quadrado_digitar.collidepoint(mouse_pos):
+                    modo_digitar = True
+                    print("oii")
                 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
@@ -1498,6 +1517,8 @@ while running:
                     print("acabou")
                     baloes_podem_aparecer = False
                     jogo_acabou = True
+                    grupo_balao.empty()
+                    grupo_pontuacao.empty()
             if jogo_acabou:
                 mensagem_fim_jogo(pontuacao, baloes_estourados)
                 

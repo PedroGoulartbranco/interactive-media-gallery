@@ -65,3 +65,6 @@ botao_salvar_edicoes = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES
 botao_voltar_extra = pygame.Rect(DISTANCIA_DO_QUADRADO_DAS_IMAGENS_PARA_BOTOES, 360 + ALTURA_BOTOES, LARGURA_BOTOES, ALTURA_BOTOES)
 
 lista_botoes_mais = [botao_salvar_caminho_pasta, botao_limpar_caminho_pasta, botao_baixar_imagem, botao_salvar_edicoes, botao_voltar_extra]
+
+rect_botao_salvar_nome = pygame.Rect(0, 0, 200, 50)
+rect_quadrado_digitar = pygame.Rect(0, 0, 200, 50)
