@@ -1086,9 +1086,9 @@ def mensagem_fim_jogo(pontos, baloes_estourados):
     screen.blit(titulo, titulo_rect)
 
 def funcao_mostrando_rank():
-    global pegou_rank_do_json
+    global pegou_rank_do_json, botao_sair_jogo
     fonte_titulo = calculo_tamanho_fonte_atual(50)
-    fonte_atual = calculo_tamanho_fonte_atual(20)
+    fonte_atual = calculo_tamanho_fonte_atual(30)
     titulo = fonte_titulo.render(f"Rank", True, "black")
 
     largura_tela = screen.get_width()
@@ -1100,19 +1100,51 @@ def funcao_mostrando_rank():
 
     dados_rank = pegar_pontuacao_no_rank()
 
-    informacoes_rank = []
-    for i in range(1, 6):
-        informacoes_rank.append(f"Nome: {dados_rank[str(i)]["nome"]} ---- Pontos: {dados_rank[str(i)]["pontos"]}")
     y_atual = 100
-    for usuario in informacoes_rank:
-        texto = fonte_atual.render(str(usuario), True, "black")
-        rect_texto = texto.get_rect()
+    posicao_x_fixa = (largura_tela // 2) - 150
 
-        rect_texto.midtop = (largura_tela // 2, y_atual)
-        y_atual += rect_texto.height
+    coluna_nome = (largura_tela // 2) -200
+    coluna_pontos = (largura_tela // 2) + 200
 
-        screen.blit(texto, rect_texto)
+    for i in range(1, 6):
+        texto_nome = fonte_atual.render(f"{i} - {dados_rank[str(i)]["nome"]}", True, "black")
+        texto_pontos = fonte_atual.render(f"{dados_rank[str(i)]["pontos"]}pts", True, "black")
+    
+        rect_nome = texto_nome.get_rect()
+        rect_pontos = texto_pontos.get_rect()
 
+        rect_nome.topleft = (coluna_nome, y_atual)
+        
+        rect_pontos.topright = (coluna_pontos, y_atual)
+
+
+        screen.blit(texto_nome, rect_nome)
+        screen.blit(texto_pontos, rect_pontos)
+
+        y_atual += rect_nome.height + 20
+
+        if dados_rank[str(i)]["nome"] == nome_jogador and dados_rank[str(i)]["pontos"] == pontuacao:
+            largura_borda = coluna_nome - coluna_pontos - 40
+            altura_borda = rect_nome.height + 15
+
+            rect_borda = pygame.Rect(0, 0, largura_borda, altura_borda)
+
+            rect_borda.center = ((coluna_nome + coluna_pontos)// 2, rect_nome.centery)
+            pygame.draw.rect(screen, "black", rect_borda, 2, border_radius=5)
+
+    escala_x = largura_atual / LARGURA
+    escala_y = altura_atual / ALTURA
+
+    largura_botao =LARGURA_BOTOES * escala_x
+    altura_botao = ALTURA_BOTOES * escala_y
+    botao_sair_jogo = pygame.Rect(0, 0, largura_botao, altura_botao)
+    botao_sair_jogo.midtop = (largura_tela // 2, y_atual + 50)
+    pygame.draw.rect(screen, cores_botoes, botao_sair_jogo)
+
+    texto_sair = fonte_atual.render("Sair", True, "black")
+    rect_texto_sair = texto_sair.get_rect(center=botao_sair_jogo.center)
+
+    screen.blit(texto_sair, rect_texto_sair)
 
 
 while running:
@@ -1433,6 +1465,23 @@ while running:
                                 tela_salvar_nome = False
                                 salvar_rank_json(nome_jogador, posicao_rank, pontuacao, baloes_estourados)
                                 tela_rank = True
+                                modo_digitar = False
+                                pygame.key.stop_text_input()
+            if tela_rank:
+                if botao_sair_jogo.collidepoint(mouse_pos):
+                    print("clicou")
+                    jogo_acabou = False
+                    tela_rank = False
+                    nome_jogador = ""
+                    pontuacao = 0
+                    baloes_estourados = 0
+                    pagina_inicial = True
+                    mostrar_botoes_laterais = True
+                    ticks_clicou_em_jogar = 0
+                    ticks_acabou_contagem = 0
+                    contador_jogo = 3
+                    trocou_para_musica_jogo = False
+                    mosntrou_mensagem_jogo = False
         if modo_digitar:
             if event.type == pygame.TEXTINPUT:
                     print(event.text)
