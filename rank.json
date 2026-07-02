@@ -1,27 +1,27 @@
 {
     "1": {
-        "nome": " ",
-        "pontos": 0,
-        "baloes": 0
+        "nome": "pedro",
+        "pontos": 220,
+        "baloes": 12
     },
     "2": {
-        "nome": "",
-        "pontos": 0,
-        "baloes": 0
+        "nome": "pedro",
+        "pontos": 85,
+        "baloes": 3
     },
     "3": {
-        "nome": "",
-        "pontos": 0,
-        "baloes": 0
+        "nome": "pedro",
+        "pontos": 25,
+        "baloes": 2
     },
     "4": {
-        "nome": "",
-        "pontos": 0,
-        "baloes": 0
+        "nome": "pedro",
+        "pontos": 20,
+        "baloes": 1
     },
     "5": {
-        "nome": "",
-        "pontos": 0,
-        "baloes": 0
+        "nome": "pedro",
+        "pontos": 20,
+        "baloes": 1
     }
 }

@@ -81,6 +81,7 @@ tamanho_letra_aviso_jogo = 60
 jogo_acabou = False
 tela_rank = False
 tela_salvar_nome = False
+pegou_rank_do_json = False
 
 modo_digitar = False
 nome_jogador = ""
@@ -1041,8 +1042,21 @@ def mensagem_fim_jogo(pontos, baloes_estourados):
         y_atual += rect_texto.height + 10
 
     posicao_rank = calcular_posicao_jogador_rank(pontos)
-    if int(posicao_rank) >= 6:
+    if int(posicao_rank)  == 0 or int(posicao_rank) == 6:
         texto_rank = fonte_atual.render(f"Você está fora do Rank!", True, "black")
+        texto_fechar = fonte_atual.render("Fechar", True, "black")
+
+        rect_texto_rank = texto_rank.get_rect()
+
+        rect_texto_rank.midtop = ((largura_tela // 2, y_atual + 20))
+
+        screen.blit(texto_rank, rect_texto_rank)
+        rect_botao_sair_tela_pontuacao.midtop = (largura_tela // 2, rect_texto_rank.y + 150)
+        pygame.draw.rect(screen, cores_botoes, rect_botao_sair_tela_pontuacao)
+
+        rect_texto_botao_fechar = texto_fechar.get_rect(center=rect_botao_sair_tela_pontuacao.center)
+        screen.blit(texto_fechar, rect_texto_botao_fechar)
+
     else:
         texto_rank = fonte_atual.render(f"Você está em {posicao_rank}º no Rank!", True, "black")
         texto_salvar = fonte_atual.render("Salvar", True, "black")
@@ -1054,8 +1068,8 @@ def mensagem_fim_jogo(pontos, baloes_estourados):
 
         screen.blit(texto_rank, rect_texto_rank)
 
-        rect_quadrado_digitar = pygame.Rect(0, 0, 300, 50)
-        rect_botao_salvar_nome = pygame.Rect(0, 0, 200, 50)
+        # rect_quadrado_digitar = pygame.Rect(0, 0, 300, 50)
+        # rect_botao_salvar_nome = pygame.Rect(0, 0, 200, 50)
         
         rect_quadrado_digitar.midtop = (largura_tela // 2, rect_texto_rank.y + 100)
         rect_botao_salvar_nome.midtop = (largura_tela // 2, rect_quadrado_digitar.y + 100)
@@ -1070,6 +1084,35 @@ def mensagem_fim_jogo(pontos, baloes_estourados):
 
         screen.blit(texto_nome, rect_nome_jogador)
     screen.blit(titulo, titulo_rect)
+
+def funcao_mostrando_rank():
+    global pegou_rank_do_json
+    fonte_titulo = calculo_tamanho_fonte_atual(50)
+    fonte_atual = calculo_tamanho_fonte_atual(20)
+    titulo = fonte_titulo.render(f"Rank", True, "black")
+
+    largura_tela = screen.get_width()
+    titulo_rect = titulo.get_rect()
+    margem = 20 
+    titulo_rect.midtop = (largura_tela // 2, margem)
+
+    screen.blit(titulo, titulo_rect)
+
+    dados_rank = pegar_pontuacao_no_rank()
+
+    informacoes_rank = []
+    for i in range(1, 6):
+        informacoes_rank.append(f"Nome: {dados_rank[str(i)]["nome"]} ---- Pontos: {dados_rank[str(i)]["pontos"]}")
+    y_atual = 100
+    for usuario in informacoes_rank:
+        texto = fonte_atual.render(str(usuario), True, "black")
+        rect_texto = texto.get_rect()
+
+        rect_texto.midtop = (largura_tela // 2, y_atual)
+        y_atual += rect_texto.height
+
+        screen.blit(texto, rect_texto)
+
 
 
 while running:
@@ -1376,14 +1419,20 @@ while running:
                             break
             if jogo_acabou:
                 if tela_salvar_nome:
-                    if rect_quadrado_digitar.collidepoint(mouse_pos):
-                        modo_digitar = True
-                        pygame.key.start_text_input()
-                        print(modo_digitar)
-                    if rect_botao_salvar_nome.collidepoint(mouse_pos):
-                        if len(nome_jogador) >= 1:
+                    if int(posicao_rank)  == 0 or int(posicao_rank) == 6:
+                        if rect_botao_sair_tela_pontuacao.collidepoint(mouse_pos):
                             tela_salvar_nome = False
-                            salvar_rank_json(nome_jogador, posicao_rank, pontuacao, baloes_estourados)
+                            tela_rank = True
+                    else:
+                        if rect_quadrado_digitar.collidepoint(mouse_pos):
+                            modo_digitar = True
+                            pygame.key.start_text_input()
+                            print(modo_digitar)
+                        if rect_botao_salvar_nome.collidepoint(mouse_pos):
+                            if len(nome_jogador) >= 1:
+                                tela_salvar_nome = False
+                                salvar_rank_json(nome_jogador, posicao_rank, pontuacao, baloes_estourados)
+                                tela_rank = True
         if modo_digitar:
             if event.type == pygame.TEXTINPUT:
                     print(event.text)
@@ -1543,6 +1592,8 @@ while running:
             if jogo_acabou:
                 if tela_salvar_nome:
                     mensagem_fim_jogo(pontuacao, baloes_estourados)
+                if tela_rank:
+                    funcao_mostrando_rank()
                 
     pygame.display.flip()
 

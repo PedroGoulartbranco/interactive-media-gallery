@@ -68,3 +68,4 @@ lista_botoes_mais = [botao_salvar_caminho_pasta, botao_limpar_caminho_pasta, bot
 
 rect_botao_salvar_nome = pygame.Rect(0, 0, 200, 50)
 rect_quadrado_digitar = pygame.Rect(0, 0, 200, 50)
+rect_botao_sair_tela_pontuacao = pygame.Rect(0, 0, 300, 50)
