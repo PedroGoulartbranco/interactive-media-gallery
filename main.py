@@ -79,6 +79,8 @@ trocou_para_musica_jogo = False
 mosntrou_mensagem_jogo = False
 tamanho_letra_aviso_jogo = 60
 jogo_acabou = False
+tela_rank = False
+tela_salvar_nome = False
 
 modo_digitar = False
 nome_jogador = ""
@@ -101,6 +103,7 @@ baloes_podem_aparecer = False
 pontuacao = 0
 ticks_baloes_começaram_aparecer = 0
 baloes_estourados = 0
+posicao_rank = 0
 
 grupo_balao = pygame.sprite.Group()
 grupo_pontuacao = pygame.sprite.Group()
@@ -1015,7 +1018,7 @@ def desenhar_pontuacao_e_tempo(pontuacao, tick_quando_comecou):
     screen.blit(texto_segundos, texto_segundos_rect)
 
 def mensagem_fim_jogo(pontos, baloes_estourados):
-    global rect_botao_salvar_nome, rect_quadrado_digitar
+    global rect_botao_salvar_nome, rect_quadrado_digitar, posicao_rank
     fonte_titulo = calculo_tamanho_fonte_atual(40)
     fonte_atual = calculo_tamanho_fonte_atual(30)
     titulo =  fonte_titulo.render("Fim de jogo", True, "black")
@@ -1043,6 +1046,7 @@ def mensagem_fim_jogo(pontos, baloes_estourados):
     else:
         texto_rank = fonte_atual.render(f"Você está em {posicao_rank}º no Rank!", True, "black")
         texto_salvar = fonte_atual.render("Salvar", True, "black")
+        texto_nome = fonte_atual.render(str(nome_jogador), True, "black")
 
         rect_texto_rank = texto_rank.get_rect()
 
@@ -1062,8 +1066,10 @@ def mensagem_fim_jogo(pontos, baloes_estourados):
         rect_texto_botao_salvar = texto_salvar.get_rect(center=rect_botao_salvar_nome.center)
         screen.blit(texto_salvar, rect_texto_botao_salvar)
 
-    screen.blit(titulo, titulo_rect)
+        rect_nome_jogador = texto_nome.get_rect(center=rect_quadrado_digitar.center)
 
+        screen.blit(texto_nome, rect_nome_jogador)
+    screen.blit(titulo, titulo_rect)
 
 
 while running:
@@ -1369,10 +1375,23 @@ while running:
                             baloes_estourados += 1
                             break
             if jogo_acabou:
-                if rect_quadrado_digitar.collidepoint(mouse_pos):
-                    modo_digitar = True
-                    print("oii")
-                
+                if tela_salvar_nome:
+                    if rect_quadrado_digitar.collidepoint(mouse_pos):
+                        modo_digitar = True
+                        pygame.key.start_text_input()
+                        print(modo_digitar)
+                    if rect_botao_salvar_nome.collidepoint(mouse_pos):
+                        if len(nome_jogador) >= 1:
+                            tela_salvar_nome = False
+                            salvar_rank_json(nome_jogador, posicao_rank, pontuacao, baloes_estourados)
+        if modo_digitar:
+            if event.type == pygame.TEXTINPUT:
+                    print(event.text)
+                    if len(nome_jogador) < 5:
+                        nome_jogador += event.text
+            if event.type  == pygame.KEYDOWN:
+                if event.key == pygame.K_BACKSPACE:
+                    nome_jogador = nome_jogador[:-1]
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                 if indice_musica == 0:
@@ -1398,38 +1417,39 @@ while running:
                         indice_foto_atual = 0
                     if event.key == pygame.K_2: 
                         indice_foto_atual = numero_fotos - 1
-            if event.key == pygame.K_l:
-                if pagina_de_ajuda is False:
-                    pagina_de_ajuda = True
-                    pagina_inicial = False
-                    pagina_configuracoes_aberta = False
-                    pagina_personalisar_galeria_aberta = False
-                else:
-                    pagina_de_ajuda = False
-                    pagina_inicial = True
-                    mostrar_botoes_laterais = True
-            if event.key == pygame.K_r:
-                if pasta_aberta:
-                    resetar_imagem()
-            if event.key == pygame.K_RIGHT:
-                if pasta_aberta:
-                    if indice_foto_atual== numero_fotos - 1:
-                        indice_foto_atual = 0
+            if modo_digitar is False:
+                if event.key == pygame.K_l:
+                    if pagina_de_ajuda is False:
+                        pagina_de_ajuda = True
+                        pagina_inicial = False
+                        pagina_configuracoes_aberta = False
+                        pagina_personalisar_galeria_aberta = False
                     else:
-                        indice_foto_atual += 1
-            if event.key == pygame.K_LEFT:
-                if pasta_aberta:
-                    if indice_foto_atual - 1 == -1:
-                        indice_foto_atual = numero_fotos - 1
+                        pagina_de_ajuda = False
+                        pagina_inicial = True
+                        mostrar_botoes_laterais = True
+                if event.key == pygame.K_r:
+                    if pasta_aberta:
+                        resetar_imagem()
+                if event.key == pygame.K_RIGHT:
+                    if pasta_aberta:
+                        if indice_foto_atual== numero_fotos - 1:
+                            indice_foto_atual = 0
+                        else:
+                            indice_foto_atual += 1
+                if event.key == pygame.K_LEFT:
+                    if pasta_aberta:
+                        if indice_foto_atual - 1 == -1:
+                            indice_foto_atual = numero_fotos - 1
+                        else:
+                            indice_foto_atual -= 1
+                if event.key == pygame.K_p:
+                    if musica_tocando:
+                        pygame.mixer.music.pause()
+                        musica_tocando = False
                     else:
-                        indice_foto_atual -= 1
-            if event.key == pygame.K_p:
-                if musica_tocando:
-                    pygame.mixer.music.pause()
-                    musica_tocando = False
-                else:
-                    pygame.mixer.music.unpause()
-                    musica_tocando = True
+                        pygame.mixer.music.unpause()
+                        musica_tocando = True
                 
 
     screen.fill(cor_fundo_atual)
@@ -1519,8 +1539,10 @@ while running:
                     jogo_acabou = True
                     grupo_balao.empty()
                     grupo_pontuacao.empty()
+                    tela_salvar_nome = True
             if jogo_acabou:
-                mensagem_fim_jogo(pontuacao, baloes_estourados)
+                if tela_salvar_nome:
+                    mensagem_fim_jogo(pontuacao, baloes_estourados)
                 
     pygame.display.flip()
 

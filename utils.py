@@ -215,3 +215,20 @@ def calcular_posicao_jogador_rank(pontos):
             break
 
     return rank_jogador
+
+def salvar_rank_json(nome, posicao, pontos, baloes):
+    dados = pegar_pontuacao_no_rank()
+    print(posicao)
+
+    for i in range(5, int(posicao), -1):
+        dados[str(i)] = dados[str(i - 1)]
+
+    dados[str(posicao)] = {
+        "nome": nome,
+        "pontos": pontos,
+        "baloes": baloes
+    }
+
+    caminho = caminho_config("rank.json")
+    with open(caminho, 'w') as f:
+        json.dump(dados, f, indent=4)
