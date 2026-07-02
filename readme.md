@@ -1,4 +1,4 @@
-# 🖼️ Dynamic Media Gallery & Interactive Suite
+# 🖼️ Dynamic Media Gallery & Image Studio
 
 A desktop application built entirely in **Python**, combining an interactive image gallery, an image editing studio, a customizable interface, multimedia controls, persistent local storage, and an integrated arcade game.
 

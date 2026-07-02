@@ -958,8 +958,8 @@ def contagem_jogo():
     fonte_atual = calculo_tamanho_fonte_atual(100)
     texto_aviso = fonte_atual.render("Estoure o maximo de balões", True, "black")
 
-    centro_tela_x = int(LARGURA / 2)
-    centro_tela_y = int(ALTURA / 2)
+    largura_tela = screen.get_width()
+    altura_tela = screen.get_height()
 
     if tempo_atual - ticks_clicou_em_jogar >= 1000:
         contador_jogo -= 1
@@ -968,7 +968,7 @@ def contagem_jogo():
         if contador_jogo == 0:
             return True
     texto = fonte_atual.render(str(contador_jogo), True, "black")
-    rect_texto = texto.get_rect(center=(centro_tela_x, centro_tela_y))
+    rect_texto = texto.get_rect(center=(largura_tela // 2, altura_tela // 2))
     screen.blit(texto, rect_texto)
     print(contador_jogo)
 
@@ -993,8 +993,6 @@ def mostrar_mensagem_baloes(ticks_acabou_contagem):
 
 def calcular_largura_altura_janela():
     largura = screen.get_width()
-
-
     altura = screen.get_height()
 
     return largura, altura
@@ -1019,7 +1017,7 @@ def desenhar_pontuacao_e_tempo(pontuacao, tick_quando_comecou):
     screen.blit(texto_segundos, texto_segundos_rect)
 
 def mensagem_fim_jogo(pontos, baloes_estourados):
-    global rect_botao_salvar_nome, rect_quadrado_digitar, posicao_rank
+    global rect_botao_salvar_nome, rect_quadrado_digitar, posicao_rank, rect_botao_sair_tela_pontuacao
     fonte_titulo = calculo_tamanho_fonte_atual(40)
     fonte_atual = calculo_tamanho_fonte_atual(30)
     titulo =  fonte_titulo.render("Fim de jogo", True, "black")
@@ -1048,9 +1046,17 @@ def mensagem_fim_jogo(pontos, baloes_estourados):
 
         rect_texto_rank = texto_rank.get_rect()
 
-        rect_texto_rank.midtop = ((largura_tela // 2, y_atual + 20))
+        rect_texto_rank.midtop = ((largura_tela // 2, y_atual + 80))
+
+        escala_x = largura_atual / LARGURA
+        escala_y = altura_atual / ALTURA
+
+        largura_botao =LARGURA_BOTOES * escala_x
+        altura_botao = ALTURA_BOTOES * escala_y
+  
 
         screen.blit(texto_rank, rect_texto_rank)
+        rect_botao_sair_tela_pontuacao = pygame.Rect(0, 0, largura_botao, altura_botao)
         rect_botao_sair_tela_pontuacao.midtop = (largura_tela // 2, rect_texto_rank.y + 150)
         pygame.draw.rect(screen, cores_botoes, rect_botao_sair_tela_pontuacao)
 
@@ -1067,9 +1073,6 @@ def mensagem_fim_jogo(pontos, baloes_estourados):
         rect_texto_rank.midtop = ((largura_tela // 2, y_atual + 20))
 
         screen.blit(texto_rank, rect_texto_rank)
-
-        # rect_quadrado_digitar = pygame.Rect(0, 0, 300, 50)
-        # rect_botao_salvar_nome = pygame.Rect(0, 0, 200, 50)
         
         rect_quadrado_digitar.midtop = (largura_tela // 2, rect_texto_rank.y + 100)
         rect_botao_salvar_nome.midtop = (largura_tela // 2, rect_quadrado_digitar.y + 100)
