@@ -1480,8 +1480,12 @@ while running:
                     ticks_clicou_em_jogar = 0
                     ticks_acabou_contagem = 0
                     contador_jogo = 3
-                    trocou_para_musica_jogo = False
                     mosntrou_mensagem_jogo = False
+                    trocou_para_musica_jogo = False
+                    modo_jogo = False
+                    nome_musica_atual, caminho_musica_atual = tocar_musica(indice_musica)
+                    pygame.mixer.music.load(caminho_musica_atual)
+                    pygame.mixer.music.play(-1)
         if modo_digitar:
             if event.type == pygame.TEXTINPUT:
                     print(event.text)
@@ -1629,7 +1633,6 @@ while running:
                 grupo_pontuacao.draw(screen)
 
                 desenhar_pontuacao_e_tempo(pontuacao, ticks_baloes_começaram_aparecer)
-
 
                 if tempo_atual - ticks_baloes_começaram_aparecer >= tempo_maximo_jogo:
                     print("acabou")
