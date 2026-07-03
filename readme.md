@@ -122,15 +122,16 @@ A built-in arcade mini-game featuring:
 - Keyboard shortcut support.
 - Automatic image gallery indexing.
 - Real-time rendering.
+- Automated executable generation via custom `build.py` script.
 
 ---
 
 # 📦 Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
+git clone https://github.com/PedroGoulartbranco/interactive-media-gallery
 
-cd YOUR_REPOSITORY
+cd interactive-media-gallery
 
 pip install -r requirements.txt
 
