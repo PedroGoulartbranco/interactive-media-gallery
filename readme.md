@@ -16,7 +16,7 @@ The project was developed from scratch using **Pygame** for the graphical interf
 
 | Gallery | Image Editor | Balloon Pop |
 |:-------:|:------------:|:-----------:|
-| <img src="imagens_readme/foto_1.PNG" width="300"> | <img src="imagens_readme/foto_2.PNG" width="300"> | |
+| <img src="imagens_readme/foto_1.PNG" width="300"> | <img src="imagens_readme/foto_2.PNG" width="300"> | <img src="imagens_readme/foto_3.PNG" width="300"> |
 
 ---
 
