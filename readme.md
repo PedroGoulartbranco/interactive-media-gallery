@@ -10,13 +10,13 @@ The project was developed from scratch using **Pygame** for the graphical interf
 
 ## 🎥 Demonstration
 
-> Add your YouTube or Google Drive video link here.
+> None
 
 ## 📸 Screenshots
 
 | Gallery | Image Editor | Balloon Pop |
 |:-------:|:------------:|:-----------:|
-| *(Screenshot)* | *(Screenshot)* | *(Screenshot)* |
+| <img src="imagens_readme/foto_1.PNG" width="300"> | <img src="imagens_readme/foto_2.PNG" width="300"> | |
 
 ---
 

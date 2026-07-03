@@ -1,4 +1,4 @@
-from utils import caminho_recurso
+from src.utils import caminho_recurso
 import pygame
 import random
 

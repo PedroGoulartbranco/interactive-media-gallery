@@ -1,10 +1,10 @@
 import pygame
-from utils import *
-from quadrados import *
+from src.utils import *
+from src.quadrados import *
 from PIL import Image, ImageFilter, ImageOps, ImageEnhance, ImageChops, ImageDraw
 from random import choice
-from matrizes_cores import *
-from classes_jogos import Balao, TextoPontos
+from src.matrizes_cores import *
+from src.classes_jogos import Balao, TextoPontos
 
 pygame.init()
 LARGURA, ALTURA = 1000, 600
@@ -44,11 +44,11 @@ imagem_psicodelico = False
 imagem_polaroid = False
 imagem_raioX = False
 
-pygame.display.set_caption("Nossa Galeria")
+pygame.display.set_caption("Galeria")
 fonte = pygame.font.SysFont('consolas', 20)
 
-galeria_icon = pygame.image.load(caminho_recurso("imagens/galeria_icon.ico")).convert_alpha()
-galeria_icon = pygame.transform.scale(galeria_icon, (128, 128))
+galeria_icon = pygame.image.load(caminho_recurso("imagens/galeria_icon.png")).convert_alpha()
+galeria_icon = pygame.transform.scale(galeria_icon, (80, 80))
 pygame.display.set_icon(galeria_icon)
 
 pygame.mixer.init()
