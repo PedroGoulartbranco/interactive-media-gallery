@@ -47,9 +47,9 @@ imagem_raioX = False
 pygame.display.set_caption("Nossa Galeria")
 fonte = pygame.font.SysFont('consolas', 20)
 
-imagem_coracao = pygame.image.load(caminho_recurso("imagens/coracao_icon.png")).convert_alpha()
-imagem_coracao = pygame.transform.scale(imagem_coracao, (128, 128))
-pygame.display.set_icon(imagem_coracao)
+galeria_icon = pygame.image.load(caminho_recurso("imagens/galeria_icon.ico")).convert_alpha()
+galeria_icon = pygame.transform.scale(galeria_icon, (128, 128))
+pygame.display.set_icon(galeria_icon)
 
 pygame.mixer.init()
 
@@ -810,7 +810,7 @@ def funcao_mostrar_pagina_ler():
     fonte_texto = calculo_tamanho_fonte_atual(20)
     texto_titulo = fonte_atual.render("EU TE AMO MUITO", True, "black")
 
-    texto = """  Não existem palavras para descrever o quanto eu te amo do fundo do meu coração, \no quanto eu gosto de passar meu tempo com você, de ouvir sua risada, de conversar\ncom você, jogar com você entre infinitas outras coisas. Eu quero que continuemos\njuntos para todo sempre, porque além de ser minha namorada você é minha melhor amiga,\nminha parceira, minha tudo.\n Espero que você goste dessa galeria que eu fiz para nós, minha maior diversão \nfazendo for ver nossas fotos e perceber o quanto fomos ficando mais próximos e mais\na vontade um com o outro.\nASS: Com Amor Pedro!"""
+    texto = pegar_texto_json()
 
     linhas = texto.split('\n')
 

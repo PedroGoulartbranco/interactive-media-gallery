@@ -232,3 +232,12 @@ def salvar_rank_json(nome, posicao, pontos, baloes):
     caminho = caminho_config("rank.json")
     with open(caminho, 'w') as f:
         json.dump(dados, f, indent=4)
+
+def pegar_texto_json():
+    caminho_json = caminho_config("configuracoes.json")
+    dados = {}
+
+    with open(caminho_json, "r", encoding="utf-8") as arquivo:
+        dados = json.load(arquivo)
+
+    return dados["texto"]
